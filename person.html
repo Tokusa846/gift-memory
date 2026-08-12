@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>人物登録 | Gift Memory</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <main>
+    <h1>人物登録</h1>
+
+    <form id="person-form">
+
+      <label for="name">名前</label>
+      <input type="text" id="name" required>
+
+      <label for="birthday">誕生日</label>
+      <input type="date" id="birthday">
+
+      <label for="relationship">関係</label>
+      <select id="relationship">
+        <option value="">選択してください</option>
+        <option value="家族">家族</option>
+        <option value="友人">友人</option>
+        <option value="職場">職場</option>
+        <option value="親戚">親戚</option>
+        <option value="その他">その他</option>
+      </select>
+
+      <label for="likes">好きなもの</label>
+      <textarea id="likes"></textarea>
+
+      <label for="dislikes">苦手なもの</label>
+      <textarea id="dislikes"></textarea>
+
+      <label for="allergies">アレルギー</label>
+      <textarea id="allergies"></textarea>
+
+      <label for="memo">メモ</label>
+      <textarea id="memo"></textarea>
+
+      <button type="submit">登録する</button>
+
+    </form>
+
+    <p id="message"></p>
+  </main>
+
+  <script type="module" src="js/person.js"></script>
+</body>
+</html>
