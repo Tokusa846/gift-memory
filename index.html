@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+  >
+
+  <title>Gift Memory</title>
+
+  <!-- Font Awesome -->
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+  >
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+  <link
+    href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;600;700&display=swap"
+    rel="stylesheet"
+  >
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+
+  <div class="app-container">
+
+    <!-- =========================
+         HEADER
+    ========================== -->
+    <header class="top-header">
+
+      <div class="date-header">
+        <div class="date-title-area">
+          <h1 id="currentDateHeader">----.--.--.</h1>
+          <span class="today-badge">Today</span>
+        </div>
+      </div>
+
+      <!-- 曜日 -->
+      <div class="weekday-row">
+        <div>日</div>
+        <div>月</div>
+        <div>火</div>
+        <div>水</div>
+        <div>木</div>
+        <div>金</div>
+        <div>土</div>
+      </div>
+
+      <!-- 週間カレンダー -->
+      <div id="weeklyStrip" class="weekly-strip">
+        <!-- JSで生成 -->
+      </div>
+
+    </header>
+
+
+    <!-- =========================
+         MAIN
+    ========================== -->
+    <main class="main-content">
+
+      <!-- =========================
+           TOP
+      ========================== -->
+      <section id="tab-home" class="tab-section">
+
+        <!-- NEWS -->
+        <section class="news-card">
+
+          <div class="section-heading">
+            <div class="section-title">
+              <span class="section-arrow">▶</span>
+              <h2>NEWS & リマインダー</h2>
+            </div>
+
+            <span id="newsCountBadge" class="news-count">
+              0
+            </span>
+          </div>
+
+          <div id="newsContainer" class="news-list">
+            <div class="empty-message">
+              お知らせを読み込んでいます...
+            </div>
+          </div>
+
+        </section>
+
+
+        <!-- PRESENT LOG -->
+        <section class="gift-log-section">
+
+          <div class="gift-log-header">
+            <h2>
+              <i class="fa-solid fa-gift"></i>
+              プレゼント Log
+            </h2>
+
+            <span id="logCount">
+              全 0 件
+            </span>
+          </div>
+
+
+          <!-- FILTER -->
+          <div class="filter-tabs">
+
+            <button
+              id="btn-filter-all"
+              class="filter-button active"
+              data-filter="all"
+            >
+              すべて
+            </button>
+
+            <button
+              id="btn-filter-received"
+              class="filter-button"
+              data-filter="received"
+            >
+              もらった
+            </button>
+
+            <button
+              id="btn-filter-given"
+              class="filter-button"
+              data-filter="given"
+            >
+              あげた
+            </button>
+
+          </div>
+
+
+          <!-- SEARCH -->
+          <div class="search-area">
+
+            <i class="fa-solid fa-magnifying-glass"></i>
+
+            <input
+              type="text"
+              id="searchInput"
+              placeholder="品名や名前で検索..."
+            >
+
+          </div>
+
+
+          <!-- TIMELINE -->
+          <div
+            id="timelineContainer"
+            class="timeline-container"
+          >
+            <div class="empty-message">
+              プレゼント履歴を読み込んでいます...
+            </div>
+          </div>
+
+        </section>
+
+      </section>
+
+
+      <!-- =========================
+           PERSON
+      ========================== -->
+      <section
+        id="tab-person"
+        class="tab-section hidden"
+      >
+
+        <div class="coming-soon">
+
+          <i class="fa-solid fa-user"></i>
+
+          <h2>人物</h2>
+
+          <p>Coming Soon...</p>
+
+        </div>
+
+      </section>
+
+
+      <!-- =========================
+           SCHEDULE
+      ========================== -->
+      <section
+        id="tab-schedule"
+        class="tab-section hidden"
+      >
+
+        <div class="coming-soon">
+
+          <i class="fa-regular fa-calendar"></i>
+
+          <h2>予定</h2>
+
+          <p>Coming Soon...</p>
+
+        </div>
+
+      </section>
+
+
+      <!-- =========================
+           AI
+      ========================== -->
+      <section
+        id="tab-ai"
+        class="tab-section hidden"
+      >
+
+        <div class="coming-soon">
+
+          <i class="fa-solid fa-wand-magic-sparkles"></i>
+
+          <h2>AI</h2>
+
+          <p>Coming Soon...</p>
+
+        </div>
+
+      </section>
+
+
+      <!-- =========================
+           SETTING
+      ========================== -->
+      <section
+        id="tab-setting"
+        class="tab-section hidden"
+      >
+
+        <div class="coming-soon">
+
+          <i class="fa-solid fa-gear"></i>
+
+          <h2>設定</h2>
+
+          <p>Coming Soon...</p>
+
+        </div>
+
+      </section>
+
+    </main>
+
+
+    <!-- =========================
+         PLUS MENU
+    ========================== -->
+    <div
+      id="addMenu"
+      class="add-menu hidden"
+    >
+
+      <a href="given.html" class="add-menu-item">
+        <span class="add-icon given">
+          <i class="fa-solid fa-arrow-up-right"></i>
+        </span>
+
+        <span>あげた</span>
+      </a>
+
+
+      <a href="received.html" class="add-menu-item">
+        <span class="add-icon received">
+          <i class="fa-solid fa-arrow-down-left"></i>
+        </span>
+
+        <span>もらった</span>
+      </a>
+
+
+      <a href="person.html" class="add-menu-item">
+        <span class="add-icon person">
+          <i class="fa-solid fa-user-plus"></i>
+        </span>
+
+        <span>人物登録</span>
+      </a>
+
+    </div>
+
+
+    <!-- =========================
+         FLOATING PLUS BUTTON
+    ========================== -->
+    <button
+      id="addButton"
+      class="floating-add-button"
+      type="button"
+      aria-label="追加"
+    >
+      <i class="fa-solid fa-plus"></i>
+    </button>
+
+
+    <!-- =========================
+         BOTTOM NAVIGATION
+    ========================== -->
+    <nav class="bottom-nav">
+
+      <button
+        class="nav-button active-tab"
+        data-tab="home"
+        id="nav-home"
+      >
+        <i class="fa-solid fa-house"></i>
+        <span>ホーム</span>
+      </button>
+
+
+      <button
+        class="nav-button"
+        data-tab="person"
+        id="nav-person"
+      >
+        <i class="fa-solid fa-user"></i>
+        <span>人物</span>
+      </button>
+
+
+      <button
+        class="nav-button"
+        data-tab="schedule"
+        id="nav-schedule"
+      >
+        <i class="fa-regular fa-calendar"></i>
+        <span>予定</span>
+      </button>
+
+
+      <button
+        class="nav-button"
+        data-tab="ai"
+        id="nav-ai"
+      >
+        <i class="fa-solid fa-wand-magic-sparkles"></i>
+        <span>AI</span>
+      </button>
+
+
+      <button
+        class="nav-button"
+        data-tab="setting"
+        id="nav-setting"
+      >
+        <i class="fa-solid fa-gear"></i>
+        <span>設定</span>
+      </button>
+
+    </nav>
+
+  </div>
+
+
+  <!-- JavaScript -->
+  <script
+    type="module"
+    src="js/top.js"
+  ></script>
+
+</body>
+</html>
