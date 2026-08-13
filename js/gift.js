@@ -373,7 +373,7 @@ giftForm.addEventListener(
 
     const { error } =
       await supabase
-        .from("gift")
+        .from("Gifts")
         .insert([
           giftData
         ]);
