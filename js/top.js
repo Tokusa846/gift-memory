@@ -26,6 +26,8 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   renderNews();
 
+  setupReturnButtons();
+
   renderTimeline();
 
   setupNavigation();
@@ -117,6 +119,8 @@ async function loadGiftLogs() {
       item_name,
       price,
       memo,
+      need_return,
+      return_done,
       people (
         name
       )
@@ -281,15 +285,10 @@ function renderWeekStrip() {
 function renderNews() {
 
   const container =
-    document.getElementById(
-      "newsContainer"
-    );
+    document.getElementById("newsContainer");
 
   const badge =
-    document.getElementById(
-      "newsCountBadge"
-    );
-
+    document.getElementById("newsCountBadge");
 
   const newsItems = [];
 
@@ -299,12 +298,15 @@ function renderNews() {
     );
 
 
+  /* =========================
+     誕生日リマインダー
+  ========================== */
+
   people.forEach(person => {
 
     if (!person.birthday) {
       return;
     }
-
 
     const nextBirthday =
       getNextBirthday(
@@ -312,13 +314,11 @@ function renderNews() {
         today
       );
 
-
     const diffDays =
       getDifferenceInDays(
         today,
         nextBirthday
       );
-
 
     if (
       diffDays >= 0 &&
@@ -326,15 +326,10 @@ function renderNews() {
     ) {
 
       newsItems.push({
-
         type: "birthday",
-
         days: diffDays,
-
         person: person.name,
-
         birthday: nextBirthday
-
       });
 
     }
@@ -342,14 +337,85 @@ function renderNews() {
   });
 
 
-  newsItems.sort(
-    (a, b) => a.days - b.days
-  );
+  /* =========================
+     お返しリマインダー
+  ========================== */
 
+  giftLogs.forEach(log => {
+
+    if (
+      log.direction !== "received"
+    ) {
+      return;
+    }
+
+    if (
+      log.need_return !== true
+    ) {
+      return;
+    }
+
+    if (
+      log.return_done === true
+    ) {
+      return;
+    }
+
+    newsItems.push({
+      type: "return",
+      giftId: log.id,
+      person: log.people?.name ?? "人物不明",
+      occasion: log.occasion ?? "",
+      itemName: log.item_name ?? "",
+      giftDate: log.gift_date
+    });
+
+  });
+
+
+  /* =========================
+     並び順
+  ========================== */
+
+  newsItems.sort((a, b) => {
+
+    if (
+      a.type === "birthday" &&
+      b.type !== "birthday"
+    ) {
+      return -1;
+    }
+
+    if (
+      a.type !== "birthday" &&
+      b.type === "birthday"
+    ) {
+      return 1;
+    }
+
+    if (
+      a.type === "birthday" &&
+      b.type === "birthday"
+    ) {
+      return a.days - b.days;
+    }
+
+    return 0;
+
+  });
+
+
+  /* =========================
+     件数
+  ========================== */
 
   badge.textContent =
     newsItems.length;
 
+
+  /* =========================
+     0件
+  ========================== */
 
   if (
     newsItems.length === 0
@@ -364,6 +430,10 @@ function renderNews() {
     return;
   }
 
+
+  /* =========================
+     表示
+  ========================== */
 
   container.innerHTML =
     newsItems
@@ -381,54 +451,109 @@ function renderNews() {
 
 function createNewsHtml(item) {
 
-  const month =
-    item.birthday.getMonth() + 1;
-
-  const date =
-    item.birthday.getDate();
-
-
-  let message;
-
+  /* =========================
+     誕生日
+  ========================== */
 
   if (
-    item.days === 0
+    item.type === "birthday"
   ) {
 
-    message =
-      "今日が誕生日です！";
+    const month =
+      item.birthday.getMonth() + 1;
 
-  } else {
+    const date =
+      item.birthday.getDate();
 
-    message =
-      `あと${item.days}日です。`;
+
+    const message =
+      item.days === 0
+        ? "今日が誕生日です！"
+        : `あと${item.days}日です。`;
+
+
+    return `
+      <div class="news-item">
+
+        <div class="news-icon">
+          <i class="fa-solid fa-cake-candles"></i>
+        </div>
+
+        <div class="news-content">
+
+          <strong>
+            ${month}/${date} は
+            ${escapeHtml(item.person)}さんの誕生日
+          </strong>
+
+          <p>
+            ${message}
+            プレゼントの準備はお済みですか？
+          </p>
+
+        </div>
+
+      </div>
+    `;
 
   }
 
 
-  return `
-    <div class="news-item">
+  /* =========================
+     お返し
+  ========================== */
 
-      <div class="news-icon">
-        <i class="fa-solid fa-cake-candles"></i>
+  if (
+    item.type === "return"
+  ) {
+
+    const occasionText =
+      item.occasion
+        ? `${escapeHtml(item.occasion)}として`
+        : "";
+
+
+    return `
+      <div class="news-item news-item-return">
+
+        <div class="news-icon news-icon-return">
+          <i class="fa-solid fa-gift"></i>
+        </div>
+
+        <div class="news-content">
+
+          <strong>
+            ${escapeHtml(item.person)}さんから
+            ${occasionText}
+            プレゼントをもらいました
+          </strong>
+
+          <p>
+            ${escapeHtml(item.itemName)}
+          </p>
+
+          <p class="return-reminder-text">
+            お返しは済みましたか？
+          </p>
+
+          <button
+            type="button"
+            class="return-done-button"
+            data-gift-id="${item.giftId}"
+          >
+            <i class="fa-solid fa-check"></i>
+            お返し済みにする
+          </button>
+
+        </div>
+
       </div>
+    `;
 
-      <div class="news-content">
+  }
 
-        <strong>
-          ${month}/${date} は
-          ${escapeHtml(item.person)}さんの誕生日
-        </strong>
 
-        <p>
-          ${message}
-          プレゼントの準備はお済みですか？
-        </p>
-
-      </div>
-
-    </div>
-  `;
+  return "";
 
 }
 
@@ -1183,6 +1308,79 @@ function formatDate(dateString) {
 
 
   return `${year}.${month}.${day}`;
+
+}
+
+function setupReturnButtons() {
+
+  const buttons =
+    document.querySelectorAll(
+      ".return-done-button"
+    );
+
+
+  buttons.forEach(button => {
+
+    button.addEventListener(
+      "click",
+      async () => {
+
+        const giftId =
+          button.dataset.giftId;
+
+
+        button.disabled =
+          true;
+
+        button.innerHTML = `
+          <i class="fa-solid fa-spinner fa-spin"></i>
+          更新中...
+        `;
+
+
+        const { error } =
+          await supabase
+            .from("Gifts")
+            .update({
+              return_done: true
+            })
+            .eq(
+              "id",
+              giftId
+            );
+
+
+        if (error) {
+
+          console.error(
+            "お返し状態の更新に失敗しました:",
+            error
+          );
+
+          button.disabled =
+            false;
+
+          button.innerHTML = `
+            <i class="fa-solid fa-check"></i>
+            お返し済みにする
+          `;
+
+          return;
+        }
+
+
+        await loadGiftLogs();
+
+        renderNews();
+
+        setupReturnButtons();
+
+        renderTimeline();
+
+      }
+    );
+
+  });
 
 }
 
