@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+  >
+
+  <title>プレゼント登録 | Gift Memory</title>
+
+  <!-- Font Awesome -->
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+  >
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+  <link
+    href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;600;700&display=swap"
+    rel="stylesheet"
+  >
+
+  <!-- 共通CSS -->
+  <link rel="stylesheet" href="css/style.css">
+
+</head>
+
+<body>
+
+  <div class="app-container gift-page">
+
+    <!-- =========================
+         HEADER
+    ========================== -->
+    <header class="gift-page-header">
+
+      <a
+        href="index.html"
+        class="gift-back-button"
+        aria-label="TOPへ戻る"
+      >
+        <i class="fa-solid fa-chevron-left"></i>
+      </a>
+
+      <h1>プレゼントログを記録</h1>
+
+      <a
+        href="index.html"
+        class="gift-close-button"
+        aria-label="閉じる"
+      >
+        <i class="fa-solid fa-xmark"></i>
+      </a>
+
+    </header>
+
+
+    <!-- =========================
+         FORM
+    ========================== -->
+    <main class="gift-form-area">
+
+      <form id="giftForm">
+
+        <!-- =========================
+             区分
+        ========================== -->
+        <div class="gift-form-group">
+
+          <label class="gift-form-label">
+            区分
+          </label>
+
+          <div class="gift-type-selector">
+
+            <label class="gift-type-option">
+
+              <input
+                type="radio"
+                name="direction"
+                value="received"
+                checked
+              >
+
+              <span class="gift-type-button received">
+                もらった
+              </span>
+
+            </label>
+
+
+            <label class="gift-type-option">
+
+              <input
+                type="radio"
+                name="direction"
+                value="given"
+              >
+
+              <span class="gift-type-button given">
+                あげた
+              </span>
+
+            </label>
+
+          </div>
+
+        </div>
+
+
+        <!-- =========================
+             人物
+        ========================== -->
+        <div class="gift-form-group">
+
+          <label
+            for="personSelect"
+            id="personSelectLabel"
+            class="gift-form-label"
+          >
+            プレゼントをもらった相手
+          </label>
+
+          <div class="gift-select-wrapper">
+
+            <select
+              id="personSelect"
+              required
+            >
+              <option value="">
+                人物を選択してください
+              </option>
+            </select>
+
+            <i class="fa-solid fa-chevron-down"></i>
+
+          </div>
+
+
+          <a
+            href="person.html"
+            class="gift-person-add-link"
+          >
+            <i class="fa-solid fa-plus"></i>
+            新しい人物を登録
+          </a>
+
+        </div>
+
+
+        <!-- =========================
+             プレゼント内容
+        ========================== -->
+        <div class="gift-form-group">
+
+          <label
+            for="itemName"
+            class="gift-form-label"
+          >
+            品名 / プレゼント内容
+          </label>
+
+          <input
+            type="text"
+            id="itemName"
+            placeholder="例: スキンケアセット、スタイ"
+            required
+          >
+
+        </div>
+
+
+        <!-- =========================
+             日付 + イベント
+        ========================== -->
+        <div class="gift-form-two-column">
+
+          <div class="gift-form-group">
+
+            <label
+              for="giftDate"
+              class="gift-form-label"
+            >
+              日付
+            </label>
+
+            <input
+              type="date"
+              id="giftDate"
+              required
+            >
+
+          </div>
+
+
+          <div class="gift-form-group">
+
+            <label
+              for="occasion"
+              class="gift-form-label"
+            >
+              名目 / イベント
+            </label>
+
+            <select id="occasion">
+
+              <option value="誕生日">
+                誕生日
+              </option>
+
+              <option value="出産祝い">
+                出産祝い
+              </option>
+
+              <option value="結婚祝い">
+                結婚祝い
+              </option>
+
+              <option value="内祝い">
+                内祝い
+              </option>
+
+              <option value="お礼">
+                お礼
+              </option>
+
+              <option value="手土産">
+                手土産
+              </option>
+
+              <option value="お土産">
+                お土産
+              </option>
+
+              <option value="クリスマス">
+                クリスマス
+              </option>
+
+              <option value="その他">
+                その他
+              </option>
+
+            </select>
+
+          </div>
+
+        </div>
+
+
+        <!-- =========================
+             金額
+        ========================== -->
+        <div class="gift-form-group">
+
+          <label
+            for="price"
+            class="gift-form-label"
+          >
+            予算・金額の目安（任意）
+          </label>
+
+          <input
+            type="number"
+            id="price"
+            min="0"
+            step="1"
+            placeholder="例: 5000"
+          >
+
+        </div>
+
+
+        <!-- =========================
+             お返し
+        ========================== -->
+        <div
+          id="returnField"
+          class="gift-return-field"
+        >
+
+          <label class="gift-return-label">
+
+            <input
+              type="checkbox"
+              id="needReturn"
+            >
+
+            <span>
+              お返しが必要
+            </span>
+
+          </label>
+
+        </div>
+
+
+        <!-- =========================
+             メモ
+        ========================== -->
+        <div class="gift-form-group">
+
+          <label
+            for="memo"
+            class="gift-form-label"
+          >
+            メモ
+          </label>
+
+          <textarea
+            id="memo"
+            rows="3"
+            placeholder="喜んでくれた！、サイズ80cmなど..."
+          ></textarea>
+
+        </div>
+
+
+        <!-- =========================
+             MESSAGE
+        ========================== -->
+        <p
+          id="giftMessage"
+          class="gift-form-message"
+        ></p>
+
+
+        <!-- =========================
+             SAVE
+        ========================== -->
+        <button
+          type="submit"
+          id="giftSubmitButton"
+          class="gift-submit-button"
+        >
+          保存する
+        </button>
+
+      </form>
+
+    </main>
+
+  </div>
+
+
+  <!-- JavaScript -->
+  <script
+    type="module"
+    src="js/gift.js"
+  ></script>
+
+</body>
+
+</html>
