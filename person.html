@@ -1,53 +1,303 @@
 <!DOCTYPE html>
 <html lang="ja">
+
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+  >
+
   <title>人物登録 | Gift Memory</title>
+
+  <!-- Font Awesome -->
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+  >
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+  <link
+    href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;600;700&display=swap"
+    rel="stylesheet"
+  >
+
   <link rel="stylesheet" href="css/style.css">
 </head>
+
 <body>
 
-  <main>
-    <h1>人物登録</h1>
+  <div class="app-container person-page">
 
-    <form id="person-form">
+    <!-- =========================
+         HEADER
+    ========================== -->
+    <header class="person-page-header">
 
-      <label for="name">名前</label>
-      <input type="text" id="name" required>
+      <a
+        href="index.html"
+        class="person-back-button"
+        aria-label="TOPへ戻る"
+      >
+        <i class="fa-solid fa-chevron-left"></i>
+      </a>
 
-      <label for="birthday">誕生日</label>
-      <input type="date" id="birthday">
+      <h1>人物を登録</h1>
 
-      <label for="relationship">関係</label>
-      <select id="relationship">
-        <option value="">選択してください</option>
-        <option value="家族">家族</option>
-        <option value="友人">友人</option>
-        <option value="職場">職場</option>
-        <option value="親戚">親戚</option>
-        <option value="その他">その他</option>
-      </select>
+      <a
+        href="index.html"
+        class="person-close-button"
+        aria-label="閉じる"
+      >
+        <i class="fa-solid fa-xmark"></i>
+      </a>
 
-      <label for="likes">好きなもの</label>
-      <textarea id="likes"></textarea>
+    </header>
 
-      <label for="dislikes">苦手なもの</label>
-      <textarea id="dislikes"></textarea>
 
-      <label for="allergies">アレルギー</label>
-      <textarea id="allergies"></textarea>
+    <!-- =========================
+         FORM
+    ========================== -->
+    <main class="person-form-area">
 
-      <label for="memo">メモ</label>
-      <textarea id="memo"></textarea>
+      <form id="person-form">
 
-      <button type="submit">登録する</button>
+        <!-- 名前 -->
+        <div class="person-form-group">
 
-    </form>
+          <label
+            for="name"
+            class="person-form-label"
+          >
+            名前
+            <span class="required-mark">必須</span>
+          </label>
 
-    <p id="message"></p>
-  </main>
+          <input
+            type="text"
+            id="name"
+            placeholder="例: 佐藤美咲さん"
+            required
+          >
 
-  <script type="module" src="js/person.js"></script>
+        </div>
+
+
+        <!-- 誕生日 -->
+        <div class="person-form-group">
+
+          <label
+            for="birthday"
+            class="person-form-label"
+          >
+            誕生日
+          </label>
+
+          <input
+            type="date"
+            id="birthday"
+          >
+
+          <p class="person-form-help">
+            登録するとTOPのリマインダーに表示できます
+          </p>
+
+        </div>
+
+
+        <!-- 関係 -->
+        <div class="person-form-group">
+
+          <label
+            for="relationship"
+            class="person-form-label"
+          >
+            関係
+          </label>
+
+          <div class="person-select-wrapper">
+
+            <select id="relationship">
+
+              <option value="">
+                選択してください
+              </option>
+
+              <option value="家族">
+                家族
+              </option>
+
+              <option value="友人">
+                友人
+              </option>
+
+              <option value="職場">
+                職場
+              </option>
+
+              <option value="親戚">
+                親戚
+              </option>
+
+              <option value="その他">
+                その他
+              </option>
+
+            </select>
+
+            <i class="fa-solid fa-chevron-down"></i>
+
+          </div>
+
+        </div>
+
+
+        <!-- 好み -->
+        <section class="person-info-card">
+
+          <div class="person-info-heading">
+
+            <span class="person-info-icon likes">
+              <i class="fa-solid fa-heart"></i>
+            </span>
+
+            <div>
+              <h2>好み</h2>
+              <p>
+                プレゼント選びの参考になる情報
+              </p>
+            </div>
+
+          </div>
+
+
+          <div class="person-form-group">
+
+            <label
+              for="likes"
+              class="person-form-label"
+            >
+              好きなもの
+            </label>
+
+            <textarea
+              id="likes"
+              rows="3"
+              placeholder="例: コーヒー、猫、チョコレート、水色"
+            ></textarea>
+
+          </div>
+
+
+          <div class="person-form-group">
+
+            <label
+              for="dislikes"
+              class="person-form-label"
+            >
+              苦手なもの・避けたいもの
+            </label>
+
+            <textarea
+              id="dislikes"
+              rows="3"
+              placeholder="例: 和菓子、香りの強いもの"
+            ></textarea>
+
+          </div>
+
+        </section>
+
+
+        <!-- アレルギー -->
+        <section class="person-info-card allergy-card">
+
+          <div class="person-info-heading">
+
+            <span class="person-info-icon allergy">
+              <i class="fa-solid fa-triangle-exclamation"></i>
+            </span>
+
+            <div>
+              <h2>アレルギー</h2>
+              <p>
+                食品や素材など、注意したい情報
+              </p>
+            </div>
+
+          </div>
+
+
+          <div class="person-form-group">
+
+            <label
+              for="allergies"
+              class="person-form-label"
+            >
+              アレルギー情報
+            </label>
+
+            <textarea
+              id="allergies"
+              rows="3"
+              placeholder="例: そば、ナッツ、乳製品"
+            ></textarea>
+
+          </div>
+
+        </section>
+
+
+        <!-- メモ -->
+        <div class="person-form-group">
+
+          <label
+            for="memo"
+            class="person-form-label"
+          >
+            メモ
+          </label>
+
+          <textarea
+            id="memo"
+            rows="4"
+            placeholder="例: 最近コーヒーにハマっている、猫を飼い始めた"
+          ></textarea>
+
+        </div>
+
+
+        <!-- MESSAGE -->
+        <p
+          id="message"
+          class="person-form-message"
+        ></p>
+
+
+        <!-- SAVE -->
+        <button
+          type="submit"
+          class="person-submit-button"
+        >
+          登録する
+        </button>
+
+      </form>
+
+    </main>
+
+  </div>
+
+
+  <script
+    type="module"
+    src="js/person.js"
+  ></script>
+
 </body>
+
 </html>

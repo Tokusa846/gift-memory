@@ -107,7 +107,7 @@ async function loadPeople() {
 async function loadGiftLogs() {
 
   const { data, error } = await supabase
-    .from("gift")
+    .from("Gifts")
     .select(`
       id,
       person_id,
