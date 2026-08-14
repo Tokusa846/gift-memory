@@ -159,13 +159,14 @@ function renderWeekStrip() {
 
   container.innerHTML = "";
 
+  const today =
+    startOfDay(new Date());
 
-  const today = new Date();
+  const dayOfWeek =
+    today.getDay();
 
-  const dayOfWeek = today.getDay();
-
-
-  const sunday = new Date(today);
+  const sunday =
+    new Date(today);
 
   sunday.setDate(
     today.getDate() - dayOfWeek
@@ -183,25 +184,13 @@ function renderWeekStrip() {
 
 
     const isToday =
-      isSameDate(
-        day,
-        today
-      );
+      isSameDate(day, today);
 
 
-    const hasBirthday =
-      people.some(person =>
+    const birthdayPeople =
+      people.filter(person =>
         isBirthdayOnDate(
           person.birthday,
-          day
-        )
-      );
-
-
-    const hasGift =
-      giftLogs.some(log =>
-        isGiftOnDate(
-          log.gift_date,
           day
         )
       );
@@ -214,60 +203,84 @@ function renderWeekStrip() {
       "calendar-day";
 
 
-    const circle =
+    /* =========================
+       EVENT ICON
+    ========================== */
+
+    const eventArea =
       document.createElement("div");
 
-    circle.className =
-      "calendar-circle";
+    eventArea.className =
+      "calendar-event-area";
+
+
+    if (birthdayPeople.length > 0) {
+
+      const icon =
+        document.createElement("i");
+
+      icon.className =
+        "fa-solid fa-cake-candles calendar-birthday-icon";
+
+      icon.setAttribute(
+        "aria-label",
+        "誕生日"
+      );
+
+      eventArea.appendChild(icon);
+
+    } else {
+
+      /*
+        イベントがない日も
+        高さを揃えるための空要素
+      */
+      const spacer =
+        document.createElement("span");
+
+      spacer.className =
+        "calendar-event-spacer";
+
+      eventArea.appendChild(spacer);
+
+    }
+
+
+    /* =========================
+       DATE
+    ========================== */
+
+    const dateElement =
+      document.createElement("div");
+
+    dateElement.className =
+      "calendar-date";
 
 
     if (isToday) {
 
-      circle.classList.add(
+      dateElement.classList.add(
         "today"
       );
 
     }
 
 
-    if (
-      hasBirthday ||
-      hasGift
-    ) {
-
-      circle.classList.add(
-        "event"
-      );
-
-    }
-
-
-    circle.textContent =
+    dateElement.textContent =
       day.getDate();
 
 
+    /* =========================
+       APPEND
+    ========================== */
+
     dayElement.appendChild(
-      circle
+      eventArea
     );
 
-
-    if (
-      hasBirthday ||
-      hasGift
-    ) {
-
-      const dot =
-        document.createElement("span");
-
-      dot.className =
-        "calendar-event-dot";
-
-      dayElement.appendChild(
-        dot
-      );
-
-    }
-
+    dayElement.appendChild(
+      dateElement
+    );
 
     container.appendChild(
       dayElement

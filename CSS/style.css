@@ -119,6 +119,10 @@ body {
    WEEK CALENDAR
 ======================================== */
 
+/* ========================================
+   WEEK CALENDAR
+======================================== */
+
 .weekday-row,
 .weekly-strip {
   display: grid;
@@ -128,6 +132,94 @@ body {
   gap: 4px;
 
   text-align: center;
+}
+
+
+.weekday-row {
+  margin-bottom: 3px;
+
+  color: #8b8179;
+
+  font-size: 11px;
+
+  font-weight: 500;
+}
+
+
+.calendar-day {
+  min-height: 54px;
+
+  display: flex;
+
+  flex-direction: column;
+
+  align-items: center;
+
+  justify-content: flex-start;
+}
+
+
+/* イベントアイコン領域 */
+
+.calendar-event-area {
+  height: 22px;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  margin-bottom: 2px;
+}
+
+
+.calendar-birthday-icon {
+  color: #e0a23b;
+
+  font-size: 14px;
+}
+
+
+.calendar-event-spacer {
+  display: block;
+
+  width: 14px;
+
+  height: 14px;
+}
+
+
+/* 日付 */
+
+.calendar-date {
+  width: 32px;
+
+  height: 32px;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  border-radius: 50%;
+
+  color: #544d47;
+
+  font-size: 12px;
+}
+
+
+.calendar-date.today {
+  background-color: #e86a58;
+
+  color: #ffffff;
+
+  font-weight: 700;
+
+  box-shadow:
+    0 4px 10px rgba(232, 106, 88, 0.3);
 }
 
 
