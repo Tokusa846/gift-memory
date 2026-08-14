@@ -284,6 +284,55 @@
 
 
     <!-- =========================
+          DATE DETAIL MODAL
+    ========================== -->
+    <div
+       id="dateDetailModal"
+        class="date-detail-overlay hidden"
+        aria-hidden="true"
+    >
+      <div
+        class="date-detail-modal"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="dateDetailTitle"
+      >
+
+      <div class="date-detail-header">
+        <h2 id="dateDetailTitle">
+          ----年--月--日
+        </h2>
+
+        <button
+          id="dateDetailClose"
+          class="date-detail-close"
+          type="button"
+          aria-label="閉じる"
+        >
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+    </div>
+
+    <div
+      id="dateDetailContent"
+      class="date-detail-content"
+    >
+    </div>
+
+    <button
+      id="dateDetailAddButton"
+      class="date-detail-add-button"
+      type="button"
+    >
+      <i class="fa-solid fa-plus"></i>
+      この日に記録・予定を追加
+    </button>
+
+  </div>
+</div>
+
+
+    <!-- =========================
          FLOATING PLUS BUTTON
     ========================== -->
     <button

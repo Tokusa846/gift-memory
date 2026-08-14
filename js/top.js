@@ -36,6 +36,8 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   setupSearch();
 
+  setupDateDetailModal();
+
   setupAddButton();
 
 });
@@ -159,14 +161,18 @@ function renderWeekStrip() {
 
   container.innerHTML = "";
 
+
   const today =
     startOfDay(new Date());
+
 
   const dayOfWeek =
     today.getDay();
 
+
   const sunday =
     new Date(today);
+
 
   sunday.setDate(
     today.getDate() - dayOfWeek
@@ -178,115 +184,679 @@ function renderWeekStrip() {
     const day =
       new Date(sunday);
 
+
     day.setDate(
       sunday.getDate() + i
     );
 
 
     const isToday =
-      isSameDate(day, today);
-
-
-    const birthdayPeople =
-      people.filter(person =>
-        isBirthdayOnDate(
-          person.birthday,
-          day
-        )
+      isSameDate(
+        day,
+        today
       );
+
+
+    /*
+      その日のイベントを取得
+
+      現在は誕生日のみ。
+      今後イベントを追加するときは
+      getEventsForDate() を拡張する。
+    */
+    const events =
+      getEventsForDate(day);
+
+
+    const hasEvent =
+      events.length > 0;
 
 
     const dayElement =
       document.createElement("div");
+
 
     dayElement.className =
       "calendar-day";
 
 
     /* =========================
-       EVENT ICON
-    ========================== */
-
-    const eventArea =
-      document.createElement("div");
-
-    eventArea.className =
-      "calendar-event-area";
-
-
-    if (birthdayPeople.length > 0) {
-
-      const icon =
-        document.createElement("i");
-
-      icon.className =
-        "fa-solid fa-cake-candles calendar-birthday-icon";
-
-      icon.setAttribute(
-        "aria-label",
-        "誕生日"
-      );
-
-      eventArea.appendChild(icon);
-
-    } else {
-
-      /*
-        イベントがない日も
-        高さを揃えるための空要素
-      */
-      const spacer =
-        document.createElement("span");
-
-      spacer.className =
-        "calendar-event-spacer";
-
-      eventArea.appendChild(spacer);
-
-    }
-
-
-    /* =========================
        DATE
     ========================== */
 
-    const dateElement =
-      document.createElement("div");
+    const dateButton =
+      document.createElement("button");
 
-    dateElement.className =
-      "calendar-date";
+
+    dateButton.type =
+      "button";
+
+
+    dateButton.className =
+      "calendar-date-button";
+
+
+    dateButton.textContent =
+      day.getDate();
 
 
     if (isToday) {
 
-      dateElement.classList.add(
+      dateButton.classList.add(
         "today"
       );
 
     }
 
 
-    dateElement.textContent =
-      day.getDate();
+    if (hasEvent) {
+
+      dateButton.classList.add(
+        "has-event"
+      );
+
+    }
+
+
+    const dateLabel =
+      `${day.getFullYear()}年`
+      + `${day.getMonth() + 1}月`
+      + `${day.getDate()}日`;
+
+
+    dateButton.setAttribute(
+      "aria-label",
+      hasEvent
+        ? `${dateLabel}、イベントあり`
+        : dateLabel
+    );
+
+
+    /*
+      日付タップ
+    */
+    dateButton.addEventListener(
+      "click",
+      () => {
+
+        openDateDetailModal(
+          day
+        );
+
+      }
+    );
+
+
+    /* =========================
+       EVENT ICONS
+    ========================== */
+
+    const eventArea =
+      document.createElement("div");
+
+
+    eventArea.className =
+      "calendar-event-area";
+
+
+    /*
+      同じイベント種別をまとめる
+    */
+    const uniqueEventTypes =
+      [
+        ...new Set(
+          events.map(
+            event => event.type
+          )
+        )
+      ];
+
+
+    /*
+      最大2種類
+    */
+    const visibleTypes =
+      uniqueEventTypes.slice(
+        0,
+        2
+      );
+
+
+    visibleTypes.forEach(type => {
+
+      const icon =
+        createCalendarEventIcon(
+          type
+        );
+
+
+      if (icon) {
+
+        eventArea.appendChild(
+          icon
+        );
+
+      }
+
+    });
+
+
+    /*
+      3種類以上なら「…」
+    */
+    if (
+      uniqueEventTypes.length > 2
+    ) {
+
+      const more =
+        document.createElement(
+          "span"
+        );
+
+
+      more.className =
+        "calendar-event-more";
+
+
+      more.textContent =
+        "…";
+
+
+      eventArea.appendChild(
+        more
+      );
+
+    }
+
+
+    /*
+      イベントなし
+    */
+    if (
+      uniqueEventTypes.length === 0
+    ) {
+
+      const spacer =
+        document.createElement(
+          "span"
+        );
+
+
+      spacer.className =
+        "calendar-event-spacer";
+
+
+      eventArea.appendChild(
+        spacer
+      );
+
+    }
 
 
     /* =========================
        APPEND
     ========================== */
 
+    /*
+      曜日はHTML側にあるので、
+      ここでは
+
+      日付
+      ↓
+      イベント
+
+      の順番
+    */
+
+    dayElement.appendChild(
+      dateButton
+    );
+
+
     dayElement.appendChild(
       eventArea
     );
 
-    dayElement.appendChild(
-      dateElement
-    );
 
     container.appendChild(
       dayElement
     );
 
   }
+
+}
+
+/* ========================================
+   CALENDAR EVENTS
+======================================== */
+
+function getEventsForDate(date) {
+
+  const events = [];
+
+
+  /* =========================
+     BIRTHDAY
+  ========================== */
+
+  const birthdayPeople =
+    people.filter(person =>
+
+      isBirthdayOnDate(
+        person.birthday,
+        date
+      )
+
+    );
+
+
+  birthdayPeople.forEach(person => {
+
+    events.push({
+
+      type: "birthday",
+
+      title:
+        `${person.name}さんの誕生日`,
+
+      personId:
+        person.id,
+
+      personName:
+        person.name
+
+    });
+
+  });
+
+
+  /*
+    今後ここに追加できます。
+
+    例：
+
+    events.push({
+      type: "gift",
+      title: "プレゼント予定"
+    });
+
+    events.push({
+      type: "anniversary",
+      title: "記念日"
+    });
+  */
+
+
+  return events;
+
+}
+
+function createCalendarEventIcon(
+  type
+) {
+
+  const icon =
+    document.createElement("i");
+
+
+  icon.classList.add(
+    "fa-solid",
+    "calendar-event-icon"
+  );
+
+
+  switch (type) {
+
+    case "birthday":
+
+      icon.classList.add(
+        "fa-cake-candles",
+        "birthday"
+      );
+
+      icon.setAttribute(
+        "aria-label",
+        "誕生日"
+      );
+
+      break;
+
+
+    case "gift":
+
+      icon.classList.add(
+        "fa-gift",
+        "gift"
+      );
+
+      icon.setAttribute(
+        "aria-label",
+        "プレゼント"
+      );
+
+      break;
+
+
+    case "anniversary":
+
+      icon.classList.add(
+        "fa-heart",
+        "anniversary"
+      );
+
+      icon.setAttribute(
+        "aria-label",
+        "記念日"
+      );
+
+      break;
+
+
+    default:
+
+      return null;
+
+  }
+
+
+  return icon;
+
+}
+
+/* ========================================
+   DATE DETAIL MODAL
+======================================== */
+
+function openDateDetailModal(
+  date
+) {
+
+  const modal =
+    document.getElementById(
+      "dateDetailModal"
+    );
+
+
+  const title =
+    document.getElementById(
+      "dateDetailTitle"
+    );
+
+
+  const content =
+    document.getElementById(
+      "dateDetailContent"
+    );
+
+
+  const events =
+    getEventsForDate(date);
+
+
+  /* =========================
+     TITLE
+  ========================== */
+
+  title.textContent =
+    `${date.getFullYear()}年`
+    + `${date.getMonth() + 1}月`
+    + `${date.getDate()}日`;
+
+
+  /* =========================
+     EVENTなし
+  ========================== */
+
+  if (
+    events.length === 0
+  ) {
+
+    content.innerHTML = `
+
+      <div class="date-detail-empty">
+
+        <i class="fa-regular fa-calendar"></i>
+
+        <span>
+          表示するイベントがありません
+        </span>
+
+      </div>
+
+    `;
+
+  }
+
+
+  /* =========================
+     EVENTあり
+  ========================== */
+
+  else {
+
+    content.innerHTML =
+      events
+        .map(event =>
+          createDateDetailEventHtml(
+            event
+          )
+        )
+        .join("");
+
+  }
+
+
+  /*
+    追加ボタンで使用するため
+    日付を保持
+  */
+
+  modal.dataset.date =
+    formatDateForInput(date);
+
+
+  modal.classList.remove(
+    "hidden"
+  );
+
+
+  modal.setAttribute(
+    "aria-hidden",
+    "false"
+  );
+
+
+  /*
+    背景スクロール防止
+  */
+
+  document.body.style.overflow =
+    "hidden";
+
+}
+
+function createDateDetailEventHtml(
+  event
+) {
+
+  /* =========================
+     BIRTHDAY
+  ========================== */
+
+  if (
+    event.type === "birthday"
+  ) {
+
+    return `
+
+      <article class="date-detail-event">
+
+        <div class="date-detail-event-icon">
+
+          <i
+            class="
+              fa-solid
+              fa-cake-candles
+            "
+          ></i>
+
+        </div>
+
+
+        <div class="date-detail-event-body">
+
+          <span class="date-detail-event-label">
+            イベントあり
+          </span>
+
+
+          <p class="date-detail-event-title">
+
+            ${escapeHtml(
+              event.personName
+            )}さんの誕生日
+
+          </p>
+
+
+          <p class="date-detail-event-description">
+            誕生日のプレゼントを確認してみましょう。
+          </p>
+
+        </div>
+
+      </article>
+
+    `;
+
+  }
+
+
+  return "";
+
+}
+
+function closeDateDetailModal() {
+
+  const modal =
+    document.getElementById(
+      "dateDetailModal"
+    );
+
+
+  modal.classList.add(
+    "hidden"
+  );
+
+
+  modal.setAttribute(
+    "aria-hidden",
+    "true"
+  );
+
+
+  document.body.style.overflow =
+    "";
+
+}
+
+function setupDateDetailModal() {
+
+  const modal =
+    document.getElementById(
+      "dateDetailModal"
+    );
+
+
+  const closeButton =
+    document.getElementById(
+      "dateDetailClose"
+    );
+
+
+  const addButton =
+    document.getElementById(
+      "dateDetailAddButton"
+    );
+
+
+  /* 閉じる */
+
+  closeButton.addEventListener(
+    "click",
+    () => {
+
+      closeDateDetailModal();
+
+    }
+  );
+
+
+  /* 背景タップ */
+
+  modal.addEventListener(
+    "click",
+    event => {
+
+      if (
+        event.target === modal
+      ) {
+
+        closeDateDetailModal();
+
+      }
+
+    }
+  );
+
+
+  /* Esc */
+
+  document.addEventListener(
+    "keydown",
+    event => {
+
+      if (
+        event.key === "Escape" &&
+        !modal.classList.contains(
+          "hidden"
+        )
+      ) {
+
+        closeDateDetailModal();
+
+      }
+
+    }
+  );
+
+
+  /* =========================
+     ADD
+  ========================== */
+
+  addButton.addEventListener(
+    "click",
+    () => {
+
+      const selectedDate =
+        modal.dataset.date;
+
+
+      /*
+        現時点では
+        プレゼント登録画面へ遷移。
+
+        URLに日付を渡しておくので、
+        後から gifts.html 側で
+        初期日付として使用できます。
+      */
+
+      window.location.href =
+        `gifts.html?date=${selectedDate}`;
+
+    }
+  );
 
 }
 
@@ -1394,6 +1964,38 @@ function setupReturnButtons() {
     );
 
   });
+
+}
+
+function formatDateForInput(
+  date
+) {
+
+  const year =
+    date.getFullYear();
+
+
+  const month =
+    String(
+      date.getMonth() + 1
+    ).padStart(
+      2,
+      "0"
+    );
+
+
+  const day =
+    String(
+      date.getDate()
+    ).padStart(
+      2,
+      "0"
+    );
+
+
+  return (
+    `${year}-${month}-${day}`
+  );
 
 }
 

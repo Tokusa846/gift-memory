@@ -114,11 +114,6 @@ body {
   font-weight: 700;
 }
 
-
-/* ========================================
-   WEEK CALENDAR
-======================================== */
-
 /* ========================================
    WEEK CALENDAR
 ======================================== */
@@ -126,92 +121,78 @@ body {
 .weekday-row,
 .weekly-strip {
   display: grid;
-
   grid-template-columns: repeat(7, 1fr);
-
   gap: 4px;
-
   text-align: center;
 }
 
 
+/* 曜日 */
+
 .weekday-row {
-  margin-bottom: 3px;
+  margin-bottom: 6px;
 
   color: #8b8179;
 
   font-size: 11px;
-
   font-weight: 500;
 }
 
 
+/* 1日分 */
+
 .calendar-day {
-  min-height: 54px;
+  min-height: 58px;
 
   display: flex;
-
   flex-direction: column;
-
   align-items: center;
 
-  justify-content: flex-start;
+  gap: 4px;
 }
 
 
-/* イベントアイコン領域 */
+/* 日付ボタン */
 
-.calendar-event-area {
-  height: 22px;
+.calendar-date-button {
+  width: 34px;
+  height: 34px;
 
   display: flex;
-
   align-items: center;
-
   justify-content: center;
 
-  margin-bottom: 2px;
-}
+  padding: 0;
 
-
-.calendar-birthday-icon {
-  color: #e0a23b;
-
-  font-size: 14px;
-}
-
-
-.calendar-event-spacer {
-  display: block;
-
-  width: 14px;
-
-  height: 14px;
-}
-
-
-/* 日付 */
-
-.calendar-date {
-  width: 32px;
-
-  height: 32px;
-
-  display: flex;
-
-  align-items: center;
-
-  justify-content: center;
-
+  border: 1px solid #e5dfd9;
   border-radius: 50%;
+
+  background-color: #faf9f7;
 
   color: #544d47;
 
+  font-family: inherit;
   font-size: 12px;
+
+  cursor: pointer;
+
+  transition:
+    transform 0.15s,
+    border-color 0.2s,
+    background-color 0.2s;
 }
 
 
-.calendar-date.today {
+.calendar-date-button:active {
+  transform: scale(0.94);
+}
+
+
+/* 今日 */
+
+.calendar-date-button.today {
+  border-color: #e86a58;
+
   background-color: #e86a58;
 
   color: #ffffff;
@@ -223,82 +204,328 @@ body {
 }
 
 
-.weekday-row {
-  margin-bottom: 5px;
+/* イベントあり */
+/* today の場合は赤丸を優先 */
 
-  color: #8b8179;
+.calendar-date-button.has-event:not(.today) {
+  border-color: #f0b94c;
 
-  font-size: 11px;
+  background-color: #fffaf0;
 
-  font-weight: 500;
+  color: #544d47;
 }
 
 
-.calendar-day {
+/* ========================================
+   CALENDAR EVENT ICONS
+======================================== */
+
+.calendar-event-area {
+  min-height: 18px;
+
   display: flex;
-
-  flex-direction: column;
-
   align-items: center;
-
   justify-content: center;
 
   gap: 3px;
 }
 
 
-.calendar-circle {
-  width: 34px;
+/* 共通イベントアイコン */
 
-  height: 34px;
-
-  display: flex;
-
-  align-items: center;
-
-  justify-content: center;
-
-  border: 1px solid #e5dfd9;
-
-  border-radius: 50%;
-
-  background-color: #faf9f7;
-
-  color: #544d47;
-
-  font-size: 12px;
-
-  transition: 0.2s;
+.calendar-event-icon {
+  font-size: 11px;
+  line-height: 1;
 }
 
 
-.calendar-circle.today {
-  background-color: #e86a58;
+/* 誕生日 */
 
-  border-color: #e86a58;
+.calendar-event-icon.birthday {
+  color: #e0a23b;
+}
 
-  color: #ffffff;
 
+/* 将来用：プレゼント */
+
+.calendar-event-icon.gift {
+  color: #e86a58;
+}
+
+
+/* 将来用：記念日 */
+
+.calendar-event-icon.anniversary {
+  color: #c27eb8;
+}
+
+
+/* イベントなしでも高さを維持 */
+
+.calendar-event-spacer {
+  display: block;
+
+  width: 12px;
+  height: 14px;
+}
+
+
+/* 3種類以上ある場合の … */
+
+.calendar-event-more {
+  color: #968c84;
+
+  font-size: 10px;
   font-weight: 700;
 
-  box-shadow: 0 4px 10px rgba(232, 106, 88, 0.3);
+  line-height: 1;
 }
 
 
-.calendar-circle.event {
-  border-color: #f4c46c;
+/* ========================================
+   DATE DETAIL MODAL
+======================================== */
+
+.date-detail-overlay {
+  position: fixed;
+
+  inset: 0;
+
+  z-index: 100;
+
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+
+  padding: 16px;
+
+  background-color: rgba(45, 41, 38, 0.45);
+
+  backdrop-filter: blur(1px);
 }
 
 
-.calendar-event-dot {
-  width: 4px;
+.date-detail-modal {
+  width: 100%;
+  max-width: 448px;
 
-  height: 4px;
+  padding: 20px;
+
+  border-radius: 20px;
+
+  background-color: #ffffff;
+
+  box-shadow:
+    0 18px 40px rgba(0, 0, 0, 0.18);
+}
+
+
+/* ヘッダー */
+
+.date-detail-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  padding-bottom: 14px;
+
+  border-bottom: 1px solid #eee9e4;
+}
+
+
+.date-detail-header h2 {
+  margin: 0;
+
+  color: #332d29;
+
+  font-size: 16px;
+  font-weight: 700;
+}
+
+
+.date-detail-close {
+  width: 32px;
+  height: 32px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 0;
+
+  border: none;
+
+  background: none;
+
+  color: #9aa8bd;
+
+  font-size: 17px;
+
+  cursor: pointer;
+}
+
+
+/* 内容 */
+
+.date-detail-content {
+  padding: 16px 0;
+}
+
+
+/* イベントカード */
+
+.date-detail-event {
+  display: flex;
+  align-items: flex-start;
+
+  gap: 12px;
+
+  padding: 14px;
+
+  border: 1px solid #f4cf72;
+  border-radius: 14px;
+
+  background-color: #fffaf0;
+}
+
+
+.date-detail-event + .date-detail-event {
+  margin-top: 10px;
+}
+
+
+/* イベントアイコン */
+
+.date-detail-event-icon {
+  width: 34px;
+  height: 34px;
+
+  flex-shrink: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
 
   border-radius: 50%;
 
-  background-color: #e86a58;
+  background-color: #fff1c9;
+
+  color: #dd991c;
+
+  font-size: 14px;
 }
+
+
+/* イベント本文 */
+
+.date-detail-event-body {
+  flex: 1;
+}
+
+
+.date-detail-event-label {
+  display: block;
+
+  margin-bottom: 2px;
+
+  color: #9a6817;
+
+  font-size: 10px;
+  font-weight: 700;
+}
+
+
+.date-detail-event-title {
+  margin: 0;
+
+  color: #332d29;
+
+  font-size: 13px;
+  font-weight: 700;
+}
+
+
+.date-detail-event-description {
+  margin: 5px 0 0;
+
+  color: #897e76;
+
+  font-size: 10px;
+  line-height: 1.6;
+}
+
+
+/* イベントなし */
+
+.date-detail-empty {
+  min-height: 100px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  gap: 10px;
+
+  border-radius: 14px;
+
+  background-color: #f8fafc;
+
+  color: #8090a5;
+
+  font-size: 11px;
+}
+
+
+.date-detail-empty i {
+  color: #c6d1df;
+
+  font-size: 20px;
+}
+
+
+/* 追加ボタン */
+
+.date-detail-add-button {
+  width: 100%;
+
+  min-height: 38px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  gap: 5px;
+
+  border: none;
+  border-radius: 10px;
+
+  background-color: #f2f5f8;
+
+  color: #344458;
+
+  font-family: inherit;
+  font-size: 11px;
+  font-weight: 600;
+
+  cursor: pointer;
+}
+
+
+/* スマホ */
+
+@media (max-width: 480px) {
+
+  .date-detail-overlay {
+    padding:
+      16px
+      8px
+      calc(16px + env(safe-area-inset-bottom));
+  }
+
+}
+
+
 
 
 /* ========================================
