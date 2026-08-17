@@ -1523,7 +1523,6 @@ function switchTab(tabName) {
 
   const tabs = [
     "home",
-    "person",
     "schedule",
     "ai",
     "setting"
