@@ -2114,3 +2114,516 @@ input[value="given"]:checked
 .person-submit-button:active {
   transform: scale(0.99);
 }
+
+/* ========================================
+   PEOPLE MANAGE PAGE
+======================================== */
+
+.people-manage-main {
+  flex: 1;
+
+  padding:
+    calc(env(safe-area-inset-top) + 24px)
+    16px
+    110px;
+}
+
+
+/* ========================================
+   HEADER
+======================================== */
+
+.people-manage-header {
+  display: flex;
+
+  align-items: center;
+
+  justify-content: space-between;
+
+  gap: 12px;
+
+  margin-bottom: 16px;
+}
+
+
+.people-manage-header h1 {
+  margin: 0;
+
+  color: #332d29;
+
+  font-size: 18px;
+
+  font-weight: 700;
+}
+
+
+.people-manage-header p {
+  margin: 4px 0 0;
+
+  color: #aaa19a;
+
+  font-size: 10px;
+}
+
+
+/* 人物追加 */
+
+.person-add-button {
+  width: 38px;
+
+  height: 38px;
+
+  flex-shrink: 0;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  border: 1px solid #e8e3de;
+
+  border-radius: 12px;
+
+  background-color: #ffffff;
+
+  color: #e86a58;
+
+  text-decoration: none;
+
+  font-size: 14px;
+
+  box-shadow:
+    0 2px 7px rgba(0, 0, 0, 0.035);
+}
+
+
+/* ========================================
+   SEARCH
+======================================== */
+
+.person-search-area {
+  position: relative;
+
+  margin-bottom: 16px;
+}
+
+
+.person-search-area i {
+  position: absolute;
+
+  left: 13px;
+
+  top: 50%;
+
+  transform: translateY(-50%);
+
+  color: #aaa19a;
+
+  font-size: 11px;
+
+  pointer-events: none;
+}
+
+
+.person-search-area input {
+  width: 100%;
+
+  padding: 10px 12px 10px 36px;
+
+  border: 1px solid #e7e2dd;
+
+  border-radius: 12px;
+
+  background-color: #ffffff;
+
+  color: #332d29;
+
+  font-family: inherit;
+
+  font-size: 11px;
+
+  outline: none;
+}
+
+
+.person-search-area input:focus {
+  border-color: #e86a58;
+
+  box-shadow:
+    0 0 0 3px rgba(232, 106, 88, 0.08);
+}
+
+
+/* ========================================
+   PERSON LIST
+======================================== */
+
+.person-list-container {
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 11px;
+}
+
+
+/* ========================================
+   PERSON CARD
+======================================== */
+
+.person-card {
+  padding: 14px;
+
+  border: 1px solid #e8e3de;
+
+  border-radius: 16px;
+
+  background-color: #ffffff;
+
+  box-shadow:
+    0 3px 10px rgba(0, 0, 0, 0.025);
+}
+
+
+.person-card-main {
+  display: flex;
+
+  align-items: center;
+
+  gap: 11px;
+}
+
+
+/* ========================================
+   AVATAR
+======================================== */
+
+.person-avatar {
+  width: 44px;
+
+  height: 44px;
+
+  flex-shrink: 0;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  overflow: hidden;
+
+  border-radius: 50%;
+
+  background-color: #eef3f7;
+
+  color: #58708d;
+
+  font-size: 15px;
+
+  font-weight: 700;
+}
+
+
+/*
+  将来、顔写真を実装するときに使用
+*/
+
+.person-avatar img {
+  width: 100%;
+
+  height: 100%;
+
+  object-fit: cover;
+}
+
+
+/* ========================================
+   BASIC INFO
+======================================== */
+
+.person-basic-info {
+  min-width: 0;
+
+  flex: 1;
+}
+
+
+.person-name {
+  margin: 0;
+
+  overflow: hidden;
+
+  color: #332d29;
+
+  font-size: 14px;
+
+  font-weight: 700;
+
+  text-overflow: ellipsis;
+
+  white-space: nowrap;
+}
+
+
+.person-birthday {
+  margin: 3px 0 0;
+
+  color: #8798ac;
+
+  font-size: 10px;
+}
+
+
+/* ========================================
+   GIFT COUNTS
+======================================== */
+
+.person-gift-counts {
+  display: flex;
+
+  align-items: center;
+
+  gap: 6px;
+
+  margin-top: 11px;
+}
+
+
+.person-count-badge {
+  padding: 4px 8px;
+
+  border-radius: 7px;
+
+  font-size: 9px;
+
+  font-weight: 700;
+}
+
+
+.person-count-badge.received {
+  background-color: #e5f5ef;
+
+  color: #277b60;
+}
+
+
+.person-count-badge.given {
+  background-color: #ffefe9;
+
+  color: #c84e3e;
+}
+
+
+/* ========================================
+   LATEST GIFT
+======================================== */
+
+.person-latest-gift {
+  display: flex;
+
+  align-items: center;
+
+  gap: 8px;
+
+  padding-top: 10px;
+
+  margin-top: 11px;
+
+  border-top: 1px solid #f0ece8;
+}
+
+
+.person-latest-icon {
+  width: 28px;
+
+  height: 28px;
+
+  flex-shrink: 0;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  border-radius: 8px;
+
+  font-size: 10px;
+}
+
+
+.person-latest-icon.received {
+  background-color: #e5f5ef;
+
+  color: #277b60;
+}
+
+
+.person-latest-icon.given {
+  background-color: #ffefe9;
+
+  color: #c84e3e;
+}
+
+
+.person-latest-content {
+  min-width: 0;
+
+  flex: 1;
+}
+
+
+.person-latest-label {
+  display: block;
+
+  margin-bottom: 2px;
+
+  color: #aaa19a;
+
+  font-size: 8px;
+}
+
+
+.person-latest-title {
+  display: block;
+
+  overflow: hidden;
+
+  color: #554d47;
+
+  font-size: 11px;
+
+  font-weight: 600;
+
+  text-overflow: ellipsis;
+
+  white-space: nowrap;
+}
+
+
+.person-latest-meta {
+  flex-shrink: 0;
+
+  display: flex;
+
+  flex-direction: column;
+
+  align-items: flex-end;
+
+  gap: 2px;
+
+  color: #aaa19a;
+
+  font-size: 8px;
+}
+
+
+/* ========================================
+   NO GIFT
+======================================== */
+
+.person-no-gift {
+  display: flex;
+
+  align-items: center;
+
+  gap: 6px;
+
+  padding-top: 10px;
+
+  margin-top: 11px;
+
+  border-top: 1px solid #f0ece8;
+
+  color: #b2aaa4;
+
+  font-size: 9px;
+}
+
+
+/* ========================================
+   EMPTY
+======================================== */
+
+.person-list-empty {
+  padding: 48px 15px;
+
+  color: #aaa19a;
+
+  text-align: center;
+}
+
+
+.person-list-empty i {
+  display: block;
+
+  margin-bottom: 12px;
+
+  color: #d4cec8;
+
+  font-size: 28px;
+}
+
+
+.person-list-empty p {
+  margin: 0;
+
+  font-size: 11px;
+}
+
+
+/* ========================================
+   NAV LINK
+======================================== */
+
+.nav-link-button {
+  min-height: 46px;
+
+  display: flex;
+
+  flex-direction: column;
+
+  align-items: center;
+
+  justify-content: center;
+
+  gap: 4px;
+
+  border: none;
+
+  background: none;
+
+  color: #aaa19a;
+
+  font-family: inherit;
+
+  text-decoration: none;
+}
+
+
+.nav-link-button i {
+  font-size: 16px;
+}
+
+
+.nav-link-button span {
+  font-size: 9px;
+}
+
+
+.nav-link-button.active-tab {
+  color: #e86a58;
+
+  font-weight: 700;
+}
+
+
+/* ========================================
+   PEOPLE FLOATING ADD
+======================================== */
+
+.people-floating-add {
+  text-decoration: none;
+}

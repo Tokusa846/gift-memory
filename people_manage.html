@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+  >
+
+  <title>人物一覧・管理 | Gift Memory</title>
+
+  <!-- Font Awesome -->
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+  >
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+  <link
+    href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;600;700&display=swap"
+    rel="stylesheet"
+  >
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="css/style.css">
+</head>
+
+
+<body>
+
+  <div class="app-container">
+
+
+    <!-- =========================
+         MAIN
+    ========================== -->
+    <main class="people-manage-main">
+
+
+      <!-- =========================
+           HEADER
+      ========================== -->
+      <section class="people-manage-header">
+
+        <div>
+
+          <h1>
+            人物一覧・管理
+          </h1>
+
+          <p id="personCount">
+            0人
+          </p>
+
+        </div>
+
+
+        <a
+          href="person.html"
+          class="person-add-button"
+          aria-label="人物を追加"
+        >
+
+          <i class="fa-solid fa-user-plus"></i>
+
+        </a>
+
+      </section>
+
+
+      <!-- =========================
+           SEARCH
+      ========================== -->
+      <div class="person-search-area">
+
+        <i class="fa-solid fa-magnifying-glass"></i>
+
+        <input
+          type="text"
+          id="personSearchInput"
+          placeholder="名前で検索..."
+        >
+
+      </div>
+
+
+      <!-- =========================
+           PERSON LIST
+      ========================== -->
+      <section
+        id="personListContainer"
+        class="person-list-container"
+      >
+
+        <div class="empty-message">
+          人物情報を読み込んでいます...
+        </div>
+
+      </section>
+
+
+    </main>
+
+
+    <!-- =========================
+         FLOATING PLUS BUTTON
+    ========================== -->
+    <a
+      href="person.html"
+      class="floating-add-button people-floating-add"
+      aria-label="人物を追加"
+    >
+
+      <i class="fa-solid fa-plus"></i>
+
+    </a>
+
+
+    <!-- =========================
+         BOTTOM NAVIGATION
+    ========================== -->
+    <nav class="bottom-nav">
+
+
+      <!-- HOME -->
+      <a
+        href="index.html"
+        class="nav-link-button"
+      >
+
+        <i class="fa-solid fa-house"></i>
+
+        <span>ホーム</span>
+
+      </a>
+
+
+      <!-- PERSON -->
+      <a
+        href="people_manage.html"
+        class="nav-link-button active-tab"
+      >
+
+        <i class="fa-solid fa-user"></i>
+
+        <span>人物</span>
+
+      </a>
+
+
+      <!-- SCHEDULE -->
+      <button
+        class="nav-button"
+        type="button"
+        disabled
+      >
+
+        <i class="fa-regular fa-calendar"></i>
+
+        <span>予定</span>
+
+      </button>
+
+
+      <!-- AI -->
+      <button
+        class="nav-button"
+        type="button"
+        disabled
+      >
+
+        <i class="fa-solid fa-wand-magic-sparkles"></i>
+
+        <span>AI</span>
+
+      </button>
+
+
+      <!-- SETTING -->
+      <button
+        class="nav-button"
+        type="button"
+        disabled
+      >
+
+        <i class="fa-solid fa-gear"></i>
+
+        <span>設定</span>
+
+      </button>
+
+
+    </nav>
+
+
+  </div>
+
+
+  <!-- JavaScript -->
+  <script
+    type="module"
+    src="js/people_manage.js"
+  ></script>
+
+
+</body>
+
+</html>
