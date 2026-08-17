@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+
+  <title>人物詳細 | Gift Memory</title>
+
+
+  <!-- Font Awesome -->
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+  >
+
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+
+  <link
+    rel="preconnect"
+    href="https://fonts.gstatic.com"
+    crossorigin
+  >
+
+  <link
+    href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;600;700&display=swap"
+    rel="stylesheet"
+  >
+
+
+  <!-- CSS -->
+  <link
+    rel="stylesheet"
+    href="CSS/style.css"
+  >
+
+</head>
+
+
+<body>
+
+  <div class="app-container">
+
+
+    <!-- =========================
+         HEADER
+    ========================== -->
+    <header class="person-detail-header">
+
+      <a
+        href="people_manage.html"
+        class="person-detail-back"
+        aria-label="人物一覧へ戻る"
+      >
+
+        <i class="fa-solid fa-chevron-left"></i>
+
+      </a>
+
+
+      <h1>
+        人物詳細
+      </h1>
+
+
+      <button
+        type="button"
+        id="personEditButton"
+        class="person-detail-edit"
+      >
+        編集
+      </button>
+
+    </header>
+
+
+    <!-- =========================
+         MAIN
+    ========================== -->
+    <main class="person-detail-main">
+
+
+      <!-- LOADING -->
+      <div
+        id="personDetailLoading"
+        class="person-detail-loading"
+      >
+
+        人物情報を読み込んでいます...
+
+      </div>
+
+
+      <!-- DETAIL -->
+      <div
+        id="personDetailContent"
+        class="hidden"
+      >
+
+
+        <!-- =========================
+             PROFILE
+        ========================== -->
+        <section class="person-detail-profile">
+
+          <div
+            id="detailAvatar"
+            class="person-detail-avatar"
+          >
+            ?
+          </div>
+
+
+          <h2 id="detailName">
+            -
+          </h2>
+
+
+          <p
+            id="detailBirthday"
+            class="person-detail-birthday"
+          >
+            -
+          </p>
+
+
+          <span
+            id="detailRelationship"
+            class="person-detail-relationship"
+          >
+            -
+          </span>
+
+        </section>
+
+
+        <!-- =========================
+             GIFT HISTORY
+        ========================== -->
+        <section class="person-detail-section">
+
+          <div class="person-detail-section-title">
+
+            <h3>
+              プレゼント
+            </h3>
+
+          </div>
+
+
+          <div class="person-detail-counts">
+
+            <div class="person-detail-count received">
+
+              <span>もらった</span>
+
+              <strong id="detailReceivedCount">
+                0
+              </strong>
+
+            </div>
+
+
+            <div class="person-detail-count given">
+
+              <span>あげた</span>
+
+              <strong id="detailGivenCount">
+                0
+              </strong>
+
+            </div>
+
+          </div>
+
+
+          <div
+            id="detailGiftList"
+            class="person-detail-gift-list"
+          >
+          </div>
+
+        </section>
+
+
+        <!-- =========================
+             PROFILE INFORMATION
+        ========================== -->
+        <section class="person-detail-section">
+
+          <div class="person-detail-section-title">
+
+            <h3>
+              好み・情報
+            </h3>
+
+          </div>
+
+
+          <!-- LIKES -->
+          <div class="person-info-row">
+
+            <div class="person-info-icon likes">
+
+              <i class="fa-regular fa-heart"></i>
+
+            </div>
+
+
+            <div class="person-info-content">
+
+              <span class="person-info-label">
+                好きなもの
+              </span>
+
+              <p id="detailLikes">
+                -
+              </p>
+
+            </div>
+
+          </div>
+
+
+          <!-- DISLIKES -->
+          <div class="person-info-row">
+
+            <div class="person-info-icon dislikes">
+
+              <i class="fa-solid fa-minus"></i>
+
+            </div>
+
+
+            <div class="person-info-content">
+
+              <span class="person-info-label">
+                苦手なもの
+              </span>
+
+              <p id="detailDislikes">
+                -
+              </p>
+
+            </div>
+
+          </div>
+
+
+          <!-- ALLERGIES -->
+          <div class="person-info-row">
+
+            <div class="person-info-icon allergies">
+
+              <i class="fa-solid fa-triangle-exclamation"></i>
+
+            </div>
+
+
+            <div class="person-info-content">
+
+              <span class="person-info-label">
+                アレルギー情報
+              </span>
+
+              <p id="detailAllergies">
+                -
+              </p>
+
+            </div>
+
+          </div>
+
+        </section>
+
+
+        <!-- =========================
+             MEMO
+        ========================== -->
+        <section class="person-detail-section">
+
+          <div class="person-detail-section-title">
+
+            <h3>
+              メモ
+            </h3>
+
+          </div>
+
+
+          <div class="person-detail-memo">
+
+            <p id="detailMemo">
+              -
+            </p>
+
+          </div>
+
+        </section>
+
+
+      </div>
+
+
+      <!-- ERROR -->
+      <div
+        id="personDetailError"
+        class="person-detail-error hidden"
+      >
+
+        <i class="fa-regular fa-circle-xmark"></i>
+
+        <p>
+          人物情報を取得できませんでした。
+        </p>
+
+        <a href="people_manage.html">
+          人物一覧へ戻る
+        </a>
+
+      </div>
+
+
+    </main>
+
+
+    <!-- =========================
+         BOTTOM NAVIGATION
+    ========================== -->
+    <nav class="bottom-nav">
+
+
+      <a
+        href="index.html"
+        class="nav-link-button"
+      >
+
+        <i class="fa-solid fa-house"></i>
+
+        <span>ホーム</span>
+
+      </a>
+
+
+      <a
+        href="people_manage.html"
+        class="nav-link-button active-tab"
+      >
+
+        <i class="fa-solid fa-user"></i>
+
+        <span>人物</span>
+
+      </a>
+
+
+      <button
+        class="nav-button"
+        type="button"
+        disabled
+      >
+
+        <i class="fa-regular fa-calendar"></i>
+
+        <span>予定</span>
+
+      </button>
+
+
+      <button
+        class="nav-button"
+        type="button"
+        disabled
+      >
+
+        <i class="fa-solid fa-wand-magic-sparkles"></i>
+
+        <span>AI</span>
+
+      </button>
+
+
+      <button
+        class="nav-button"
+        type="button"
+        disabled
+      >
+
+        <i class="fa-solid fa-gear"></i>
+
+        <span>設定</span>
+
+      </button>
+
+
+    </nav>
+
+
+  </div>
+
+
+  <script
+    type="module"
+    src="js/people_detail.js"
+  ></script>
+
+</body>
+
+</html>
