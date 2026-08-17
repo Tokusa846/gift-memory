@@ -228,6 +228,8 @@ function renderPersonList() {
       )
       .join("");
 
+      setupPersonCardLinks();
+
 }
 
 
@@ -402,78 +404,48 @@ function createPersonCardHtml(
   return `
 
     <article
-      class="person-card"
-      data-person-id="${person.id}"
+        class="person-card person-card-link"
+        data-person-id="${person.id}"
+        tabindex="0"
+        role="link"
     >
 
-      <div class="person-card-main">
+        <div class="person-card-main">
+            <div class="person-avatar">
+                ${escapeHtml(initial)}
+            </div>
+    
+            <div class="person-basic-info">
+    
+                <p class="person-name">
+                    ${escapeHtml(person.name)}
+                </p>
+
+                <p class="person-birthday">
+                    ${
+                        birthdayText
+                        ? `誕生日: ${birthdayText}`
+                        : "誕生日: 未登録"
+                    }
+                </p>
+            </div>
 
 
-        <!-- AVATAR -->
-        <div class="person-avatar">
-
-          ${escapeHtml(
-            initial
-          )}
-
+            <div class="person-gift-counts">
+            
+                <span class="person-count-badge received">
+                    もらった ${receivedCount}
+                </span>
+                
+                <span class="person-count-badge given">
+                    あげた ${givenCount}
+                </span>
+            </div>
         </div>
 
 
-        <!-- NAME / BIRTHDAY -->
-        <div class="person-basic-info">
-
-          <p class="person-name">
-
-            ${escapeHtml(
-              person.name
-            )}
-
-          </p>
-
-
-          <p class="person-birthday">
-
-            ${
-              birthdayText
-                ? `誕生日: ${birthdayText}`
-                : "誕生日: 未登録"
-            }
-
-          </p>
-
-        </div>
-
-
-      </div>
-
-
-      <!-- COUNTS -->
-      <div class="person-gift-counts">
-
-        <span
-          class="
-            person-count-badge
-            received
-          "
-        >
-          もらった ${receivedCount}
-        </span>
-
-
-        <span
-          class="
-            person-count-badge
-            given
-          "
-        >
-          あげた ${givenCount}
-        </span>
-
-      </div>
-
-
-      <!-- LATEST GIFT -->
-      ${latestGiftHtml}
+        <!-- LATEST GIFT -->
+        ${latestGiftHtml}
 
 
     </article>
@@ -673,5 +645,59 @@ function escapeHtml(
       "'",
       "&#039;"
     );
+
+}
+
+/* ========================================
+   PERSON CARD LINK
+======================================== */
+
+function setupPersonCardLinks() {
+
+  const cards =
+    document.querySelectorAll(
+      ".person-card-link"
+    );
+
+
+  cards.forEach(card => {
+
+    const openDetail = () => {
+
+      const personId =
+        card.dataset.personId;
+
+
+      window.location.href =
+        `people_detail.html?id=${encodeURIComponent(personId)}`;
+
+    };
+
+
+    card.addEventListener(
+      "click",
+      openDetail
+    );
+
+
+    card.addEventListener(
+      "keydown",
+      event => {
+
+        if (
+          event.key === "Enter" ||
+          event.key === " "
+        ) {
+
+          event.preventDefault();
+
+          openDetail();
+
+        }
+
+      }
+    );
+
+  });
 
 }

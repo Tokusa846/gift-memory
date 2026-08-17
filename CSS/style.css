@@ -2169,20 +2169,17 @@ input[value="given"]:checked
 /* 人物追加 */
 
 .person-add-button {
-  width: 38px;
+  min-height: 40px;
 
-  height: 38px;
-
-  flex-shrink: 0;
-
-  display: flex;
-
+  display: inline-flex;
   align-items: center;
-
   justify-content: center;
 
-  border: 1px solid #e8e3de;
+  gap: 7px;
 
+  padding: 0 13px;
+
+  border: 1px solid #e8e3de;
   border-radius: 12px;
 
   background-color: #ffffff;
@@ -2191,10 +2188,19 @@ input[value="given"]:checked
 
   text-decoration: none;
 
-  font-size: 14px;
+  font-size: 11px;
+  font-weight: 700;
 
   box-shadow:
     0 2px 7px rgba(0, 0, 0, 0.035);
+}
+
+.person-add-button i {
+  font-size: 13px;
+}
+
+.person-add-button:active {
+  transform: scale(0.97);
 }
 
 
@@ -2381,13 +2387,15 @@ input[value="given"]:checked
 ======================================== */
 
 .person-gift-counts {
+  flex-shrink: 0;
+
   display: flex;
+  flex-direction: column;
+  align-items: flex-end;
 
-  align-items: center;
+  gap: 5px;
 
-  gap: 6px;
-
-  margin-top: 11px;
+  margin-left: auto;
 }
 
 
@@ -2620,10 +2628,19 @@ input[value="given"]:checked
 }
 
 
-/* ========================================
-   PEOPLE FLOATING ADD
-======================================== */
+.person-card-link {
+  cursor: pointer;
 
-.people-floating-add {
-  text-decoration: none;
+  transition:
+    transform 0.15s,
+    box-shadow 0.15s;
+}
+
+.person-card-link:active {
+  transform: scale(0.985);
+}
+
+.person-card-link:focus-visible {
+  outline: 2px solid #e86a58;
+  outline-offset: 2px;
 }
