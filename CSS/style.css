@@ -3369,7 +3369,7 @@ input[value="given"]:checked
 }
 
 
-.person-edit-form-group label {
+.person-edit-form-group > label {
   display: block;
 
   margin-bottom: 6px;
@@ -3407,7 +3407,7 @@ input[value="given"]:checked
 }
 
 
-.person-edit-form-group input:focus,
+.person-edit-form-group input:not([type="checkbox"]):focus,
 .person-edit-form-group select:focus {
   border-color: #e86a58;
 
@@ -3564,11 +3564,23 @@ input[value="given"]:checked
   font-size: 12px;
 
   cursor: pointer;
+
+  white-space: nowrap;
 }
 
 .allergy-checkbox-item input {
   width: 16px;
   height: 16px;
 
+  flex-shrink: 0;
+
+  margin: 0;
+
   accent-color: #e86a58;
+}
+
+.allergy-checkbox-item span {
+  display: inline-block;
+
+  line-height: 1;
 }
