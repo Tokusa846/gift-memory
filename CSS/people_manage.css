@@ -465,50 +465,7 @@
 }
 
 
-/* ========================================
-   NAV LINK
-======================================== */
 
-.nav-link-button {
-  min-height: 46px;
-
-  display: flex;
-
-  flex-direction: column;
-
-  align-items: center;
-
-  justify-content: center;
-
-  gap: 4px;
-
-  border: none;
-
-  background: none;
-
-  color: #aaa19a;
-
-  font-family: inherit;
-
-  text-decoration: none;
-}
-
-
-.nav-link-button i {
-  font-size: 16px;
-}
-
-
-.nav-link-button span {
-  font-size: 9px;
-}
-
-
-.nav-link-button.active-tab {
-  color: #e86a58;
-
-  font-weight: 700;
-}
 
 
 .person-card-link {

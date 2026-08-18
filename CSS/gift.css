@@ -1,0 +1,394 @@
+/* ========================================
+   GIFT REGISTER PAGE
+======================================== */
+
+.gift-page {
+  background-color: #ffffff;
+}
+
+
+/* HEADER */
+
+.gift-page-header {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+
+  min-height: 64px;
+
+  display: grid;
+  grid-template-columns: 40px 1fr 40px;
+  align-items: center;
+
+  padding: 10px 16px;
+
+  background-color: #ffffff;
+
+  border-bottom: 1px solid #eeeae6;
+}
+
+
+.gift-page-header h1 {
+  margin: 0;
+
+  color: #332d29;
+
+  text-align: center;
+
+  font-size: 16px;
+
+  font-weight: 700;
+}
+
+
+.gift-back-button,
+.gift-close-button {
+  width: 36px;
+  height: 36px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 50%;
+
+  color: #aaa19a;
+
+  text-decoration: none;
+
+  font-size: 17px;
+}
+
+
+.gift-back-button:hover,
+.gift-close-button:hover {
+  background-color: #f7f4f1;
+}
+
+
+/* FORM */
+
+.gift-form-area {
+  flex: 1;
+
+  padding: 18px 20px 32px;
+}
+
+
+.gift-form-group {
+  margin-bottom: 15px;
+}
+
+
+.gift-form-label {
+  display: block;
+
+  margin-bottom: 6px;
+
+  color: #4c4540;
+
+  font-size: 12px;
+
+  font-weight: 700;
+}
+
+
+.gift-form-area input[type="text"],
+.gift-form-area input[type="number"],
+.gift-form-area input[type="date"],
+.gift-form-area select,
+.gift-form-area textarea {
+  width: 100%;
+
+  padding: 11px 12px;
+
+  border: 1px solid #dfdad5;
+
+  border-radius: 12px;
+
+  background-color: #ffffff;
+
+  color: #332d29;
+
+  font-family: inherit;
+
+  font-size: 12px;
+
+  outline: none;
+
+  transition:
+    border-color 0.2s,
+    box-shadow 0.2s;
+}
+
+
+.gift-form-area input:focus,
+.gift-form-area select:focus,
+.gift-form-area textarea:focus {
+  border-color: #e86a58;
+
+  box-shadow:
+    0 0 0 3px rgba(232, 106, 88, 0.08);
+}
+
+
+.gift-form-area input::placeholder,
+.gift-form-area textarea::placeholder {
+  color: #b3aba5;
+}
+
+
+/* TYPE SELECTOR */
+
+.gift-type-selector {
+  display: grid;
+
+  grid-template-columns: repeat(2, 1fr);
+
+  gap: 8px;
+}
+
+
+.gift-type-option {
+  cursor: pointer;
+}
+
+
+.gift-type-option input {
+  display: none;
+}
+
+
+.gift-type-button {
+  min-height: 36px;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  border: 1px solid #ddd8d3;
+
+  border-radius: 11px;
+
+  background-color: #ffffff;
+
+  color: #4e4742;
+
+  font-size: 12px;
+
+  font-weight: 700;
+
+  transition: 0.2s;
+}
+
+
+/* もらった */
+
+.gift-type-option
+input[value="received"]:checked
++ .gift-type-button {
+  border-color: #35bd8a;
+
+  background-color: #edfff7;
+
+  color: #087c56;
+}
+
+
+/* あげた */
+
+.gift-type-option
+input[value="given"]:checked
++ .gift-type-button {
+  border-color: #ef6a59;
+
+  background-color: #fff4f1;
+
+  color: #c94333;
+}
+
+
+/* PERSON */
+
+.gift-select-wrapper {
+  position: relative;
+}
+
+
+.gift-select-wrapper select {
+  padding-right: 36px;
+
+  appearance: none;
+}
+
+
+.gift-select-wrapper i {
+  position: absolute;
+
+  right: 13px;
+
+  top: 50%;
+
+  transform: translateY(-50%);
+
+  color: #928982;
+
+  font-size: 10px;
+
+  pointer-events: none;
+}
+
+
+.gift-person-add-link {
+  display: inline-flex;
+
+  align-items: center;
+
+  gap: 5px;
+
+  margin-top: 7px;
+
+  color: #d55240;
+
+  text-decoration: none;
+
+  font-size: 11px;
+
+  font-weight: 600;
+}
+
+
+/* DATE / EVENT */
+
+.gift-form-two-column {
+  display: grid;
+
+  grid-template-columns: 1fr 1fr;
+
+  gap: 9px;
+}
+
+
+/* RETURN */
+
+.gift-return-field {
+  margin-bottom: 15px;
+
+  padding: 12px;
+
+  border: 1px solid #e1ddd8;
+
+  border-radius: 12px;
+
+  background-color: #faf9f7;
+}
+
+
+.gift-return-label {
+  display: flex;
+
+  align-items: center;
+
+  gap: 9px;
+
+  color: #514944;
+
+  font-size: 12px;
+
+  font-weight: 700;
+
+  cursor: pointer;
+}
+
+
+.gift-return-label input {
+  width: 17px;
+  height: 17px;
+
+  accent-color: #e86a58;
+}
+
+
+/* MESSAGE */
+
+.gift-form-message {
+  min-height: 18px;
+
+  margin: 0 0 8px;
+
+  font-size: 11px;
+
+  text-align: center;
+}
+
+
+.gift-form-message.success {
+  color: #22805d;
+}
+
+
+.gift-form-message.error {
+  color: #d54c40;
+}
+
+
+/* SUBMIT */
+
+.gift-submit-button {
+  width: 100%;
+
+  min-height: 46px;
+
+  border: none;
+
+  border-radius: 12px;
+
+  background-color: #ef6958;
+
+  color: #ffffff;
+
+  font-family: inherit;
+
+  font-size: 14px;
+
+  font-weight: 700;
+
+  cursor: pointer;
+
+  box-shadow:
+    0 4px 10px rgba(232, 106, 88, 0.2);
+
+  transition:
+    background-color 0.2s,
+    transform 0.1s;
+}
+
+
+.gift-submit-button:hover {
+  background-color: #dd5848;
+}
+
+
+.gift-submit-button:active {
+  transform: scale(0.99);
+}
+
+
+.gift-submit-button:disabled {
+  opacity: 0.6;
+
+  cursor: default;
+}
+
+
+/* SMARTPHONE */
+
+@media (max-width: 360px) {
+
+  .gift-form-two-column {
+    grid-template-columns: 1fr;
+  }
+
+}
