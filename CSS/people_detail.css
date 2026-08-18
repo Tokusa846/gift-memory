@@ -980,3 +980,38 @@
 .person-section-add-button:active {
   transform: scale(0.94);
 }
+
+.person-detail-gift-menu {
+  width: 30px;
+  height: 30px;
+
+  flex-shrink: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 50%;
+
+  color: #b1aaa4;
+
+  text-decoration: none;
+
+  font-size: 13px;
+
+  transition:
+    background-color 0.15s,
+    color 0.15s;
+}
+
+
+.person-detail-gift-menu:hover {
+  background-color: #f4f1ee;
+
+  color: #7b736d;
+}
+
+
+.person-detail-gift-menu:active {
+  transform: scale(0.94);
+}

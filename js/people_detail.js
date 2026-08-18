@@ -451,6 +451,18 @@ function createGiftItemHtml(
 
       </div>
 
+      <a
+        class="person-detail-gift-menu"
+        href="gifts.html?gift_id=${encodeURIComponent(
+          gift.id
+        )}&return_to=${encodeURIComponent(
+          `people_detail.html?id=${currentPerson.id}`
+        )}"
+        aria-label="プレゼントを編集"
+      >
+        <i class="fa-solid fa-ellipsis-vertical"></i>
+      </a>
+
     </article>
 
   `;

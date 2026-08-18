@@ -62,6 +62,10 @@ const presetPersonId =
     "person_id"
   );
 
+const giftId =
+  urlParams.get(
+    "gift_id"
+  );
 
 const returnTo =
   urlParams.get(
@@ -83,8 +87,14 @@ document.addEventListener(
 
     await loadPeople();
 
-    applyPresetPerson();
+    if (giftId) {
+      await loadGiftForEdit(
+        giftId
+      );
 
+    }else{
+      applyPresetPerson();
+    }
   }
 );
 
@@ -395,12 +405,40 @@ giftForm.addEventListener(
       "保存中...";
 
 
-    const { error } =
-      await supabase
-        .from("Gifts")
-        .insert([
-          giftData
-        ]);
+    let error;
+
+
+    if (giftId) {
+
+      const result =
+        await supabase
+          .from("Gifts")
+          .update(
+            giftData
+          )
+          .eq(
+            "id",
+            giftId
+          );
+
+
+      error =
+        result.error;
+
+    } else {
+
+      const result =
+        await supabase
+          .from("Gifts")
+          .insert([
+            giftData
+          ]);
+
+
+      error =
+        result.error;
+
+    }
 
 
     if (error) {
@@ -430,13 +468,17 @@ giftForm.addEventListener(
     ------------------------- */
 
     showMessage(
-      "プレゼントを登録しました。",
+      giftId
+        ? "プレゼントを更新しました。"
+        : "プレゼントを登録しました。",
       "success"
     );
 
 
     submitButton.textContent =
-      "保存しました";
+      giftId
+        ? "更新しました"
+        : "保存しました";
 
 
     /*
@@ -515,5 +557,138 @@ function applyPresetPerson() {
 
   personSelect.value =
     presetPersonId;
+
+}
+
+/* ========================================
+   LOAD GIFT FOR EDIT
+======================================== */
+
+async function loadGiftForEdit(
+  giftId
+) {
+
+  const { data, error } =
+    await supabase
+      .from("Gifts")
+      .select(`
+        id,
+        person_id,
+        direction,
+        gift_date,
+        occasion,
+        item_name,
+        price,
+        memo,
+        need_return,
+        return_done
+      `)
+      .eq(
+        "id",
+        giftId
+      )
+      .single();
+
+
+  if (error) {
+
+    console.error(
+      "プレゼント情報の取得に失敗しました:",
+      error
+    );
+
+
+    showMessage(
+      "プレゼント情報を取得できませんでした。",
+      "error"
+    );
+
+
+    return;
+
+  }
+
+
+  /* 区分 */
+
+  const directionInput =
+    document.querySelector(
+      `input[name="direction"][value="${data.direction}"]`
+    );
+
+
+  if (directionInput) {
+
+    directionInput.checked =
+      true;
+
+  }
+
+
+  /* 人物 */
+
+  personSelect.value =
+    data.person_id ?? "";
+
+
+  /* 品名 */
+
+  itemNameInput.value =
+    data.item_name ?? "";
+
+
+  /* 日付 */
+
+  giftDateInput.value =
+    data.gift_date ?? "";
+
+
+  /* 名目 */
+
+  occasionSelect.value =
+    data.occasion ?? "その他";
+
+
+  /* 金額 */
+
+  priceInput.value =
+    data.price ?? "";
+
+
+  /* メモ */
+
+  memoInput.value =
+    data.memo ?? "";
+
+
+  /* お返し */
+
+  needReturnInput.checked =
+    data.need_return === true;
+
+
+  /* 区分に合わせてUI更新 */
+
+  updateDirectionUI();
+
+
+  /* 見出し */
+
+  const pageTitle =
+    document.querySelector(
+      ".gift-page-header h1"
+    );
+
+
+  if (pageTitle) {
+
+    pageTitle.textContent =
+      "プレゼントログを編集";
+
+  }
+
+
+  submitButton.textContent =
+    "変更を保存";
 
 }
