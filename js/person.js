@@ -24,9 +24,7 @@ const dislikesInput =
   document.getElementById("dislikes");
 
 const allergiesInput =
-    document.getElementById(
-    "allergies-other"
-  );
+    document.getElementById("allergies-other");
 
 const memoInput =
   document.getElementById("memo");
@@ -184,7 +182,7 @@ function buildAllergyText() {
 
 
   const other =
-    allergiesOtherInput
+    allergiesInput
       .value
       .trim();
 
