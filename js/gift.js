@@ -48,6 +48,28 @@ const submitButton =
 
 
 /* ========================================
+   URL PARAMS
+======================================== */
+
+const urlParams =
+  new URLSearchParams(
+    window.location.search
+  );
+
+
+const presetPersonId =
+  urlParams.get(
+    "person_id"
+  );
+
+
+const returnTo =
+  urlParams.get(
+    "return_to"
+  );
+
+
+/* ========================================
    INITIALIZE
 ======================================== */
 
@@ -60,6 +82,8 @@ document.addEventListener(
     setupDirectionSwitch();
 
     await loadPeople();
+
+    applyPresetPerson();
 
   }
 );
@@ -423,6 +447,7 @@ giftForm.addEventListener(
       () => {
 
         window.location.href =
+          returnTo ||
           "index.html";
 
       },
@@ -458,5 +483,37 @@ function clearMessage() {
 
   message.className =
     "gift-form-message";
+
+}
+
+/* ========================================
+   PRESET PERSON
+======================================== */
+
+function applyPresetPerson() {
+
+  if (!presetPersonId) {
+    return;
+  }
+
+
+  const optionExists =
+    [
+      ...personSelect.options
+    ]
+      .some(
+        option =>
+          option.value ===
+          presetPersonId
+      );
+
+
+  if (!optionExists) {
+    return;
+  }
+
+
+  personSelect.value =
+    presetPersonId;
 
 }

@@ -937,3 +937,46 @@
 
   line-height: 1;
 }
+
+/* ========================================
+   SECTION ADD BUTTON
+======================================== */
+
+.person-section-add-button {
+  width: 30px;
+  height: 30px;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  border: 1px solid #ebe6e1;
+  border-radius: 50%;
+
+  background-color: #faf8f6;
+
+  color: #aaa19a;
+
+  text-decoration: none;
+
+  font-size: 11px;
+
+  cursor: pointer;
+
+  transition:
+    background-color 0.15s,
+    color 0.15s,
+    transform 0.1s;
+}
+
+
+.person-section-add-button:hover {
+  background-color: #f3efec;
+
+  color: #e86a58;
+}
+
+
+.person-section-add-button:active {
+  transform: scale(0.94);
+}

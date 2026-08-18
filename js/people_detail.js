@@ -56,6 +56,8 @@ document.addEventListener(
 
     setupPreferenceEdit();
 
+    setupGiftAddButton();
+
   }
 );
 
@@ -279,6 +281,35 @@ function renderPersonDetail() {
     )
     .classList
     .remove("hidden");
+
+}
+
+  /* ========================================
+   GIFT ADD BUTTON
+  ======================================== */
+
+  function setupGiftAddButton() {
+
+    const button =
+      document.getElementById(
+        "giftAddButton"
+      );
+
+
+    if (
+      !button ||
+      !currentPerson
+    ) {
+      return;
+    }
+
+
+    button.href =
+      `gifts.html?person_id=${encodeURIComponent(
+        currentPerson.id
+      )}&return_to=${encodeURIComponent(
+        `people_detail.html?id=${currentPerson.id}`
+      )}`;
 
 }
 
