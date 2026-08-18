@@ -54,6 +54,8 @@ document.addEventListener(
 
     setupBasicInfoEdit();
 
+    setupPreferenceEdit();
+
   }
 );
 
@@ -211,26 +213,7 @@ function renderPersonDetail() {
      PERSONAL INFORMATION
   ========================== */
 
-  setText(
-    "detailLikes",
-    currentPerson.likes ||
-      "未登録"
-  );
-
-
-  setText(
-    "detailDislikes",
-    currentPerson.dislikes ||
-      "未登録"
-  );
-
-
-  setText(
-    "detailAllergies",
-    currentPerson.allergies ||
-      "未登録"
-  );
-
+  renderPreferenceInfo();
 
   setText(
     "detailMemo",
@@ -1122,6 +1105,448 @@ function resetBasicInfoSaveButton() {
   const saveButton =
     document.getElementById(
       "basicInfoEditSave"
+    );
+
+
+  saveButton.disabled =
+    false;
+
+
+  saveButton.textContent =
+    "保存";
+
+}
+
+/* ========================================
+   PREFERENCE EDIT
+======================================== */
+
+function setupPreferenceEdit() {
+
+  const openButton =
+    document.getElementById(
+      "preferenceEditButton"
+    );
+
+  const modal =
+    document.getElementById(
+      "preferenceEditModal"
+    );
+
+  const closeButton =
+    document.getElementById(
+      "preferenceEditClose"
+    );
+
+  const cancelButton =
+    document.getElementById(
+      "preferenceEditCancel"
+    );
+
+  const form =
+    document.getElementById(
+      "preferenceEditForm"
+    );
+
+
+  if (
+    !openButton ||
+    !modal ||
+    !form
+  ) {
+    return;
+  }
+
+
+  openButton.addEventListener(
+    "click",
+    openPreferenceEditModal
+  );
+
+
+  closeButton.addEventListener(
+    "click",
+    closePreferenceEditModal
+  );
+
+
+  cancelButton.addEventListener(
+    "click",
+    closePreferenceEditModal
+  );
+
+
+  modal.addEventListener(
+    "click",
+    event => {
+
+      if (
+        event.target === modal
+      ) {
+
+        closePreferenceEditModal();
+
+      }
+
+    }
+  );
+
+
+  form.addEventListener(
+    "submit",
+    async event => {
+
+      event.preventDefault();
+
+      await savePreferenceInfo();
+
+    }
+  );
+
+}
+
+function openPreferenceEditModal() {
+
+  const modal =
+    document.getElementById(
+      "preferenceEditModal"
+    );
+
+
+  document
+    .getElementById(
+      "preferenceEditLikes"
+    )
+    .value =
+      currentPerson.likes ?? "";
+
+
+  document
+    .getElementById(
+      "preferenceEditDislikes"
+    )
+    .value =
+      currentPerson.dislikes ?? "";
+
+
+  setAllergyFormValues(
+    currentPerson.allergies ?? ""
+  );
+
+
+  const message =
+    document.getElementById(
+      "preferenceEditMessage"
+    );
+
+
+  message.textContent = "";
+
+  message.className =
+    "person-edit-message";
+
+
+  modal.classList.remove(
+    "hidden"
+  );
+
+
+  modal.setAttribute(
+    "aria-hidden",
+    "false"
+  );
+
+
+  document.body.style.overflow =
+    "hidden";
+
+}
+
+function closePreferenceEditModal() {
+
+  const modal =
+    document.getElementById(
+      "preferenceEditModal"
+    );
+
+
+  modal.classList.add(
+    "hidden"
+  );
+
+
+  modal.setAttribute(
+    "aria-hidden",
+    "true"
+  );
+
+
+  document.body.style.overflow =
+    "";
+
+}
+
+function setAllergyFormValues(
+  allergyText
+) {
+
+  const checkboxes =
+    document.querySelectorAll(
+      "#preferenceEditModal .allergy-checkbox-item input"
+    );
+
+
+  const otherInput =
+    document.getElementById(
+      "preferenceEditAllergyOther"
+    );
+
+
+  const knownAllergies =
+    [
+      "卵",
+      "乳",
+      "小麦",
+      "えび",
+      "かに",
+      "そば",
+      "落花生",
+      "くるみ"
+    ];
+
+
+  const allergyItems =
+    allergyText
+      .split(",")
+      .map(item =>
+        item.trim()
+      )
+      .filter(Boolean);
+
+
+  checkboxes.forEach(
+    checkbox => {
+
+      checkbox.checked =
+        allergyItems.includes(
+          checkbox.value
+        );
+
+    }
+  );
+
+
+  const otherItems =
+    allergyItems.filter(
+      item =>
+        !knownAllergies.includes(
+          item
+        )
+    );
+
+
+  otherInput.value =
+    otherItems.join(", ");
+
+}
+
+function buildAllergyText() {
+
+  const checked =
+    [
+      ...document.querySelectorAll(
+        "#preferenceEditModal .allergy-checkbox-item input:checked"
+      )
+    ]
+      .map(
+        checkbox =>
+          checkbox.value
+      );
+
+
+  const other =
+    document
+      .getElementById(
+        "preferenceEditAllergyOther"
+      )
+      .value
+      .trim();
+
+
+  if (other) {
+
+    const otherItems =
+      other
+        .split(",")
+        .map(item =>
+          item.trim()
+        )
+        .filter(Boolean);
+
+
+    checked.push(
+      ...otherItems
+    );
+
+  }
+
+
+  return checked.join(", ");
+
+}
+
+async function savePreferenceInfo() {
+
+  const likes =
+    document
+      .getElementById(
+        "preferenceEditLikes"
+      )
+      .value
+      .trim();
+
+
+  const dislikes =
+    document
+      .getElementById(
+        "preferenceEditDislikes"
+      )
+      .value
+      .trim();
+
+
+  const allergies =
+    buildAllergyText();
+
+
+  const message =
+    document.getElementById(
+      "preferenceEditMessage"
+    );
+
+
+  const saveButton =
+    document.getElementById(
+      "preferenceEditSave"
+    );
+
+
+  saveButton.disabled = true;
+
+
+  saveButton.innerHTML = `
+
+    <i class="fa-solid fa-spinner fa-spin"></i>
+
+    保存中...
+
+  `;
+
+
+  const { data, error } =
+    await supabase
+      .from("people")
+      .update({
+
+        likes:
+          likes || null,
+
+        dislikes:
+          dislikes || null,
+
+        allergies:
+          allergies || null
+
+      })
+      .eq(
+        "id",
+        currentPerson.id
+      )
+      .select()
+      .single();
+
+
+  if (error) {
+
+    console.error(
+      "好み情報の更新に失敗しました:",
+      error
+    );
+
+
+    message.textContent =
+      "保存に失敗しました。";
+
+
+    message.className =
+      "person-edit-message error";
+
+
+    resetPreferenceSaveButton();
+
+    return;
+
+  }
+
+
+  currentPerson =
+    data;
+
+
+  renderPreferenceInfo();
+
+
+  message.textContent =
+    "保存しました。";
+
+
+  message.className =
+    "person-edit-message success";
+
+
+  resetPreferenceSaveButton();
+
+
+  setTimeout(
+    () => {
+
+      closePreferenceEditModal();
+
+    },
+    400
+  );
+
+}
+
+function renderPreferenceInfo() {
+
+  setText(
+    "detailLikes",
+    currentPerson.likes ||
+      "未登録"
+  );
+
+
+  setText(
+    "detailDislikes",
+    currentPerson.dislikes ||
+      "未登録"
+  );
+
+
+  setText(
+    "detailAllergies",
+    currentPerson.allergies ||
+      "未登録"
+  );
+
+}
+
+function resetPreferenceSaveButton() {
+
+  const saveButton =
+    document.getElementById(
+      "preferenceEditSave"
     );
 
 

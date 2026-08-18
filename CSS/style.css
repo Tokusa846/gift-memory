@@ -3498,3 +3498,77 @@ input[value="given"]:checked
 
   cursor: default;
 }
+
+.person-detail-section-title-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.person-edit-form-group textarea {
+  width: 100%;
+
+  padding: 10px 11px;
+
+  border: 1px solid #dfdad5;
+  border-radius: 11px;
+
+  background-color: #ffffff;
+
+  color: #332d29;
+
+  font-family: inherit;
+  font-size: 13px;
+
+  line-height: 1.6;
+
+  resize: vertical;
+
+  outline: none;
+}
+
+.person-edit-form-group textarea:focus {
+  border-color: #e86a58;
+
+  box-shadow:
+    0 0 0 3px
+    rgba(232, 106, 88, 0.08);
+}
+
+.allergy-checkbox-grid {
+  display: grid;
+
+  grid-template-columns:
+    repeat(2, 1fr);
+
+  gap: 8px;
+}
+
+.allergy-checkbox-item {
+  min-height: 38px;
+
+  display: flex;
+  align-items: center;
+
+  gap: 7px;
+
+  padding: 8px 10px;
+
+  border: 1px solid #e5dfda;
+  border-radius: 10px;
+
+  background-color: #faf9f7;
+
+  color: #554d47;
+
+  font-size: 12px;
+
+  cursor: pointer;
+}
+
+.allergy-checkbox-item input {
+  width: 16px;
+  height: 16px;
+
+  accent-color: #e86a58;
+}

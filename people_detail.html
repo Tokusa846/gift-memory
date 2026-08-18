@@ -201,93 +201,194 @@
         <!-- =========================
              PROFILE INFORMATION
         ========================== -->
-        <section class="person-detail-section">
+        <div class="person-detail-section-title person-detail-section-title-row">
 
-          <div class="person-detail-section-title">
+          <h3>
+            好み・情報
+          </h3>
 
-            <h3>
-              好み・情報
-            </h3>
+          <button
+            type="button"
+            id="preferenceEditButton"
+            class="person-section-edit-button"
+            aria-label="好み・情報を編集"
+          >
+            <i class="fa-solid fa-pencil"></i>
+          </button>
+
+        </div>
+
+        <!-- =========================
+        PREFERENCE EDIT MODAL
+        ========================== -->
+        <div
+          id="preferenceEditModal"
+          class="person-edit-overlay hidden"
+          aria-hidden="true"
+        >
+
+          <div
+            class="person-edit-modal"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="preferenceEditTitle"
+          >
+
+            <div class="person-edit-modal-header">
+
+              <h2 id="preferenceEditTitle">
+                好み・情報を編集
+              </h2>
+
+              <button
+                type="button"
+                id="preferenceEditClose"
+                class="person-edit-modal-close"
+                aria-label="閉じる"
+              >
+                <i class="fa-solid fa-xmark"></i>
+              </button>
+
+            </div>
+
+
+            <form id="preferenceEditForm">
+
+
+              <!-- LIKES -->
+              <div class="person-edit-form-group">
+
+                <label for="preferenceEditLikes">
+                  好きなもの
+                </label>
+
+                <textarea
+                  id="preferenceEditLikes"
+                  rows="3"
+                  placeholder="例：コーヒー、読書、甘いもの"
+                ></textarea>
+
+              </div>
+
+
+              <!-- DISLIKES -->
+              <div class="person-edit-form-group">
+
+                <label for="preferenceEditDislikes">
+                  苦手なもの
+                </label>
+
+                <textarea
+                  id="preferenceEditDislikes"
+                  rows="3"
+                  placeholder="例：香りの強いもの"
+                ></textarea>
+
+              </div>
+
+
+              <!-- ALLERGIES -->
+              <div class="person-edit-form-group">
+
+                <label>
+                  アレルギー情報
+                </label>
+
+                <div class="allergy-checkbox-grid">
+
+                  <label class="allergy-checkbox-item">
+                    <input type="checkbox" value="卵">
+                    <span>卵</span>
+                  </label>
+
+                  <label class="allergy-checkbox-item">
+                    <input type="checkbox" value="乳">
+                    <span>乳</span>
+                  </label>
+
+                  <label class="allergy-checkbox-item">
+                    <input type="checkbox" value="小麦">
+                    <span>小麦</span>
+                  </label>
+
+                  <label class="allergy-checkbox-item">
+                    <input type="checkbox" value="えび">
+                    <span>えび</span>
+                  </label>
+
+                  <label class="allergy-checkbox-item">
+                    <input type="checkbox" value="かに">
+                    <span>かに</span>
+                  </label>
+
+                  <label class="allergy-checkbox-item">
+                    <input type="checkbox" value="そば">
+                    <span>そば</span>
+                  </label>
+
+                  <label class="allergy-checkbox-item">
+                    <input type="checkbox" value="落花生">
+                    <span>落花生</span>
+                  </label>
+
+                  <label class="allergy-checkbox-item">
+                    <input type="checkbox" value="くるみ">
+                    <span>くるみ</span>
+                  </label>
+
+                </div>
+
+              </div>
+
+
+              <!-- OTHER ALLERGY -->
+              <div class="person-edit-form-group">
+
+                <label for="preferenceEditAllergyOther">
+                  その他
+                </label>
+
+                <input
+                  type="text"
+                  id="preferenceEditAllergyOther"
+                  placeholder="例：キウイ、桃"
+                >
+
+              </div>
+
+
+              <p
+                id="preferenceEditMessage"
+                class="person-edit-message"
+              ></p>
+
+
+              <div class="person-edit-actions">
+
+                <button
+                  type="button"
+                  id="preferenceEditCancel"
+                  class="person-edit-cancel-button"
+                >
+                  キャンセル
+                </button>
+
+                <button
+                  type="submit"
+                  id="preferenceEditSave"
+                  class="person-edit-save-button"
+                >
+                  保存
+                </button>
+
+              </div>
+
+            </form>
 
           </div>
 
-
-          <!-- LIKES -->
-          <div class="person-info-row">
-
-            <div class="person-info-icon likes">
-
-              <i class="fa-regular fa-heart"></i>
-
-            </div>
-
-
-            <div class="person-info-content">
-
-              <span class="person-info-label">
-                好きなもの
-              </span>
-
-              <p id="detailLikes">
-                -
-              </p>
-
-            </div>
-
-          </div>
-
-
-          <!-- DISLIKES -->
-          <div class="person-info-row">
-
-            <div class="person-info-icon dislikes">
-
-              <i class="fa-solid fa-minus"></i>
-
-            </div>
-
-
-            <div class="person-info-content">
-
-              <span class="person-info-label">
-                苦手なもの
-              </span>
-
-              <p id="detailDislikes">
-                -
-              </p>
-
-            </div>
-
-          </div>
-
-
-          <!-- ALLERGIES -->
-          <div class="person-info-row">
-
-            <div class="person-info-icon allergies">
-
-              <i class="fa-solid fa-triangle-exclamation"></i>
-
-            </div>
-
-
-            <div class="person-info-content">
-
-              <span class="person-info-label">
-                アレルギー情報
-              </span>
-
-              <p id="detailAllergies">
-                -
-              </p>
-
-            </div>
-
-          </div>
-
-        </section>
-
+        </div>
+        
 
         <!-- =========================
              MEMO
