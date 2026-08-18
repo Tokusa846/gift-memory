@@ -3196,3 +3196,305 @@ input[value="given"]:checked
 
   text-decoration: none;
 }
+
+/* ========================================
+   DETAIL NAME ROW
+======================================== */
+
+.person-detail-name-row {
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  gap: 7px;
+}
+
+
+.person-detail-name-row h2 {
+  margin: 0;
+}
+
+
+/* 共通編集アイコン */
+
+.person-section-edit-button {
+  width: 28px;
+  height: 28px;
+
+  display: inline-flex;
+
+  align-items: center;
+  justify-content: center;
+
+  padding: 0;
+
+  border: none;
+
+  border-radius: 50%;
+
+  background: transparent;
+
+  color: #a9adb1;
+
+  font-size: 11px;
+
+  cursor: pointer;
+
+  transition:
+    background-color 0.15s,
+    color 0.15s;
+}
+
+
+.person-section-edit-button:hover {
+  background-color: #f2f1ef;
+
+  color: #777d82;
+}
+
+
+.person-section-edit-button:active {
+  transform: scale(0.94);
+}
+
+.person-detail-header-spacer {
+  width: 34px;
+  height: 34px;
+}
+
+/* ========================================
+   PERSON EDIT MODAL
+======================================== */
+
+.person-edit-overlay {
+  position: fixed;
+
+  inset: 0;
+
+  z-index: 100;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  padding: 18px;
+
+  background-color:
+    rgba(45, 41, 38, 0.45);
+
+  backdrop-filter:
+    blur(1px);
+}
+
+
+.person-edit-modal {
+  width: 100%;
+
+  max-width: 420px;
+
+  padding: 18px;
+
+  border-radius: 18px;
+
+  background-color: #ffffff;
+
+  box-shadow:
+    0 18px 40px
+    rgba(0, 0, 0, 0.18);
+}
+
+
+/* ========================================
+   MODAL HEADER
+======================================== */
+
+.person-edit-modal-header {
+  display: flex;
+
+  align-items: center;
+  justify-content: space-between;
+
+  padding-bottom: 12px;
+
+  margin-bottom: 16px;
+
+  border-bottom:
+    1px solid #eee9e4;
+}
+
+
+.person-edit-modal-header h2 {
+  margin: 0;
+
+  color: #332d29;
+
+  font-size: 16px;
+
+  font-weight: 700;
+}
+
+
+.person-edit-modal-close {
+  width: 32px;
+  height: 32px;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  padding: 0;
+
+  border: none;
+
+  background: none;
+
+  color: #aaa19a;
+
+  font-size: 16px;
+
+  cursor: pointer;
+}
+
+
+/* ========================================
+   EDIT FORM
+======================================== */
+
+.person-edit-form-group {
+  margin-bottom: 14px;
+}
+
+
+.person-edit-form-group label {
+  display: block;
+
+  margin-bottom: 6px;
+
+  color: #554d47;
+
+  font-size: 12px;
+
+  font-weight: 700;
+}
+
+
+.person-edit-form-group input,
+.person-edit-form-group select {
+  width: 100%;
+
+  min-height: 42px;
+
+  padding: 9px 11px;
+
+  border:
+    1px solid #dfdad5;
+
+  border-radius: 11px;
+
+  background-color: #ffffff;
+
+  color: #332d29;
+
+  font-family: inherit;
+
+  font-size: 13px;
+
+  outline: none;
+}
+
+
+.person-edit-form-group input:focus,
+.person-edit-form-group select:focus {
+  border-color: #e86a58;
+
+  box-shadow:
+    0 0 0 3px
+    rgba(232, 106, 88, 0.08);
+}
+
+
+/* ========================================
+   MESSAGE
+======================================== */
+
+.person-edit-message {
+  min-height: 18px;
+
+  margin: 5px 0 8px;
+
+  font-size: 11px;
+
+  text-align: center;
+}
+
+
+.person-edit-message.success {
+  color: #277b60;
+}
+
+
+.person-edit-message.error {
+  color: #d55240;
+}
+
+
+/* ========================================
+   ACTION BUTTONS
+======================================== */
+
+.person-edit-actions {
+  display: grid;
+
+  grid-template-columns:
+    1fr 1fr;
+
+  gap: 8px;
+
+  margin-top: 8px;
+}
+
+
+.person-edit-cancel-button,
+.person-edit-save-button {
+  min-height: 42px;
+
+  border-radius: 11px;
+
+  font-family: inherit;
+
+  font-size: 12px;
+
+  font-weight: 700;
+
+  cursor: pointer;
+}
+
+
+.person-edit-cancel-button {
+  border:
+    1px solid #e2ddd8;
+
+  background-color: #ffffff;
+
+  color: #716861;
+}
+
+
+.person-edit-save-button {
+  border: none;
+
+  background-color: #e86a58;
+
+  color: #ffffff;
+}
+
+
+.person-edit-save-button:disabled {
+  opacity: 0.6;
+
+  cursor: default;
+}

@@ -52,6 +52,8 @@ document.addEventListener(
 
     renderPersonDetail();
 
+    setupBasicInfoEdit();
+
   }
 );
 
@@ -186,19 +188,7 @@ function renderPersonDetail() {
      BASIC PROFILE
   ========================== */
 
-  setText(
-    "detailAvatar",
-    getPersonInitial(
-      currentPerson.name
-    )
-  );
-
-
-  setText(
-    "detailName",
-    currentPerson.name
-  );
-
+  renderBasicProfile();
 
   setText(
     "detailBirthday",
@@ -670,5 +660,476 @@ function escapeHtml(
       "'",
       "&#039;"
     );
+
+}
+
+/* ========================================
+   BASIC INFO EDIT
+======================================== */
+
+function setupBasicInfoEdit() {
+
+  const openButton =
+    document.getElementById(
+      "basicInfoEditButton"
+    );
+
+  const modal =
+    document.getElementById(
+      "basicInfoEditModal"
+    );
+
+  const closeButton =
+    document.getElementById(
+      "basicInfoEditClose"
+    );
+
+  const cancelButton =
+    document.getElementById(
+      "basicInfoEditCancel"
+    );
+
+  const form =
+    document.getElementById(
+      "basicInfoEditForm"
+    );
+
+
+  if (
+    !openButton ||
+    !modal ||
+    !form
+  ) {
+    return;
+  }
+
+
+  /* =========================
+     OPEN
+  ========================== */
+
+  openButton.addEventListener(
+    "click",
+    () => {
+
+      openBasicInfoEditModal();
+
+    }
+  );
+
+
+  /* =========================
+     CLOSE
+  ========================== */
+
+  closeButton.addEventListener(
+    "click",
+    closeBasicInfoEditModal
+  );
+
+
+  cancelButton.addEventListener(
+    "click",
+    closeBasicInfoEditModal
+  );
+
+
+  /* 背景タップ */
+
+  modal.addEventListener(
+    "click",
+    event => {
+
+      if (
+        event.target === modal
+      ) {
+
+        closeBasicInfoEditModal();
+
+      }
+
+    }
+  );
+
+
+  /* Esc */
+
+  document.addEventListener(
+    "keydown",
+    event => {
+
+      if (
+        event.key === "Escape" &&
+        !modal.classList.contains(
+          "hidden"
+        )
+      ) {
+
+        closeBasicInfoEditModal();
+
+      }
+
+    }
+  );
+
+
+  /* =========================
+     SAVE
+  ========================== */
+
+  form.addEventListener(
+    "submit",
+    async event => {
+
+      event.preventDefault();
+
+      await saveBasicInfo();
+
+    }
+  );
+
+}
+
+/* ========================================
+   OPEN BASIC INFO EDIT
+======================================== */
+
+function openBasicInfoEditModal() {
+
+  const modal =
+    document.getElementById(
+      "basicInfoEditModal"
+    );
+
+
+  const nameInput =
+    document.getElementById(
+      "basicEditName"
+    );
+
+
+  const birthdayInput =
+    document.getElementById(
+      "basicEditBirthday"
+    );
+
+
+  const relationshipInput =
+    document.getElementById(
+      "basicEditRelationship"
+    );
+
+
+  const message =
+    document.getElementById(
+      "basicInfoEditMessage"
+    );
+
+
+  /*
+    現在の値をフォームへセット
+  */
+
+  nameInput.value =
+    currentPerson.name ?? "";
+
+
+  birthdayInput.value =
+    currentPerson.birthday ?? "";
+
+
+  relationshipInput.value =
+    currentPerson.relationship ?? "";
+
+
+  message.textContent = "";
+
+  message.className =
+    "person-edit-message";
+
+
+  modal.classList.remove(
+    "hidden"
+  );
+
+
+  modal.setAttribute(
+    "aria-hidden",
+    "false"
+  );
+
+
+  document.body.style.overflow =
+    "hidden";
+
+}
+
+/* ========================================
+   CLOSE BASIC INFO EDIT
+======================================== */
+
+function closeBasicInfoEditModal() {
+
+  const modal =
+    document.getElementById(
+      "basicInfoEditModal"
+    );
+
+
+  modal.classList.add(
+    "hidden"
+  );
+
+
+  modal.setAttribute(
+    "aria-hidden",
+    "true"
+  );
+
+
+  document.body.style.overflow =
+    "";
+
+}
+
+/* ========================================
+   SAVE BASIC INFO
+======================================== */
+
+async function saveBasicInfo() {
+
+  const nameInput =
+    document.getElementById(
+      "basicEditName"
+    );
+
+
+  const birthdayInput =
+    document.getElementById(
+      "basicEditBirthday"
+    );
+
+
+  const relationshipInput =
+    document.getElementById(
+      "basicEditRelationship"
+    );
+
+
+  const message =
+    document.getElementById(
+      "basicInfoEditMessage"
+    );
+
+
+  const saveButton =
+    document.getElementById(
+      "basicInfoEditSave"
+    );
+
+
+  /* =========================
+     VALUES
+  ========================== */
+
+  const name =
+    nameInput.value.trim();
+
+
+  const birthday =
+    birthdayInput.value;
+
+
+  const relationship =
+    relationshipInput.value;
+
+
+  /* =========================
+     VALIDATION
+  ========================== */
+
+  if (!name) {
+
+    message.textContent =
+      "名前を入力してください。";
+
+    message.className =
+      "person-edit-message error";
+
+    return;
+
+  }
+
+
+  /* =========================
+     SAVING
+  ========================== */
+
+  saveButton.disabled =
+    true;
+
+
+  saveButton.innerHTML = `
+
+    <i class="fa-solid fa-spinner fa-spin"></i>
+
+    保存中...
+
+  `;
+
+
+  message.textContent = "";
+
+
+  /* =========================
+     UPDATE
+  ========================== */
+
+  const { data, error } =
+    await supabase
+      .from("people")
+      .update({
+
+        name:
+          name,
+
+        birthday:
+          birthday || null,
+
+        relationship:
+          relationship || null
+
+      })
+      .eq(
+        "id",
+        currentPerson.id
+      )
+      .select()
+      .single();
+
+
+  /* =========================
+     ERROR
+  ========================== */
+
+  if (error) {
+
+    console.error(
+      "人物基本情報の更新に失敗しました:",
+      error
+    );
+
+
+    message.textContent =
+      "保存に失敗しました。";
+
+    message.className =
+      "person-edit-message error";
+
+
+    resetBasicInfoSaveButton();
+
+    return;
+
+  }
+
+
+  /* =========================
+     SUCCESS
+  ========================== */
+
+  currentPerson =
+    data;
+
+
+  /*
+    詳細画面を更新
+  */
+
+  renderBasicProfile();
+
+
+  message.textContent =
+    "保存しました。";
+
+
+  message.className =
+    "person-edit-message success";
+
+
+  resetBasicInfoSaveButton();
+
+
+  /*
+    少しだけ成功表示を見せてから閉じる
+  */
+
+  setTimeout(
+    () => {
+
+      closeBasicInfoEditModal();
+
+    },
+    400
+  );
+
+}
+
+/* ========================================
+   BASIC PROFILE
+======================================== */
+
+function renderBasicProfile() {
+
+  setText(
+    "detailAvatar",
+    getPersonInitial(
+      currentPerson.name
+    )
+  );
+
+
+  setText(
+    "detailName",
+    currentPerson.name
+  );
+
+
+  setText(
+    "detailBirthday",
+    currentPerson.birthday
+      ? `誕生日 ${formatBirthday(
+          currentPerson.birthday
+        )}`
+      : "誕生日 未登録"
+  );
+
+
+  setText(
+    "detailRelationship",
+    currentPerson.relationship ||
+      "関係値 未登録"
+  );
+
+}
+
+/* ========================================
+   RESET BASIC SAVE BUTTON
+======================================== */
+
+function resetBasicInfoSaveButton() {
+
+  const saveButton =
+    document.getElementById(
+      "basicInfoEditSave"
+    );
+
+
+  saveButton.disabled =
+    false;
+
+
+  saveButton.textContent =
+    "保存";
 
 }
