@@ -213,43 +213,111 @@
         </section>
 
 
-        <!-- アレルギー -->
-        <section class="person-info-card allergy-card">
+        <!-- =========================
+              ALLERGIES
+        ========================== -->
+        <div class="person-form-group">
 
-          <div class="person-info-heading">
+          <label class="person-form-label">
+            アレルギー情報
+          </label>
 
-            <span class="person-info-icon allergy">
-              <i class="fa-solid fa-triangle-exclamation"></i>
-            </span>
+          <div class="allergy-checkbox-grid">
 
-            <div>
-              <h2>アレルギー</h2>
-              <p>
-                食品や素材など、注意したい情報
-              </p>
-            </div>
-
-          </div>
-
-
-          <div class="person-form-group">
-
-            <label
-              for="allergies"
-              class="person-form-label"
-            >
-              アレルギー情報
+            <label class="allergy-checkbox-item">
+              <input
+                type="checkbox"
+                name="allergy"
+                value="卵"
+              >
+              <span>卵</span>
             </label>
 
-            <textarea
-              id="allergies"
-              rows="3"
-              placeholder="例: そば、ナッツ、乳製品"
-            ></textarea>
+            <label class="allergy-checkbox-item">
+              <input
+                type="checkbox"
+                name="allergy"
+                value="乳"
+              >
+              <span>乳</span>
+            </label>
+
+            <label class="allergy-checkbox-item">
+              <input
+                type="checkbox"
+                name="allergy"
+                value="小麦"
+              >
+              <span>小麦</span>
+            </label>
+
+            <label class="allergy-checkbox-item">
+              <input
+                type="checkbox"
+                name="allergy"
+                value="えび"
+              >
+              <span>えび</span>
+            </label>
+
+            <label class="allergy-checkbox-item">
+              <input
+                type="checkbox"
+                name="allergy"
+                value="かに"
+              >
+              <span>かに</span>
+            </label>
+
+            <label class="allergy-checkbox-item">
+              <input
+                type="checkbox"
+                name="allergy"
+                value="そば"
+              >
+              <span>そば</span>
+            </label>
+
+            <label class="allergy-checkbox-item">
+              <input
+                type="checkbox"
+                name="allergy"
+                value="落花生"
+              >
+              <span>落花生</span>
+            </label>
+
+            <label class="allergy-checkbox-item">
+              <input
+                type="checkbox"
+                name="allergy"
+                value="くるみ"
+              >
+              <span>くるみ</span>
+            </label>
 
           </div>
 
-        </section>
+        </div>
+
+
+        <!-- その他 -->
+        <div class="person-form-group">
+
+          <label
+            for="allergies-other"
+            class="person-form-label"
+          >
+            その他のアレルギー
+          </label>
+
+          <input
+            type="text"
+            id="allergies-other"
+            placeholder="例：キウイ、桃"
+          >
+
+        </div>
 
 
         <!-- メモ -->

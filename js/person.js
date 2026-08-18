@@ -24,7 +24,9 @@ const dislikesInput =
   document.getElementById("dislikes");
 
 const allergiesInput =
-  document.getElementById("allergies");
+    document.getElementById(
+    "allergies-other"
+  );
 
 const memoInput =
   document.getElementById("memo");
@@ -66,7 +68,7 @@ personForm.addEventListener(
       dislikesInput.value.trim();
 
     const allergies =
-      allergiesInput.value.trim();
+      buildAllergyText();
 
     const memo =
       memoInput.value.trim();
@@ -162,3 +164,49 @@ personForm.addEventListener(
 
   }
 );
+
+/* ========================================
+   BUILD ALLERGY TEXT
+======================================== */
+
+function buildAllergyText() {
+
+  const checked =
+    [
+      ...document.querySelectorAll(
+        'input[name="allergy"]:checked'
+      )
+    ]
+      .map(
+        checkbox =>
+          checkbox.value
+      );
+
+
+  const other =
+    allergiesOtherInput
+      .value
+      .trim();
+
+
+  if (other) {
+
+    const otherItems =
+      other
+        .split(",")
+        .map(item =>
+          item.trim()
+        )
+        .filter(Boolean);
+
+
+    checked.push(
+      ...otherItems
+    );
+
+  }
+
+
+  return checked.join(", ");
+
+}
