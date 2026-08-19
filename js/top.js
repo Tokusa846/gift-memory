@@ -32,6 +32,8 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   setupNavigation();
 
+  applyInitialTab();
+
   setupFilters();
 
   setupSearch();
@@ -1511,6 +1513,49 @@ function setupNavigation() {
     );
 
   });
+
+}
+
+/* ========================================
+   INITIAL TAB FROM URL
+======================================== */
+
+function applyInitialTab() {
+
+  const params =
+    new URLSearchParams(
+      window.location.search
+    );
+
+
+  const tab =
+    params.get(
+      "tab"
+    );
+
+
+  const allowedTabs =
+    [
+      "home",
+      "schedule",
+      "ai",
+      "setting"
+    ];
+
+
+  if (
+    !tab ||
+    !allowedTabs.includes(
+      tab
+    )
+  ) {
+    return;
+  }
+
+
+  switchTab(
+    tab
+  );
 
 }
 
