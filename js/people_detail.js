@@ -1,4 +1,11 @@
+/* Import */
 import { supabase } from "./supabase.js";
+import {
+  openModal,
+  closeModal,
+  setupModalClose,
+  setupModalEscape
+} from "./common/modal.js";
 
 
 /* ========================================
@@ -63,7 +70,7 @@ document.addEventListener(
 
     setupGiftAddButton();
 
-    setupMemoAdd();
+    setupModalEscape();
 
   }
 );
@@ -703,20 +710,6 @@ function setupBasicInfoEdit() {
       "basicInfoEditButton"
     );
 
-  const modal =
-    document.getElementById(
-      "basicInfoEditModal"
-    );
-
-  const closeButton =
-    document.getElementById(
-      "basicInfoEditClose"
-    );
-
-  const cancelButton =
-    document.getElementById(
-      "basicInfoEditCancel"
-    );
 
   const form =
     document.getElementById(
@@ -726,85 +719,30 @@ function setupBasicInfoEdit() {
 
   if (
     !openButton ||
-    !modal ||
     !form
   ) {
     return;
   }
 
 
-  /* =========================
-     OPEN
-  ========================== */
+  /* OPEN */
 
   openButton.addEventListener(
     "click",
-    () => {
-
-      openBasicInfoEditModal();
-
-    }
+    openBasicInfoEditModal
   );
 
 
-  /* =========================
-     CLOSE
-  ========================== */
+  /* CLOSE */
 
-  closeButton.addEventListener(
-    "click",
-    closeBasicInfoEditModal
+  setupModalClose(
+    "basicInfoEditModal",
+    "basicInfoEditClose",
+    "basicInfoEditCancel"
   );
 
 
-  cancelButton.addEventListener(
-    "click",
-    closeBasicInfoEditModal
-  );
-
-
-  /* 背景タップ */
-
-  modal.addEventListener(
-    "click",
-    event => {
-
-      if (
-        event.target === modal
-      ) {
-
-        closeBasicInfoEditModal();
-
-      }
-
-    }
-  );
-
-
-  /* Esc */
-
-  document.addEventListener(
-    "keydown",
-    event => {
-
-      if (
-        event.key === "Escape" &&
-        !modal.classList.contains(
-          "hidden"
-        )
-      ) {
-
-        closeBasicInfoEditModal();
-
-      }
-
-    }
-  );
-
-
-  /* =========================
-     SAVE
-  ========================== */
+  /* SAVE */
 
   form.addEventListener(
     "submit",
@@ -824,12 +762,6 @@ function setupBasicInfoEdit() {
 ======================================== */
 
 function openBasicInfoEditModal() {
-
-  const modal =
-    document.getElementById(
-      "basicInfoEditModal"
-    );
-
 
   const nameInput =
     document.getElementById(
@@ -855,71 +787,28 @@ function openBasicInfoEditModal() {
     );
 
 
-  /*
-    現在の値をフォームへセット
-  */
-
+  /*　現在の値をフォームへセット　*/
   nameInput.value =
     currentPerson.name ?? "";
-
 
   birthdayInput.value =
     currentPerson.birthday ?? "";
 
-
   relationshipInput.value =
     currentPerson.relationship ?? "";
-
 
   message.textContent = "";
 
   message.className =
     "person-edit-message";
-
-
-  modal.classList.remove(
-    "hidden"
+  
+  openModal(
+  "basicInfoEditModal"
   );
-
-
-  modal.setAttribute(
-    "aria-hidden",
-    "false"
-  );
-
-
-  document.body.style.overflow =
-    "hidden";
 
 }
 
-/* ========================================
-   CLOSE BASIC INFO EDIT
-======================================== */
 
-function closeBasicInfoEditModal() {
-
-  const modal =
-    document.getElementById(
-      "basicInfoEditModal"
-    );
-
-
-  modal.classList.add(
-    "hidden"
-  );
-
-
-  modal.setAttribute(
-    "aria-hidden",
-    "true"
-  );
-
-
-  document.body.style.overflow =
-    "";
-
-}
 
 /* ========================================
    SAVE BASIC INFO
@@ -1096,7 +985,9 @@ async function saveBasicInfo() {
   setTimeout(
     () => {
 
-      closeBasicInfoEditModal();
+      closeModal(
+         "basicInfoEditModal"
+      );
 
     },
     400
@@ -1174,20 +1065,6 @@ function setupPreferenceEdit() {
       "preferenceEditButton"
     );
 
-  const modal =
-    document.getElementById(
-      "preferenceEditModal"
-    );
-
-  const closeButton =
-    document.getElementById(
-      "preferenceEditClose"
-    );
-
-  const cancelButton =
-    document.getElementById(
-      "preferenceEditCancel"
-    );
 
   const form =
     document.getElementById(
@@ -1197,12 +1074,13 @@ function setupPreferenceEdit() {
 
   if (
     !openButton ||
-    !modal ||
     !form
   ) {
     return;
   }
 
+
+  /* OPEN */
 
   openButton.addEventListener(
     "click",
@@ -1210,33 +1088,16 @@ function setupPreferenceEdit() {
   );
 
 
-  closeButton.addEventListener(
-    "click",
-    closePreferenceEditModal
+  /* CLOSE */
+
+  setupModalClose(
+    "preferenceEditModal",
+    "preferenceEditClose",
+    "preferenceEditCancel"
   );
 
 
-  cancelButton.addEventListener(
-    "click",
-    closePreferenceEditModal
-  );
-
-
-  modal.addEventListener(
-    "click",
-    event => {
-
-      if (
-        event.target === modal
-      ) {
-
-        closePreferenceEditModal();
-
-      }
-
-    }
-  );
-
+  /* SAVE */
 
   form.addEventListener(
     "submit",
@@ -1252,12 +1113,6 @@ function setupPreferenceEdit() {
 }
 
 function openPreferenceEditModal() {
-
-  const modal =
-    document.getElementById(
-      "preferenceEditModal"
-    );
-
 
   document
     .getElementById(
@@ -1290,47 +1145,13 @@ function openPreferenceEditModal() {
 
   message.className =
     "person-edit-message";
-
-
-  modal.classList.remove(
-    "hidden"
+  
+  openModal(
+    "preferenceEditModal"
   );
-
-
-  modal.setAttribute(
-    "aria-hidden",
-    "false"
-  );
-
-
-  document.body.style.overflow =
-    "hidden";
 
 }
 
-function closePreferenceEditModal() {
-
-  const modal =
-    document.getElementById(
-      "preferenceEditModal"
-    );
-
-
-  modal.classList.add(
-    "hidden"
-  );
-
-
-  modal.setAttribute(
-    "aria-hidden",
-    "true"
-  );
-
-
-  document.body.style.overflow =
-    "";
-
-}
 
 function setAllergyFormValues(
   allergyText
@@ -1556,8 +1377,9 @@ async function savePreferenceInfo() {
   setTimeout(
     () => {
 
-      closePreferenceEditModal();
-
+      closeModal(
+        "preferenceEditModal"
+      );
     },
     400
   );
@@ -1773,93 +1595,5 @@ function formatMemoDate(
 
 
   return `${year}.${month}.${day}`;
-
-}
-
-/* ========================================
-   MEMO ADD
-======================================== */
-
-function setupMemoAdd() {
-
-  const openButton =
-    document.getElementById(
-      "memoAddButton"
-    );
-
-  const modal =
-    document.getElementById(
-      "memoAddModal"
-    );
-
-  const closeButton =
-    document.getElementById(
-      "memoAddClose"
-    );
-
-  const cancelButton =
-    document.getElementById(
-      "memoAddCancel"
-    );
-
-  const form =
-    document.getElementById(
-      "memoAddForm"
-    );
-
-
-  if (
-    !openButton ||
-    !modal ||
-    !form
-  ) {
-    return;
-  }
-
-
-  openButton.addEventListener(
-    "click",
-    openMemoAddModal
-  );
-
-
-  closeButton.addEventListener(
-    "click",
-    closeMemoAddModal
-  );
-
-
-  cancelButton.addEventListener(
-    "click",
-    closeMemoAddModal
-  );
-
-
-  modal.addEventListener(
-    "click",
-    event => {
-
-      if (
-        event.target === modal
-      ) {
-
-        closeMemoAddModal();
-
-      }
-
-    }
-  );
-
-
-  form.addEventListener(
-    "submit",
-    async event => {
-
-      event.preventDefault();
-
-      await saveNewMemo();
-
-    }
-  );
 
 }
