@@ -63,6 +63,8 @@ document.addEventListener(
 
     setupGiftAddButton();
 
+    setupMemoAdd();
+
   }
 );
 
@@ -1771,5 +1773,93 @@ function formatMemoDate(
 
 
   return `${year}.${month}.${day}`;
+
+}
+
+/* ========================================
+   MEMO ADD
+======================================== */
+
+function setupMemoAdd() {
+
+  const openButton =
+    document.getElementById(
+      "memoAddButton"
+    );
+
+  const modal =
+    document.getElementById(
+      "memoAddModal"
+    );
+
+  const closeButton =
+    document.getElementById(
+      "memoAddClose"
+    );
+
+  const cancelButton =
+    document.getElementById(
+      "memoAddCancel"
+    );
+
+  const form =
+    document.getElementById(
+      "memoAddForm"
+    );
+
+
+  if (
+    !openButton ||
+    !modal ||
+    !form
+  ) {
+    return;
+  }
+
+
+  openButton.addEventListener(
+    "click",
+    openMemoAddModal
+  );
+
+
+  closeButton.addEventListener(
+    "click",
+    closeMemoAddModal
+  );
+
+
+  cancelButton.addEventListener(
+    "click",
+    closeMemoAddModal
+  );
+
+
+  modal.addEventListener(
+    "click",
+    event => {
+
+      if (
+        event.target === modal
+      ) {
+
+        closeMemoAddModal();
+
+      }
+
+    }
+  );
+
+
+  form.addEventListener(
+    "submit",
+    async event => {
+
+      event.preventDefault();
+
+      await saveNewMemo();
+
+    }
+  );
 
 }

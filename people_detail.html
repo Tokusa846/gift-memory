@@ -682,9 +682,9 @@
 
     </div>
 
-    <!-- =========================
+    <!-- ------------------
      BASIC INFO EDIT MODAL
-    ========================== -->
+    -------------------- -->
     <div
       id="basicInfoEditModal"
       class="person-edit-overlay hidden"
@@ -699,10 +699,10 @@
       >
       
         <!-- HEADER -->
-          <div class="person-edit-modal-header">
-            <h2 id="basicInfoEditTitle">
-              基本情報を編集
-            </h2>
+        <div class="person-edit-modal-header">
+          <h2 id="basicInfoEditTitle">
+            基本情報を編集
+          </h2>
 
           <button
             type="button"
@@ -713,118 +713,192 @@
             <i class="fa-solid fa-xmark"></i>
           </button>
 
-      </div>
+        </div>
 
 
         <!-- FORM -->
         <form id="basicInfoEditForm">
 
+          <!-- NAME -->
+          <div class="person-edit-form-group">
+            <label for="basicEditName">
+                名前
+            </label>
 
-            <!-- NAME -->
-            <div class="person-edit-form-group">
-
-                <label for="basicEditName">
-                    名前
-                </label>
-
-                <input
-                    type="text"
-                    id="basicEditName"
-                    required
-                >
-
-            </div>
+            <input
+                type="text"
+                id="basicEditName"
+                required
+            >
+          </div>
 
 
-      <!-- BIRTHDAY -->
-      <div class="person-edit-form-group">
+          <!-- BIRTHDAY -->
+          <div class="person-edit-form-group">
+          <label for="basicEditBirthday">
+              誕生日
+           </label>
 
-        <label for="basicEditBirthday">
-          誕生日
-        </label>
+          <input
+              type="date"
+              id="basicEditBirthday"
+            >
+          </div>
 
-        <input
-          type="date"
-          id="basicEditBirthday"
-        >
+
+          <!-- RELATIONSHIP -->
+          <div class="person-edit-form-group">
+
+            <label for="basicEditRelationship">
+              関係値
+            </label>
+
+            <select id="basicEditRelationship">
+              <option value="">
+                未設定
+              </option>
+
+              <option value="家族">
+                家族
+              </option>
+
+              <option value="友人">
+                友人
+              </option>
+
+              <option value="職場">
+                職場
+              </option>
+
+              <option value="親戚">
+                親戚
+              </option>
+
+              <option value="その他">
+                その他
+              </option>
+
+            </select>
+          </div>
+
+
+          <!-- MESSAGE -->
+          <p
+            id="basicInfoEditMessage"
+            class="person-edit-message"
+          ></p>
+
+
+          <!-- BUTTONS -->
+          <div class="person-edit-actions">
+            <button
+              type="button"
+              id="basicInfoEditCancel"
+              class="person-edit-cancel-button"
+            >
+              キャンセル
+            </button>
+
+            <button
+              type="submit"
+              id="basicInfoEditSave"
+              class="person-edit-save-button"
+            >
+              保存
+            </button>
+
+          </div>
+
+
+        </form>
+      </div>
+    </div>
+
+    <!-- =========================
+     MEMO ADD MODAL
+    ========================== -->
+    <div
+      id="memoAddModal"
+      class="person-edit-overlay hidden"
+      aria-hidden="true"
+    >
+
+      <div
+        class="person-edit-modal"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="memoAddTitle"
+      >
+
+        <div class="person-edit-modal-header">
+
+          <h2 id="memoAddTitle">
+            メモを追加
+          </h2>
+
+          <button
+            type="button"
+            id="memoAddClose"
+            class="person-edit-modal-close"
+            aria-label="閉じる"
+          >
+            <i class="fa-solid fa-xmark"></i>
+          </button>
+
+        </div>
+
+
+        <form id="memoAddForm">
+
+          <div class="person-edit-form-group">
+
+            <label for="memoAddContent">
+              メモ
+            </label>
+
+            <textarea
+              id="memoAddContent"
+              rows="5"
+              placeholder="覚えておきたいことを入力"
+              required
+            ></textarea>
+
+          </div>
+
+
+          <p
+            id="memoAddMessage"
+            class="person-edit-message"
+          ></p>
+
+
+          <div class="person-edit-actions">
+
+            <button
+              type="button"
+              id="memoAddCancel"
+              class="person-edit-cancel-button"
+            >
+              キャンセル
+            </button>
+
+            <button
+              type="submit"
+              id="memoAddSave"
+              class="person-edit-save-button"
+            >
+              追加
+            </button>
+
+          </div>
+
+        </form>
 
       </div>
 
+    </div>
 
-      <!-- RELATIONSHIP -->
-      <div class="person-edit-form-group">
-
-        <label for="basicEditRelationship">
-          関係値
-        </label>
-
-        <select id="basicEditRelationship">
-
-          <option value="">
-            未設定
-          </option>
-
-          <option value="家族">
-            家族
-          </option>
-
-          <option value="友人">
-            友人
-          </option>
-
-          <option value="職場">
-            職場
-          </option>
-
-          <option value="親戚">
-            親戚
-          </option>
-
-          <option value="その他">
-            その他
-          </option>
-
-        </select>
-
-      </div>
-
-
-      <!-- MESSAGE -->
-      <p
-        id="basicInfoEditMessage"
-        class="person-edit-message"
-      ></p>
-
-
-      <!-- BUTTONS -->
-      <div class="person-edit-actions">
-
-        <button
-          type="button"
-          id="basicInfoEditCancel"
-          class="person-edit-cancel-button"
-        >
-          キャンセル
-        </button>
-
-        <button
-          type="submit"
-          id="basicInfoEditSave"
-          class="person-edit-save-button"
-        >
-          保存
-        </button>
-
-      </div>
-
-
-    </form>
-
-  </div>
-
-</div>
-
-
+    <!-- ↓ class_name = app-container -->
   </div>
 
 
