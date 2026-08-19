@@ -9,6 +9,8 @@ let currentPerson = null;
 
 let giftLogs = [];
 
+let memoLogs = [];
+
 
 /* ========================================
    INITIALIZE
@@ -49,6 +51,9 @@ document.addEventListener(
       personId
     );
 
+    await loadMemoLogs(
+      personId
+    );
 
     renderPersonDetail();
 
@@ -217,11 +222,7 @@ function renderPersonDetail() {
 
   renderPreferenceInfo();
 
-  setText(
-    "detailMemo",
-    currentPerson.memo ||
-      "メモはありません"
-  );
+  renderMemoList();
 
 
   /* =========================
@@ -1599,5 +1600,176 @@ function resetPreferenceSaveButton() {
 
   saveButton.textContent =
     "保存";
+
+}
+
+/* ========================================
+   LOAD MEMOS
+======================================== */
+
+async function loadMemoLogs(
+  personId
+) {
+
+  const { data, error } =
+    await supabase
+      .from("person_memos")
+      .select(`
+        id,
+        person_id,
+        content,
+        created_at,
+        updated_at
+      `)
+      .eq(
+        "person_id",
+        personId
+      )
+      .order(
+        "created_at",
+        {
+          ascending: false
+        }
+      );
+
+
+  if (error) {
+
+    console.error(
+      "メモ情報の取得に失敗しました:",
+      error
+    );
+
+    memoLogs = [];
+
+    return;
+
+  }
+
+
+  memoLogs =
+    data ?? [];
+
+}
+
+/* ========================================
+   MEMO LIST
+======================================== */
+
+function renderMemoList() {
+
+  const container =
+    document.getElementById(
+      "detailMemoList"
+    );
+
+
+  if (!container) {
+    return;
+  }
+
+
+  if (
+    memoLogs.length === 0
+  ) {
+
+    container.innerHTML = `
+      <div class="person-detail-memo-empty">
+        メモはありません
+      </div>
+    `;
+
+    return;
+
+  }
+
+
+  container.innerHTML =
+    memoLogs
+      .map(
+        memo =>
+          createMemoItemHtml(
+            memo
+          )
+      )
+      .join("");
+
+}
+
+function createMemoItemHtml(
+  memo
+) {
+
+  return `
+
+    <article class="person-detail-memo-item">
+
+      <div class="person-detail-memo-content">
+
+        <p>
+          ${escapeHtml(
+            memo.content
+          )}
+        </p>
+
+        <time>
+          ${formatMemoDate(
+            memo.created_at
+          )}
+        </time>
+
+      </div>
+
+      <button
+        type="button"
+        class="person-detail-memo-menu"
+        data-memo-id="${memo.id}"
+        aria-label="メモを編集"
+      >
+        <i class="fa-solid fa-ellipsis-vertical"></i>
+      </button>
+
+    </article>
+
+  `;
+
+}
+
+function formatMemoDate(
+  dateString
+) {
+
+  if (!dateString) {
+    return "";
+  }
+
+
+  const date =
+    new Date(
+      dateString
+    );
+
+
+  const year =
+    date.getFullYear();
+
+  const month =
+    String(
+      date.getMonth() + 1
+    ).padStart(
+      2,
+      "0"
+    );
+
+  const day =
+    String(
+      date.getDate()
+    ).padStart(
+      2,
+      "0"
+    );
+
+
+  return `${year}.${month}.${day}`;
 
 }

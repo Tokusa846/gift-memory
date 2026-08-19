@@ -1015,3 +1015,104 @@
 .person-detail-gift-menu:active {
   transform: scale(0.94);
 }
+
+/* ========================================
+   MEMO LIST
+======================================== */
+
+.person-detail-memo-list {
+  display: flex;
+  flex-direction: column;
+}
+
+
+.person-detail-memo-item {
+  display: flex;
+  align-items: flex-start;
+
+  gap: 8px;
+
+  padding: 11px 0;
+
+  border-bottom: 1px solid #f2eeeb;
+}
+
+
+.person-detail-memo-item:last-child {
+  border-bottom: none;
+}
+
+
+.person-detail-memo-content {
+  min-width: 0;
+
+  flex: 1;
+}
+
+
+.person-detail-memo-content p {
+  margin: 0 0 5px;
+
+  color: #554d47;
+
+  font-size: 12px;
+
+  line-height: 1.7;
+
+  white-space: pre-wrap;
+}
+
+
+.person-detail-memo-content time {
+  display: block;
+
+  color: #aaa19a;
+
+  font-size: 10px;
+
+  text-align: right;
+}
+
+
+.person-detail-memo-menu {
+  width: 30px;
+  height: 30px;
+
+  flex-shrink: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 0;
+
+  border: none;
+
+  border-radius: 50%;
+
+  background: none;
+
+  color: #b1aaa4;
+
+  font-size: 13px;
+
+  cursor: pointer;
+}
+
+
+.person-detail-memo-menu:hover {
+  background-color: #f4f1ee;
+
+  color: #7b736d;
+}
+
+
+.person-detail-memo-empty {
+  padding: 16px 10px;
+
+  color: #aaa19a;
+
+  font-size: 11px;
+
+  text-align: center;
+}
