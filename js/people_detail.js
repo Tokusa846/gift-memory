@@ -18,6 +18,8 @@ let giftLogs = [];
 
 let memoLogs = [];
 
+let editingMemoId = null;
+
 
 /* ========================================
    INITIALIZE
@@ -72,8 +74,10 @@ document.addEventListener(
 
     setupMemoAdd();
 
-    setupModalEscape();
+    setupMemoEdit();
 
+    setupModalEscape();
+    
   }
 );
 
@@ -1829,5 +1833,312 @@ function resetMemoAddButton() {
 
   saveButton.textContent =
     "追加";
+
+}
+
+/* ========================================
+   MEMO EDIT
+======================================== */
+
+function setupMemoEdit() {
+
+  const memoList =
+    document.getElementById(
+      "detailMemoList"
+    );
+
+
+  const form =
+    document.getElementById(
+      "memoEditForm"
+    );
+
+
+  if (
+    !memoList ||
+    !form
+  ) {
+    return;
+  }
+
+
+  /* 「…」押下 */
+
+  memoList.addEventListener(
+    "click",
+    event => {
+
+      const menuButton =
+        event.target.closest(
+          ".person-detail-memo-menu"
+        );
+
+
+      if (!menuButton) {
+        return;
+      }
+
+
+      const memoId =
+        menuButton.dataset.memoId;
+
+
+      openMemoEditModal(
+        memoId
+      );
+
+    }
+  );
+
+
+  /* CLOSE */
+
+  setupModalClose(
+    "memoEditModal",
+    "memoEditClose",
+    "memoEditCancel"
+  );
+
+
+  /* SAVE */
+
+  form.addEventListener(
+    "submit",
+    async event => {
+
+      event.preventDefault();
+
+      await saveEditedMemo();
+
+    }
+  );
+
+}
+
+/* 編集モーダルを開く */
+function openMemoEditModal(
+  memoId
+) {
+
+  const memo =
+    memoLogs.find(
+      item =>
+        String(item.id) ===
+        String(memoId)
+    );
+
+
+  if (!memo) {
+
+    console.error(
+      "編集対象のメモが見つかりません:",
+      memoId
+    );
+
+    return;
+
+  }
+
+
+  editingMemoId =
+    memo.id;
+
+
+  const input =
+    document.getElementById(
+      "memoEditContent"
+    );
+
+
+  const message =
+    document.getElementById(
+      "memoEditMessage"
+    );
+
+
+  input.value =
+    memo.content ?? "";
+
+
+  message.textContent = "";
+
+  message.className =
+    "person-edit-message";
+
+
+  openModal(
+    "memoEditModal"
+  );
+
+
+  input.focus();
+
+}
+
+
+/* SupabaseのUPDATE処理 */
+async function saveEditedMemo() {
+
+  if (!editingMemoId) {
+    return;
+  }
+
+
+  const input =
+    document.getElementById(
+      "memoEditContent"
+    );
+
+
+  const message =
+    document.getElementById(
+      "memoEditMessage"
+    );
+
+
+  const saveButton =
+    document.getElementById(
+      "memoEditSave"
+    );
+
+
+  const content =
+    input.value.trim();
+
+
+  if (!content) {
+
+    message.textContent =
+      "メモを入力してください。";
+
+    message.className =
+      "person-edit-message error";
+
+    return;
+
+  }
+
+
+  saveButton.disabled =
+    true;
+
+
+  saveButton.innerHTML = `
+    <i class="fa-solid fa-spinner fa-spin"></i>
+    保存中...
+  `;
+
+
+  const { data, error } =
+    await supabase
+      .from("person_memos")
+      .update({
+        content:
+          content,
+
+        updated_at:
+          new Date().toISOString()
+      })
+      .eq(
+        "id",
+        editingMemoId
+      )
+      .select(`
+        id,
+        person_id,
+        content,
+        created_at,
+        updated_at
+      `)
+      .single();
+
+
+  if (error) {
+
+    console.error(
+      "メモ更新に失敗しました:",
+      error
+    );
+
+
+    message.textContent =
+      "メモの更新に失敗しました。";
+
+
+    message.className =
+      "person-edit-message error";
+
+
+    resetMemoEditButton();
+
+    return;
+
+  }
+
+
+  const memoIndex =
+    memoLogs.findIndex(
+      memo =>
+        String(memo.id) ===
+        String(editingMemoId)
+    );
+
+
+  if (
+    memoIndex !== -1
+  ) {
+
+    memoLogs[memoIndex] =
+      data;
+
+  }
+
+
+  renderMemoList();
+
+
+  message.textContent =
+    "メモを更新しました。";
+
+
+  message.className =
+    "person-edit-message success";
+
+
+  resetMemoEditButton();
+
+
+  setTimeout(
+    () => {
+
+      closeModal(
+        "memoEditModal"
+      );
+
+
+      editingMemoId =
+        null;
+
+    },
+    400
+  );
+
+}
+
+/* 保存ボタンを戻す*/
+function resetMemoEditButton() {
+
+  const saveButton =
+    document.getElementById(
+      "memoEditSave"
+    );
+
+
+  saveButton.disabled =
+    false;
+
+
+  saveButton.textContent =
+    "保存";
 
 }

@@ -898,6 +898,90 @@
 
     </div>
 
+    <!-- =========================
+     MEMO EDIT MODAL
+    ========================== -->
+    <div
+      id="memoEditModal"
+      class="person-edit-overlay hidden"
+      aria-hidden="true"
+    >
+
+      <div
+        class="person-edit-modal"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="memoEditTitle"
+      >
+
+        <div class="person-edit-modal-header">
+
+          <h2 id="memoEditTitle">
+            メモを編集
+          </h2>
+
+          <button
+            type="button"
+            id="memoEditClose"
+            class="person-edit-modal-close"
+            aria-label="閉じる"
+          >
+            <i class="fa-solid fa-xmark"></i>
+          </button>
+
+        </div>
+
+
+        <form id="memoEditForm">
+
+          <div class="person-edit-form-group">
+
+            <label for="memoEditContent">
+              メモ
+            </label>
+
+            <textarea
+              id="memoEditContent"
+              rows="5"
+              required
+            ></textarea>
+
+          </div>
+
+
+          <p
+            id="memoEditMessage"
+            class="person-edit-message"
+          ></p>
+
+
+          <div class="person-edit-actions">
+
+            <button
+              type="button"
+              id="memoEditCancel"
+              class="person-edit-cancel-button"
+            >
+              キャンセル
+            </button>
+
+            <button
+              type="submit"
+              id="memoEditSave"
+              class="person-edit-save-button"
+            >
+              保存
+            </button>
+
+          </div>
+
+        </form>
+
+      </div>
+
+    </div>
+
+
     <!-- ↓ class_name = app-container -->
   </div>
 
