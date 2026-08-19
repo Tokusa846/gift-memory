@@ -1023,20 +1023,28 @@
 ======================================== */
 
 .person-detail-memo-list {
-  display: flex;
-  flex-direction: column;
+  width: 100%;
 }
 
 
 .person-detail-memo-item {
-  display: flex;
-  align-items: flex-start;
+  width: 100%;
 
-  gap: 8px;
+  display: grid;
 
-  padding: 11px 0;
+  grid-template-columns:
+    minmax(0, 1fr)
+    30px;
 
-  border-bottom: 1px solid #f2eeeb;
+  align-items: start;
+
+  gap: 6px;
+
+  padding: 12px 6px 10px 12px;
+
+  border-bottom: 1px solid #eee9e5;
+
+  box-sizing: border-box;
 }
 
 
@@ -1048,39 +1056,51 @@
 .person-detail-memo-content {
   min-width: 0;
 
-  flex: 1;
+  display: flex;
+  flex-direction: column;
+
+  gap: 8px;
 }
 
 
 .person-detail-memo-content p {
-  margin: 0 0 5px;
+  width: 100%;
+
+  margin: 0;
+  padding: 0;
 
   color: #554d47;
 
   font-size: 12px;
-
   line-height: 1.7;
 
+  text-align: left;
+  text-indent: 0;
+
   white-space: pre-wrap;
+
+  overflow-wrap: anywhere;
+  word-break: break-word;
 }
 
 
 .person-detail-memo-content time {
   display: block;
 
+  margin: 0;
+
+  align-self: flex-end;
+
   color: #aaa19a;
 
   font-size: 10px;
-
-  text-align: right;
+  line-height: 1;
 }
 
 
 .person-detail-memo-menu {
   width: 30px;
   height: 30px;
-
-  flex-shrink: 0;
 
   display: flex;
   align-items: center;
@@ -1089,10 +1109,9 @@
   padding: 0;
 
   border: none;
-
   border-radius: 50%;
 
-  background: none;
+  background: transparent;
 
   color: #b1aaa4;
 
@@ -1109,6 +1128,7 @@
 }
 
 
+/* メモ0件 */
 .person-detail-memo-empty {
   padding: 16px 10px;
 
@@ -1119,6 +1139,7 @@
   text-align: center;
 }
 
+/* 「もっとみる…」ボタン */
 .person-detail-more-button {
   width: 100%;
 
@@ -1145,7 +1166,7 @@
     color 0.15s;
 }
 
-
+/* 「もっとみる…」ボタンのホバー時 */
 .person-detail-more-button:hover {
   background-color: #f2eeea;
 

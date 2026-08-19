@@ -1580,11 +1580,7 @@ function createMemoItemHtml(
 
       <div class="person-detail-memo-content">
 
-        <p>
-          ${escapeHtml(
-            memo.content
-          )}
-        </p>
+        <p>${escapeHtml(memo.content)}</p>
 
         <time>
           ${formatMemoDate(
