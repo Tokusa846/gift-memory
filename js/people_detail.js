@@ -360,20 +360,41 @@ function renderGiftList() {
 
     `;
 
-
     return;
-
   }
+
+  const visibleGifts =
+    giftLogs.slice(
+      0,
+      3
+    );
 
 
   container.innerHTML =
-    giftLogs
+    visibleGifts
       .map(gift =>
         createGiftItemHtml(
           gift
         )
       )
       .join("");
+
+  if (
+    giftLogs.length > 3
+  ) {
+
+    container.innerHTML += `
+      <a
+        class="person-detail-more-button"
+        href="gift_history.html?person_id=${encodeURIComponent(
+          currentPerson.id
+        )}"
+      >
+        もっと見る…
+      </a>
+    `;
+
+  }
 
 }
 
@@ -1513,9 +1534,15 @@ function renderMemoList() {
 
   }
 
+  const visibleMemos =
+    memoLogs.slice(
+      0,
+      3
+    );
+
 
   container.innerHTML =
-    memoLogs
+    visibleMemos
       .map(
         memo =>
           createMemoItemHtml(
@@ -1523,6 +1550,23 @@ function renderMemoList() {
           )
       )
       .join("");
+
+   if (
+    memoLogs.length > 3
+  ) {
+
+    container.innerHTML += `
+      <a
+        class="person-detail-more-button"
+        href="memo_history.html?person_id=${encodeURIComponent(
+          currentPerson.id
+        )}"
+      >
+        もっと見る…
+      </a>
+    `;
+
+  }
 
 }
 

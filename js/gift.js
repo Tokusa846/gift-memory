@@ -46,6 +46,16 @@ const message =
 const submitButton =
   document.getElementById("giftSubmitButton");
 
+const backButton =
+  document.getElementById(
+    "giftBackButton"
+  );
+
+const closeButton =
+  document.getElementById(
+    "giftCloseButton"
+  );
+
 
 /* ========================================
    URL PARAMS
@@ -84,6 +94,8 @@ document.addEventListener(
     setToday();
 
     setupDirectionSwitch();
+
+    setupReturnNavigation();
 
     await loadPeople();
 
@@ -690,5 +702,33 @@ async function loadGiftForEdit(
 
   submitButton.textContent =
     "変更を保存";
+
+}
+
+/* ========================================
+   RETURN NAVIGATION
+======================================== */
+
+function setupReturnNavigation() {
+
+  const destination =
+    returnTo ||
+    "index.html";
+
+
+  if (backButton) {
+
+    backButton.href =
+      destination;
+
+  }
+
+
+  if (closeButton) {
+
+    closeButton.href =
+      destination;
+
+  }
 
 }
