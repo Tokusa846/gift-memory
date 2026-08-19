@@ -70,6 +70,8 @@ document.addEventListener(
 
     setupGiftAddButton();
 
+    setupMemoAdd();
+
     setupModalEscape();
 
   }
@@ -1595,5 +1597,237 @@ function formatMemoDate(
 
 
   return `${year}.${month}.${day}`;
+
+}
+
+/* ========================================
+   MEMO ADD
+======================================== */
+
+function setupMemoAdd() {
+
+  const openButton =
+    document.getElementById(
+      "memoAddButton"
+    );
+
+
+  const form =
+    document.getElementById(
+      "memoAddForm"
+    );
+
+
+  if (
+    !openButton ||
+    !form
+  ) {
+    return;
+  }
+
+
+  /* OPEN */
+
+  openButton.addEventListener(
+    "click",
+    openMemoAddModal
+  );
+
+
+  /* CLOSE */
+
+  setupModalClose(
+    "memoAddModal",
+    "memoAddClose",
+    "memoAddCancel"
+  );
+
+
+  /* SAVE */
+
+  form.addEventListener(
+    "submit",
+    async event => {
+
+      event.preventDefault();
+
+      await saveNewMemo();
+
+    }
+  );
+
+}
+
+function openMemoAddModal() {
+
+  const input =
+    document.getElementById(
+      "memoAddContent"
+    );
+
+
+  const message =
+    document.getElementById(
+      "memoAddMessage"
+    );
+
+
+  input.value = "";
+
+  message.textContent = "";
+
+  message.className =
+    "person-edit-message";
+
+
+  openModal(
+    "memoAddModal"
+  );
+
+
+  input.focus();
+
+}
+
+async function saveNewMemo() {
+
+  const input =
+    document.getElementById(
+      "memoAddContent"
+    );
+
+
+  const message =
+    document.getElementById(
+      "memoAddMessage"
+    );
+
+
+  const saveButton =
+    document.getElementById(
+      "memoAddSave"
+    );
+
+
+  const content =
+    input.value.trim();
+
+
+  if (!content) {
+
+    message.textContent =
+      "メモを入力してください。";
+
+    message.className =
+      "person-edit-message error";
+
+    return;
+
+  }
+
+
+  saveButton.disabled =
+    true;
+
+
+  saveButton.innerHTML = `
+    <i class="fa-solid fa-spinner fa-spin"></i>
+    追加中...
+  `;
+
+
+  const { data, error } =
+    await supabase
+      .from("person_memos")
+      .insert([
+        {
+          person_id:
+            currentPerson.id,
+
+          content:
+            content
+        }
+      ])
+      .select(`
+        id,
+        person_id,
+        content,
+        created_at,
+        updated_at
+      `)
+      .single();
+
+
+  if (error) {
+
+    console.error(
+      "メモ追加に失敗しました:",
+      error
+    );
+
+
+    message.textContent =
+      "メモの追加に失敗しました。";
+
+
+    message.className =
+      "person-edit-message error";
+
+
+    resetMemoAddButton();
+
+    return;
+
+  }
+
+
+  /* 新しいメモを先頭に追加 */
+
+  memoLogs.unshift(
+    data
+  );
+
+
+  renderMemoList();
+
+
+  message.textContent =
+    "メモを追加しました。";
+
+
+  message.className =
+    "person-edit-message success";
+
+
+  resetMemoAddButton();
+
+
+  setTimeout(
+    () => {
+
+      closeModal(
+        "memoAddModal"
+      );
+
+    },
+    400
+  );
+
+}
+
+function resetMemoAddButton() {
+
+  const saveButton =
+    document.getElementById(
+      "memoAddSave"
+    );
+
+
+  saveButton.disabled =
+    false;
+
+
+  saveButton.textContent =
+    "追加";
 
 }
