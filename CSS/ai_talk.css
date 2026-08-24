@@ -1,0 +1,919 @@
+/* ========================================
+   AI TALK PAGE
+======================================== */
+
+.ai-talk-main {
+  padding: 20px 16px 120px;
+}
+
+
+/* ========================================
+   HEADER
+======================================== */
+
+.ai-talk-header {
+  position: relative;
+
+  min-height: 54px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  padding: 8px 16px;
+
+  border-bottom: 1px solid #eee9e5;
+
+  background-color: #ffffff;
+}
+
+
+.ai-talk-header h1 {
+  position: absolute;
+
+  left: 50%;
+
+  margin: 0;
+
+  transform: translateX(-50%);
+
+  color: #332d29;
+
+  font-size: 16px;
+  font-weight: 700;
+
+  white-space: nowrap;
+}
+
+
+.ai-talk-back {
+  width: 34px;
+  height: 34px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  color: #665d56;
+
+  font-size: 13px;
+
+  text-decoration: none;
+}
+
+
+.ai-talk-header-spacer {
+  width: 34px;
+  height: 34px;
+}
+
+
+/* ========================================
+   LOADING
+======================================== */
+
+.ai-talk-loading {
+  min-height: 260px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  gap: 12px;
+
+  color: #8e8580;
+}
+
+
+.ai-talk-loading i {
+  color: #9a6db4;
+
+  font-size: 22px;
+}
+
+
+.ai-talk-loading p {
+  margin: 0;
+
+  font-size: 12px;
+  font-weight: 500;
+}
+
+
+/* ========================================
+   ERROR
+======================================== */
+
+.ai-talk-error {
+  min-height: 260px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  gap: 11px;
+
+  text-align: center;
+
+  color: #8e8580;
+}
+
+
+.ai-talk-error > i {
+  color: #d2776a;
+
+  font-size: 28px;
+}
+
+
+.ai-talk-error p {
+  margin: 0;
+
+  font-size: 12px;
+}
+
+
+.ai-talk-error a {
+  color: #e86a58;
+
+  font-size: 12px;
+  font-weight: 700;
+
+  text-decoration: none;
+}
+
+
+/* ========================================
+   INTRODUCTION
+======================================== */
+
+.ai-talk-introduction {
+  display: flex;
+  align-items: center;
+
+  gap: 13px;
+
+  margin-bottom: 14px;
+  padding: 17px 15px;
+
+  border: 1px solid #eadcf6;
+  border-radius: 17px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #fbf7ff 0%,
+      #fff8f3 100%
+    );
+
+  box-shadow:
+    0 3px 12px rgba(111, 72, 145, 0.06);
+}
+
+
+.ai-talk-introduction-icon {
+  width: 46px;
+  height: 46px;
+
+  flex-shrink: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 14px;
+
+  background-color: #efe4f7;
+
+  color: #8b5ca8;
+
+  font-size: 18px;
+}
+
+
+.ai-talk-introduction h2 {
+  margin: 0 0 4px;
+
+  color: #4a3d50;
+
+  font-size: 15px;
+  font-weight: 700;
+}
+
+
+.ai-talk-introduction p {
+  margin: 0;
+
+  color: #8d828f;
+
+  font-size: 10px;
+  font-weight: 500;
+
+  line-height: 1.6;
+}
+
+
+/* ========================================
+   COMMON SECTION
+======================================== */
+
+.ai-talk-section {
+  margin-bottom: 13px;
+  padding: 16px 15px;
+
+  border: 1px solid #e8e3de;
+  border-radius: 16px;
+
+  background-color: #ffffff;
+
+  box-shadow:
+    0 3px 10px rgba(0, 0, 0, 0.025);
+}
+
+
+.ai-talk-section-title {
+  display: flex;
+  align-items: center;
+
+  gap: 8px;
+
+  padding-bottom: 11px;
+  margin-bottom: 12px;
+
+  border-bottom: 1px solid #f0ece8;
+}
+
+
+.ai-talk-section-title > i {
+  color: #9a6db4;
+
+  font-size: 13px;
+}
+
+
+.ai-talk-section-title h3 {
+  margin: 0;
+
+  color: #4a423d;
+
+  font-size: 13px;
+  font-weight: 700;
+}
+
+
+/* ========================================
+   PERSON INFORMATION
+======================================== */
+
+.ai-talk-person-info {
+  display: flex;
+  flex-direction: column;
+
+  gap: 9px;
+}
+
+
+.ai-talk-person-row {
+  display: flex;
+  align-items: flex-start;
+
+  gap: 10px;
+}
+
+
+.ai-talk-person-label {
+  width: 76px;
+
+  flex-shrink: 0;
+
+  color: #968c86;
+
+  font-size: 10px;
+  font-weight: 600;
+
+  line-height: 1.7;
+}
+
+
+.ai-talk-person-value {
+  flex: 1;
+
+  margin: 0;
+
+  color: #514944;
+
+  font-size: 11px;
+  font-weight: 500;
+
+  line-height: 1.7;
+
+  overflow-wrap: anywhere;
+}
+
+
+.ai-talk-no-person-info {
+  margin: 0;
+
+  color: #9b928d;
+
+  font-size: 11px;
+
+  text-align: center;
+}
+
+/* ========================================
+   GIFT HISTORY INFORMATION
+======================================== */
+
+.ai-talk-gift-history {
+  align-items: flex-start;
+}
+
+
+.ai-talk-gift-history-groups {
+  min-width: 0;
+
+  flex: 1;
+
+  display: flex;
+  flex-direction: column;
+
+  gap: 9px;
+}
+
+
+.ai-talk-gift-history-group {
+  display: flex;
+  align-items: flex-start;
+
+  gap: 8px;
+}
+
+
+.ai-talk-gift-history-icon {
+  width: 28px;
+  height: 28px;
+
+  flex-shrink: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 8px;
+
+  font-size: 10px;
+}
+
+
+/* もらった */
+
+.ai-talk-gift-history-icon.received {
+  background-color: #e5f5ef;
+
+  color: #277b60;
+}
+
+
+/* 贈った */
+
+.ai-talk-gift-history-icon.given {
+  background-color: #ffefe9;
+
+  color: #c84e3e;
+}
+
+
+.ai-talk-gift-history-text {
+  flex: 1;
+
+  margin: 4px 0 0;
+
+  color: #514944;
+
+  font-size: 11px;
+  font-weight: 500;
+
+  line-height: 1.8;
+
+  overflow-wrap: anywhere;
+}
+
+
+/* ========================================
+   QUESTION TITLE
+======================================== */
+
+.ai-talk-question-title {
+  display: flex;
+  align-items: flex-start;
+
+  gap: 10px;
+
+  margin-bottom: 14px;
+}
+
+
+.ai-talk-question-number {
+  width: 25px;
+  height: 25px;
+
+  flex-shrink: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 50%;
+
+  background-color: #efe4f7;
+
+  color: #8659a1;
+
+  font-size: 11px;
+  font-weight: 700;
+}
+
+
+.ai-talk-question-title h3 {
+  margin: 1px 0 2px;
+
+  color: #4a423d;
+
+  font-size: 13px;
+  font-weight: 700;
+}
+
+
+.ai-talk-question-title p {
+  margin: 0;
+
+  color: #a19892;
+
+  font-size: 9px;
+  font-weight: 500;
+}
+
+
+/* ========================================
+   OCCASION OPTIONS
+======================================== */
+
+.ai-talk-option-grid {
+  display: grid;
+
+  grid-template-columns:
+    repeat(3, minmax(0, 1fr));
+
+  gap: 8px;
+}
+
+
+.ai-talk-option-button {
+  min-height: 65px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  gap: 6px;
+
+  padding: 9px 5px;
+
+  border: 1px solid #e7e1dd;
+  border-radius: 11px;
+
+  background-color: #ffffff;
+
+  color: #746b65;
+
+  font-family: inherit;
+  font-size: 10px;
+  font-weight: 600;
+
+  cursor: pointer;
+
+  transition:
+    border-color 0.15s,
+    background-color 0.15s,
+    color 0.15s,
+    transform 0.15s;
+}
+
+
+.ai-talk-option-button i {
+  font-size: 15px;
+}
+
+
+.ai-talk-option-button:hover {
+  border-color: #d8c2e6;
+
+  background-color: #fcf9fe;
+}
+
+
+.ai-talk-option-button:active {
+  transform: scale(0.97);
+}
+
+
+.ai-talk-option-button.selected {
+  border-color: #9a6db4;
+
+  background-color: #f5edf9;
+
+  color: #7a4c96;
+}
+
+
+/* ========================================
+   BUDGET OPTIONS
+======================================== */
+
+.ai-talk-budget-options {
+  display: grid;
+
+  grid-template-columns:
+    repeat(2, minmax(0, 1fr));
+
+  gap: 8px;
+}
+
+
+.ai-talk-budget-button {
+  min-height: 42px;
+
+  padding: 9px 7px;
+
+  border: 1px solid #e7e1dd;
+  border-radius: 10px;
+
+  background-color: #ffffff;
+
+  color: #746b65;
+
+  font-family: inherit;
+  font-size: 10px;
+  font-weight: 600;
+
+  cursor: pointer;
+
+  transition:
+    border-color 0.15s,
+    background-color 0.15s,
+    color 0.15s,
+    transform 0.15s;
+}
+
+
+.ai-talk-budget-button:hover {
+  border-color: #d8c2e6;
+
+  background-color: #fcf9fe;
+}
+
+
+.ai-talk-budget-button:active {
+  transform: scale(0.98);
+}
+
+
+.ai-talk-budget-button.selected {
+  border-color: #9a6db4;
+
+  background-color: #f5edf9;
+
+  color: #7a4c96;
+}
+
+
+/* ========================================
+   OTHER INPUT
+======================================== */
+
+.ai-talk-other-field {
+  position: relative;
+
+  margin-top: 12px;
+}
+
+
+.ai-talk-other-field label {
+  display: block;
+
+  margin-bottom: 6px;
+
+  color: #716862;
+
+  font-size: 10px;
+  font-weight: 700;
+}
+
+
+.ai-talk-other-field input {
+  width: 100%;
+  height: 43px;
+
+  box-sizing: border-box;
+
+  padding: 0 12px;
+
+  border: 1px solid #ddd6d1;
+  border-radius: 10px;
+
+  outline: none;
+
+  background-color: #ffffff;
+
+  color: #4a423d;
+
+  font-family: inherit;
+  font-size: 12px;
+}
+
+
+.ai-talk-other-field input:focus {
+  border-color: #a87bbb;
+
+  box-shadow:
+    0 0 0 3px rgba(154, 109, 180, 0.1);
+}
+
+
+.ai-talk-input-unit {
+  position: absolute;
+
+  right: 12px;
+  bottom: 12px;
+
+  color: #8e8580;
+
+  font-size: 11px;
+  font-weight: 600;
+}
+
+
+#customBudget {
+  padding-right: 38px;
+}
+
+
+/* 数値入力欄の矢印を非表示 */
+
+#customBudget::-webkit-inner-spin-button,
+#customBudget::-webkit-outer-spin-button {
+  margin: 0;
+
+  appearance: none;
+}
+
+
+#customBudget {
+  appearance: textfield;
+}
+
+
+/* ========================================
+   TEXTAREA
+======================================== */
+
+#additionalRequest {
+  width: 100%;
+  min-height: 96px;
+
+  box-sizing: border-box;
+
+  padding: 11px 12px;
+
+  resize: vertical;
+
+  border: 1px solid #ddd6d1;
+  border-radius: 10px;
+
+  outline: none;
+
+  background-color: #ffffff;
+
+  color: #4a423d;
+
+  font-family: inherit;
+  font-size: 12px;
+
+  line-height: 1.7;
+}
+
+
+#additionalRequest:focus {
+  border-color: #a87bbb;
+
+  box-shadow:
+    0 0 0 3px rgba(154, 109, 180, 0.1);
+}
+
+
+#additionalRequest::placeholder,
+.ai-talk-other-field input::placeholder {
+  color: #b2aaa5;
+}
+
+
+/* ========================================
+   FORM MESSAGE
+======================================== */
+
+.ai-talk-form-message {
+  min-height: 18px;
+
+  margin: 0 0 7px;
+
+  color: #cc5f53;
+
+  font-size: 10px;
+  font-weight: 600;
+
+  text-align: center;
+}
+
+
+/* ========================================
+   SUBMIT BUTTON
+======================================== */
+
+.ai-talk-submit-button {
+  width: 100%;
+  min-height: 50px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  gap: 9px;
+
+  padding: 12px;
+
+  border: none;
+  border-radius: 14px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #9a6db4 0%,
+      #c47a89 100%
+    );
+
+  color: #ffffff;
+
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 700;
+
+  cursor: pointer;
+
+  box-shadow:
+    0 5px 14px rgba(139, 92, 168, 0.2);
+
+  transition:
+    opacity 0.15s,
+    transform 0.15s,
+    box-shadow 0.15s;
+}
+
+
+.ai-talk-submit-button:not(:disabled):hover {
+  box-shadow:
+    0 7px 18px rgba(139, 92, 168, 0.27);
+}
+
+
+.ai-talk-submit-button:not(:disabled):active {
+  transform: scale(0.98);
+}
+
+
+.ai-talk-submit-button:disabled {
+  background: #d8d2cf;
+
+  color: #f4f2f1;
+
+  cursor: not-allowed;
+
+  box-shadow: none;
+
+  opacity: 0.8;
+}
+
+
+/* ========================================
+   RESULT
+======================================== */
+
+.ai-talk-result {
+  margin-top: 20px;
+}
+
+
+.ai-talk-result-title {
+  display: flex;
+  align-items: center;
+
+  gap: 8px;
+
+  margin-bottom: 12px;
+}
+
+
+.ai-talk-result-title i {
+  color: #9a6db4;
+
+  font-size: 15px;
+}
+
+
+.ai-talk-result-title h2 {
+  margin: 0;
+
+  color: #433a46;
+
+  font-size: 15px;
+  font-weight: 700;
+}
+
+
+.ai-talk-suggestion-card {
+  margin-bottom: 12px;
+  padding: 16px 15px;
+
+  border: 1px solid #e8e0eb;
+  border-radius: 16px;
+
+  background-color: #ffffff;
+
+  box-shadow:
+    0 3px 12px rgba(82, 58, 93, 0.05);
+}
+
+
+.ai-talk-suggestion-card h3 {
+  margin: 0 0 6px;
+
+  color: #493e4e;
+
+  font-size: 14px;
+  font-weight: 700;
+}
+
+
+.ai-talk-suggestion-budget {
+  display: inline-block;
+
+  margin-bottom: 10px;
+  padding: 4px 8px;
+
+  border-radius: 9px;
+
+  background-color: #f3ebf7;
+
+  color: #82559c;
+
+  font-size: 9px;
+  font-weight: 700;
+}
+
+
+.ai-talk-suggestion-card p {
+  margin: 0;
+
+  color: #665d67;
+
+  font-size: 11px;
+
+  line-height: 1.8;
+}
+
+
+/* ========================================
+   RESPONSIVE
+======================================== */
+
+@media (max-width: 360px) {
+
+  .ai-talk-option-grid {
+    grid-template-columns:
+      repeat(2, minmax(0, 1fr));
+  }
+
+
+  .ai-talk-introduction h2 {
+    font-size: 14px;
+  }
+
+
+  .ai-talk-introduction p {
+    font-size: 9px;
+  }
+
+}

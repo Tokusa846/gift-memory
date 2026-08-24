@@ -10,48 +10,567 @@
     content="width=device-width, initial-scale=1.0"
   >
 
-  <title>AI相談 | Gift Memory</title>
+  <title>AIプレゼント相談 | Gift Memory</title>
+
+
+  <!-- Font Awesome -->
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+  >
+
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+
+  <link
+    rel="preconnect"
+    href="https://fonts.gstatic.com"
+    crossorigin
+  >
+
+  <link
+    href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;600;700&display=swap"
+    rel="stylesheet"
+  >
+
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="CSS/common.css">
+  <link rel="stylesheet" href="CSS/ai_talk.css">
 
 </head>
 
+
 <body>
 
-  <main>
-
-    <h1>AI相談</h1>
-
-    <p>
-      AI相談画面は現在開発中です。
-    </p>
-
-    <a id="backButton" href="people_manage.html">
-      戻る
-    </a>
-
-  </main>
+  <div class="app-container">
 
 
-  <script>
+    <!-- ===============================================
+         HEADER
+    ================================================ -->
+    <header class="ai-talk-header">
 
-    const params =
-      new URLSearchParams(
-        window.location.search
-      );
+      <a
+        id="aiTalkBackButton"
+        href="people_manage.html"
+        class="ai-talk-back"
+        aria-label="前の画面へ戻る"
+      >
+        <i class="fa-solid fa-chevron-left"></i>
+      </a>
 
 
-    const returnTo =
-      params.get("return_to");
+      <h1>
+        AIプレゼント相談
+      </h1>
 
 
-    if (returnTo) {
+      <div class="ai-talk-header-spacer"></div>
 
-      document
-        .getElementById("backButton")
-        .href = returnTo;
+    </header>
 
-    }
 
-  </script>
+    <!-- ===============================================
+         MAIN
+    ================================================ -->
+    <main class="ai-talk-main">
+
+
+      <!-- LOADING -->
+      <div
+        id="aiTalkLoading"
+        class="ai-talk-loading"
+      >
+
+        <i class="fa-solid fa-spinner fa-spin"></i>
+
+        <p>
+          人物情報を読み込んでいます...
+        </p>
+
+      </div>
+
+
+      <!-- ERROR -->
+      <div
+        id="aiTalkError"
+        class="ai-talk-error hidden"
+      >
+
+        <i class="fa-regular fa-circle-xmark"></i>
+
+        <p id="aiTalkErrorMessage">
+          人物情報を取得できませんでした。
+        </p>
+
+        <a href="people_manage.html">
+          人物一覧へ戻る
+        </a>
+
+      </div>
+
+
+      <!-- CONTENT -->
+      <div
+        id="aiTalkContent"
+        class="hidden"
+      >
+
+
+        <!-- ===========================================
+             INTRODUCTION
+        ============================================ -->
+        <section class="ai-talk-introduction">
+
+          <div class="ai-talk-introduction-icon">
+
+            <i class="fa-solid fa-wand-magic-sparkles"></i>
+
+          </div>
+
+
+          <div>
+
+            <h2 id="aiTalkPersonTitle">
+              プレゼントを一緒に考えます
+            </h2>
+
+            <p>
+              登録情報と希望条件をもとに、プレゼント候補をご提案します。
+            </p>
+
+          </div>
+
+        </section>
+
+
+        <!-- ===========================================
+             PERSON INFORMATION
+        ============================================ -->
+        <section class="ai-talk-section">
+
+          <div class="ai-talk-section-title">
+
+            <i class="fa-regular fa-user"></i>
+
+            <h3>
+              AIが参考にする情報
+            </h3>
+
+          </div>
+
+
+          <div
+            id="aiTalkPersonInfo"
+            class="ai-talk-person-info"
+          >
+
+            <!-- JavaScriptで人物情報を表示 -->
+
+          </div>
+
+        </section>
+
+
+        <!-- ===========================================
+             CONSULTATION FORM
+        ============================================ -->
+        <form id="aiTalkForm">
+
+
+          <!-- OCCASION -->
+          <section class="ai-talk-section">
+
+            <div class="ai-talk-question-title">
+
+              <span class="ai-talk-question-number">
+                1
+              </span>
+
+              <div>
+
+                <h3>
+                  贈る目的を教えてください
+                </h3>
+
+                <p>
+                  1つ選択してください
+                </p>
+
+              </div>
+
+            </div>
+
+
+            <div
+              id="occasionOptions"
+              class="ai-talk-option-grid"
+            >
+
+              <button
+                type="button"
+                class="ai-talk-option-button"
+                data-occasion="誕生日"
+              >
+                <i class="fa-solid fa-cake-candles"></i>
+                <span>誕生日</span>
+              </button>
+
+
+              <button
+                type="button"
+                class="ai-talk-option-button"
+                data-occasion="お祝い"
+              >
+                <i class="fa-solid fa-champagne-glasses"></i>
+                <span>お祝い</span>
+              </button>
+
+
+              <button
+                type="button"
+                class="ai-talk-option-button"
+                data-occasion="お礼"
+              >
+                <i class="fa-regular fa-heart"></i>
+                <span>お礼</span>
+              </button>
+
+
+              <button
+                type="button"
+                class="ai-talk-option-button"
+                data-occasion="手土産"
+              >
+                <i class="fa-solid fa-bag-shopping"></i>
+                <span>手土産</span>
+              </button>
+
+
+              <button
+                type="button"
+                class="ai-talk-option-button"
+                data-occasion="お返し"
+              >
+                <i class="fa-solid fa-gift"></i>
+                <span>お返し</span>
+              </button>
+
+
+              <button
+                type="button"
+                class="ai-talk-option-button"
+                data-occasion="その他"
+              >
+                <i class="fa-solid fa-ellipsis"></i>
+                <span>その他</span>
+              </button>
+
+            </div>
+
+
+            <div
+              id="otherOccasionField"
+              class="ai-talk-other-field hidden"
+            >
+
+              <label for="otherOccasion">
+                贈る目的
+              </label>
+
+              <input
+                type="text"
+                id="otherOccasion"
+                maxlength="50"
+                placeholder="例：退職、引っ越し、記念日"
+              >
+
+            </div>
+
+
+            <input
+              type="hidden"
+              id="selectedOccasion"
+              name="occasion"
+            >
+
+          </section>
+
+
+          <!-- BUDGET -->
+          <section class="ai-talk-section">
+
+            <div class="ai-talk-question-title">
+
+              <span class="ai-talk-question-number">
+                2
+              </span>
+
+              <div>
+
+                <h3>
+                  予算を教えてください
+                </h3>
+
+              </div>
+
+            </div>
+
+
+            <div
+              id="budgetOptions"
+              class="ai-talk-budget-options"
+            >
+
+              <button
+                type="button"
+                class="ai-talk-budget-button"
+                data-budget="1,000円以内"
+              >
+                〜1,000円
+              </button>
+
+
+              <button
+                type="button"
+                class="ai-talk-budget-button"
+                data-budget="1,000〜3,000円"
+              >
+                1,000〜3,000円
+              </button>
+
+
+              <button
+                type="button"
+                class="ai-talk-budget-button"
+                data-budget="3,000〜5,000円"
+              >
+                3,000〜5,000円
+              </button>
+
+
+              <button
+                type="button"
+                class="ai-talk-budget-button"
+                data-budget="5,000〜10,000円"
+              >
+                5,000〜10,000円
+              </button>
+
+
+              <button
+                type="button"
+                class="ai-talk-budget-button"
+                data-budget="10,000円以上"
+              >
+                10,000円以上
+              </button>
+
+
+              <button
+                type="button"
+                class="ai-talk-budget-button"
+                data-budget="自由入力"
+              >
+                自由入力
+              </button>
+
+            </div>
+
+
+            <div
+              id="customBudgetField"
+              class="ai-talk-other-field hidden"
+            >
+
+              <label for="customBudget">
+                予算
+              </label>
+
+              <input
+                type="number"
+                id="customBudget"
+                min="0"
+                step="100"
+                inputmode="numeric"
+                placeholder="例：7000"
+              >
+
+              <span class="ai-talk-input-unit">
+                円
+              </span>
+
+            </div>
+
+
+            <input
+              type="hidden"
+              id="selectedBudget"
+              name="budget"
+            >
+
+          </section>
+
+
+          <!-- ADDITIONAL REQUEST -->
+          <section class="ai-talk-section">
+
+            <div class="ai-talk-question-title">
+
+              <span class="ai-talk-question-number">
+                3
+              </span>
+
+              <div>
+
+                <h3>
+                  ほかに希望はありますか？
+                </h3>
+
+                <p>
+                  この項目は任意です
+                </p>
+
+              </div>
+
+            </div>
+
+
+            <textarea
+              id="additionalRequest"
+              name="additionalRequest"
+              rows="4"
+              maxlength="500"
+              placeholder="例：職場で渡しやすく、食べ物以外のものがいい"
+            ></textarea>
+
+          </section>
+
+
+          <!-- MESSAGE -->
+          <p
+            id="aiTalkFormMessage"
+            class="ai-talk-form-message"
+            aria-live="polite"
+          ></p>
+
+
+          <!-- SUBMIT -->
+          <button
+            type="submit"
+            id="aiTalkSubmitButton"
+            class="ai-talk-submit-button"
+            disabled
+          >
+
+            <i class="fa-solid fa-wand-magic-sparkles"></i>
+
+            <span>
+              AIにプレゼントを提案してもらう
+            </span>
+
+          </button>
+
+        </form>
+
+
+        <!-- ===========================================
+             AI RESULT
+        ============================================ -->
+        <section
+          id="aiTalkResult"
+          class="ai-talk-result hidden"
+          aria-live="polite"
+        >
+
+          <div class="ai-talk-result-title">
+
+            <i class="fa-solid fa-sparkles"></i>
+
+            <h2>
+              おすすめのプレゼント
+            </h2>
+
+          </div>
+
+
+          <div id="aiTalkSuggestionList">
+
+            <!-- AIの回答をJavaScriptで表示 -->
+
+          </div>
+
+        </section>
+
+
+      </div>
+
+    </main>
+
+
+    <!-- ===============================================
+         BOTTOM NAVIGATION
+    ================================================ -->
+    <nav class="bottom-nav">
+
+
+      <a
+        href="index.html"
+        class="nav-link-button"
+      >
+        <i class="fa-solid fa-house"></i>
+        <span>ホーム</span>
+      </a>
+
+
+      <a
+        href="people_manage.html"
+        class="nav-link-button"
+      >
+        <i class="fa-solid fa-user"></i>
+        <span>人物</span>
+      </a>
+
+
+      <a
+        href="index.html?tab=schedule"
+        class="nav-link-button"
+      >
+        <i class="fa-regular fa-calendar"></i>
+        <span>予定</span>
+      </a>
+
+
+      <a
+        href="ai_talk.html"
+        class="nav-link-button active-tab"
+      >
+        <i class="fa-solid fa-wand-magic-sparkles"></i>
+        <span>AI</span>
+      </a>
+
+
+      <a
+        href="index.html?tab=setting"
+        class="nav-link-button"
+      >
+        <i class="fa-solid fa-gear"></i>
+        <span>設定</span>
+      </a>
+
+
+    </nav>
+
+
+  </div>
+
+
+  <script
+    type="module"
+    src="js/ai_talk.js"
+  ></script>
 
 </body>
 
