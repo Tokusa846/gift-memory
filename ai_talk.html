@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+
+  <title>AI相談 | Gift Memory</title>
+
+</head>
+
+<body>
+
+  <main>
+
+    <h1>AI相談</h1>
+
+    <p>
+      AI相談画面は現在開発中です。
+    </p>
+
+    <a id="backButton" href="people_manage.html">
+      戻る
+    </a>
+
+  </main>
+
+
+  <script>
+
+    const params =
+      new URLSearchParams(
+        window.location.search
+      );
+
+
+    const returnTo =
+      params.get("return_to");
+
+
+    if (returnTo) {
+
+      document
+        .getElementById("backButton")
+        .href = returnTo;
+
+    }
+
+  </script>
+
+</body>
+
+</html>
