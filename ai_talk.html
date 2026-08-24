@@ -118,28 +118,253 @@
         class="hidden"
       >
 
-
         <!-- ===========================================
-             INTRODUCTION
+             RECIPIENT SELECTION
+             一般相談の場合のみ表示
         ============================================ -->
-        <section class="ai-talk-introduction">
+        <section
+          id="recipientSelectionSection"
+          class="ai-talk-section hidden"
+        >
 
-          <div class="ai-talk-introduction-icon">
+          <div class="ai-talk-section-title">
 
-            <i class="fa-solid fa-wand-magic-sparkles"></i>
+            <i class="fa-solid fa-user-plus"></i>
+
+            <h3>
+              贈る相手を教えてください
+            </h3>
 
           </div>
 
 
-          <div>
+          <!-- RECIPIENT TYPE -->
+          <div class="ai-talk-recipient-type">
 
-            <h2 id="aiTalkPersonTitle">
-              プレゼントを一緒に考えます
-            </h2>
+            <button
+              type="button"
+              id="registeredRecipientButton"
+              class="ai-talk-recipient-type-button"
+              data-recipient-type="registered"
+              aria-pressed="false"
+            >
 
-            <p>
-              登録情報と希望条件をもとに、プレゼント候補をご提案します。
-            </p>
+              <i class="fa-regular fa-address-book"></i>
+
+              <span>
+                登録済みの人物
+              </span>
+
+            </button>
+
+
+            <button
+              type="button"
+              id="unregisteredRecipientButton"
+              class="ai-talk-recipient-type-button"
+              data-recipient-type="unregistered"
+              aria-pressed="false"
+            >
+
+              <i class="fa-regular fa-user"></i>
+
+              <span>
+                登録なしで相談
+              </span>
+
+            </button>
+
+          </div>
+
+
+          <!-- =======================================
+               REGISTERED RECIPIENT
+          ======================================== -->
+          <div
+            id="registeredRecipientField"
+            class="ai-talk-recipient-field hidden"
+          >
+
+            <label for="registeredPersonSelect">
+              人物を選択
+            </label>
+
+
+            <div class="ai-talk-select-wrapper">
+
+              <select id="registeredPersonSelect">
+
+                <option value="">
+                  選択してください
+                </option>
+
+                <!-- JavaScriptで人物を追加 -->
+
+              </select>
+
+
+              <i class="fa-solid fa-chevron-down"></i>
+
+            </div>
+
+
+            <p
+              id="registeredPersonMessage"
+              class="ai-talk-recipient-message"
+            ></p>
+
+          </div>
+
+
+          <!-- =======================================
+               UNREGISTERED RECIPIENT
+          ======================================== -->
+          <div
+            id="unregisteredRecipientField"
+            class="ai-talk-recipient-field hidden"
+          >
+
+
+            <!-- RELATIONSHIP -->
+                        <!-- RELATIONSHIP -->
+            <div class="ai-talk-recipient-form-group">
+
+              <label for="recipientRelationship">
+                相手との関係
+                <span>必須</span>
+              </label>
+
+
+              <div class="ai-talk-select-wrapper">
+
+                <select id="recipientRelationship">
+
+                  <option value="">
+                    選択してください
+                  </option>
+
+                  <option value="家族">
+                    家族
+                  </option>
+
+                  <option value="友人">
+                    友人
+                  </option>
+
+                  <option value="職場">
+                    職場
+                  </option>
+
+                  <option value="親戚">
+                    親戚
+                  </option>
+
+                  <option value="その他">
+                    その他
+                  </option>
+
+                </select>
+
+
+                <i class="fa-solid fa-chevron-down"></i>
+
+              </div>
+
+            </div>
+
+
+            <!-- AGE GROUP -->
+            <div class="ai-talk-recipient-form-group">
+
+              <label for="recipientAgeGroup">
+                相手の年代
+              </label>
+
+
+              <div class="ai-talk-select-wrapper">
+
+                <select id="recipientAgeGroup">
+
+                  <option value="">
+                    選択しない
+                  </option>
+
+                  <option value="10歳未満">
+                    10歳未満
+                  </option>
+
+                  <option value="10代">
+                    10代
+                  </option>
+
+                  <option value="20代">
+                    20代
+                  </option>
+
+                  <option value="30代">
+                    30代
+                  </option>
+
+                  <option value="40代">
+                    40代
+                  </option>
+
+                  <option value="50代">
+                    50代
+                  </option>
+
+                  <option value="60代">
+                    60代
+                  </option>
+
+                  <option value="70代以上">
+                    70代以上
+                  </option>
+
+                </select>
+
+
+                <i class="fa-solid fa-chevron-down"></i>
+
+              </div>
+
+            </div>
+
+
+            <!-- LIKES -->
+            <div class="ai-talk-recipient-form-group">
+
+              <label for="recipientLikes">
+                好きなもの・趣味
+              </label>
+
+
+              <textarea
+                id="recipientLikes"
+                rows="3"
+                maxlength="300"
+                placeholder="例：コーヒー、読書、キャンプ"
+              ></textarea>
+
+            </div>
+
+
+            <!-- AVOID -->
+            <div class="ai-talk-recipient-form-group">
+
+              <label for="recipientAvoid">
+                避けたいもの
+              </label>
+
+
+              <textarea
+                id="recipientAvoid"
+                rows="3"
+                maxlength="300"
+                placeholder="例：甘いもの、香りが強いもの"
+              ></textarea>
+
+            </div>
 
           </div>
 
@@ -149,14 +374,17 @@
         <!-- ===========================================
              PERSON INFORMATION
         ============================================ -->
-        <section class="ai-talk-section">
+        <section 
+          id="personInformationSection"
+          class="ai-talk-section"
+        >
 
           <div class="ai-talk-section-title">
 
             <i class="fa-regular fa-user"></i>
 
-            <h3>
-              AIが参考にする情報
+            <h3 id="personInformationTitle">
+              記録情報
             </h3>
 
           </div>
@@ -457,21 +685,32 @@
           ></p>
 
 
-          <!-- SUBMIT -->
-          <button
-            type="submit"
-            id="aiTalkSubmitButton"
-            class="ai-talk-submit-button"
-            disabled
-          >
+          <!-- FIXED SUBMIT AREA -->
+          <div class="ai-talk-fixed-action">
 
-            <i class="fa-solid fa-wand-magic-sparkles"></i>
+            <p
+              id="aiTalkFormMessage"
+              class="ai-talk-form-message"
+              aria-live="polite"
+            ></p>
 
-            <span>
-              AIにプレゼントを提案してもらう
-            </span>
 
-          </button>
+            <button
+              type="submit"
+              id="aiTalkSubmitButton"
+              class="ai-talk-submit-button"
+              disabled
+            >
+
+              <i class="fa-solid fa-wand-magic-sparkles"></i>
+
+              <span>
+                AIにプレゼントを提案してもらう
+              </span>
+
+            </button>
+
+          </div>
 
         </form>
 

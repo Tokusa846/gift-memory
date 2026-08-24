@@ -14,6 +14,13 @@ let selectedOccasion = "";
 
 let selectedBudget = "";
 
+let consultationMode =
+  "general";
+
+let recipientType = "";
+
+let peopleOptions = [];
+
 
 /* ========================================
    INITIALIZE
@@ -24,6 +31,12 @@ document.addEventListener(
   async () => {
 
     setupBackButton();
+
+    setupBackButton();
+
+    setupRecipientSelection();
+
+    setupOccasionOptions();
 
     setupOccasionOptions();
 
@@ -44,6 +57,13 @@ document.addEventListener(
     */
     if (!personId) {
 
+      consultationMode =
+        "general";
+
+
+      await loadPeopleOptions();
+
+
       renderGeneralConsultation();
 
       showContent();
@@ -51,6 +71,10 @@ document.addEventListener(
       return;
 
     }
+
+
+    consultationMode =
+      "personal";
 
 
     await loadPerson(
@@ -311,29 +335,30 @@ async function loadGiftLogs(
 
 function renderPersonInformation() {
 
-  const title =
+    const informationTitle =
     document.getElementById(
-      "aiTalkPersonTitle"
+      "personInformationTitle"
     );
 
-
-  const container =
+    const container =
     document.getElementById(
       "aiTalkPersonInfo"
     );
 
 
   if (
-    !title ||
     !container ||
     !currentPerson
   ) {
     return;
   }
 
+  if (informationTitle) {
 
-  title.textContent =
-    `${currentPerson.name}さんへのプレゼント相談`;
+    informationTitle.textContent =
+      `${currentPerson.name}さんの記録情報`;
+
+  }
 
 
   container.innerHTML = "";
@@ -717,9 +742,15 @@ function renderGeneralConsultation() {
     );
 
 
-  const personInfo =
+  const recipientSection =
     document.getElementById(
-      "aiTalkPersonInfo"
+      "recipientSelectionSection"
+    );
+
+
+  const personSection =
+    document.getElementById(
+      "personInformationSection"
     );
 
 
@@ -731,21 +762,411 @@ function renderGeneralConsultation() {
   }
 
 
-  /*
-    人物IDがない場合は、
-    人物情報カードを非表示にする
-  */
-  const personSection =
-    personInfo?.closest(
-      ".ai-talk-section"
+  recipientSection?.classList.remove(
+    "hidden"
+  );
+
+
+  personSection?.classList.add(
+    "hidden"
+  );
+
+
+  renderPeopleOptions();
+
+}
+
+/* ========================================
+   LOAD PEOPLE OPTIONS
+======================================== */
+
+async function loadPeopleOptions() {
+
+  const { data, error } =
+    await supabase
+      .from("people")
+      .select(`
+        id,
+        name,
+        birthday,
+        relationship,
+        likes,
+        dislikes,
+        allergies,
+        memo
+      `)
+      .order(
+        "name",
+        {
+          ascending: true
+        }
+      );
+
+
+  if (error) {
+
+    console.error(
+      "人物一覧の取得に失敗しました:",
+      error
     );
 
 
-  if (personSection) {
+    peopleOptions = [];
 
-    personSection.classList.add(
+    return;
+
+  }
+
+
+  peopleOptions =
+    data ?? [];
+
+}
+
+
+/* ========================================
+   RENDER PEOPLE OPTIONS
+======================================== */
+
+function renderPeopleOptions() {
+
+  const select =
+    document.getElementById(
+      "registeredPersonSelect"
+    );
+
+
+  const message =
+    document.getElementById(
+      "registeredPersonMessage"
+    );
+
+
+  if (!select) {
+    return;
+  }
+
+
+  select.innerHTML = "";
+
+
+  const defaultOption =
+    document.createElement(
+      "option"
+    );
+
+
+  defaultOption.value = "";
+
+  defaultOption.textContent =
+    "選択してください";
+
+
+  select.appendChild(
+    defaultOption
+  );
+
+
+  peopleOptions.forEach(
+    person => {
+
+      const option =
+        document.createElement(
+          "option"
+        );
+
+
+      option.value =
+        person.id;
+
+
+      option.textContent =
+        person.name;
+
+
+      select.appendChild(
+        option
+      );
+
+    }
+  );
+
+
+  if (
+    message &&
+    peopleOptions.length === 0
+  ) {
+
+    message.textContent =
+      "登録済みの人物がいません。";
+
+  } else if (message) {
+
+    message.textContent = "";
+
+  }
+
+}
+
+
+/* ========================================
+   SETUP RECIPIENT SELECTION
+======================================== */
+
+function setupRecipientSelection() {
+
+  const typeButtons =
+    document.querySelectorAll(
+      ".ai-talk-recipient-type-button"
+    );
+
+
+  const personSelect =
+    document.getElementById(
+      "registeredPersonSelect"
+    );
+
+
+  const relationshipInput =
+    document.getElementById(
+      "recipientRelationship"
+    );
+
+
+  typeButtons.forEach(
+    button => {
+
+      button.addEventListener(
+        "click",
+        () => {
+
+          selectRecipientType(
+            button.dataset.recipientType || ""
+          );
+
+        }
+      );
+
+    }
+  );
+
+
+  personSelect?.addEventListener(
+    "change",
+    async event => {
+
+      await selectRegisteredPerson(
+        event.target.value
+      );
+
+    }
+  );
+
+
+  relationshipInput?.addEventListener(
+    "input",
+    updateSubmitButton
+  );
+
+}
+
+
+/* ========================================
+   SELECT RECIPIENT TYPE
+======================================== */
+
+function selectRecipientType(
+  type
+) {
+
+  recipientType =
+    type;
+
+
+  const buttons =
+    document.querySelectorAll(
+      ".ai-talk-recipient-type-button"
+    );
+
+
+  const registeredField =
+    document.getElementById(
+      "registeredRecipientField"
+    );
+
+
+  const unregisteredField =
+    document.getElementById(
+      "unregisteredRecipientField"
+    );
+
+
+  const personSection =
+    document.getElementById(
+      "personInformationSection"
+    );
+
+
+  buttons.forEach(
+    button => {
+
+      const isSelected =
+        button.dataset.recipientType ===
+        type;
+
+
+      button.classList.toggle(
+        "selected",
+        isSelected
+      );
+
+
+      button.setAttribute(
+        "aria-pressed",
+        String(isSelected)
+      );
+
+    }
+  );
+
+
+  registeredField?.classList.toggle(
+    "hidden",
+    type !== "registered"
+  );
+
+
+  unregisteredField?.classList.toggle(
+    "hidden",
+    type !== "unregistered"
+  );
+
+
+  /*
+    相手の種類を切り替えたら
+    選択済み人物を一度解除
+  */
+  currentPerson = null;
+
+  giftLogs = [];
+
+
+  const personSelect =
+    document.getElementById(
+      "registeredPersonSelect"
+    );
+
+
+  if (personSelect) {
+
+    personSelect.value = "";
+
+  }
+
+
+  personSection?.classList.add(
+    "hidden"
+  );
+
+
+  resetGeneralConsultationTitle();
+
+  updateSubmitButton();
+
+}
+
+
+/* ========================================
+   SELECT REGISTERED PERSON
+======================================== */
+
+async function selectRegisteredPerson(
+  personId
+) {
+
+  const personSection =
+    document.getElementById(
+      "personInformationSection"
+    );
+
+
+  if (!personId) {
+
+    currentPerson = null;
+
+    giftLogs = [];
+
+
+    personSection?.classList.add(
       "hidden"
     );
+
+
+    resetGeneralConsultationTitle();
+
+    updateSubmitButton();
+
+    return;
+
+  }
+
+
+  currentPerson =
+    peopleOptions.find(
+      person =>
+        String(person.id) ===
+        String(personId)
+    ) || null;
+
+
+  if (!currentPerson) {
+
+    personSection?.classList.add(
+      "hidden"
+    );
+
+
+    updateSubmitButton();
+
+    return;
+
+  }
+
+
+  await loadGiftLogs(
+    currentPerson.id
+  );
+
+
+  renderPersonInformation();
+
+
+  personSection?.classList.remove(
+    "hidden"
+  );
+
+
+  updateSubmitButton();
+
+}
+
+
+/* ========================================
+   RESET GENERAL TITLE
+======================================== */
+
+function resetGeneralConsultationTitle() {
+
+  const title =
+    document.getElementById(
+      "aiTalkPersonTitle"
+    );
+
+
+  if (title) {
+
+    title.textContent =
+      "プレゼントを一緒に考えます";
 
   }
 
@@ -1076,6 +1497,45 @@ function updateSubmitButton() {
     )?.value || "";
 
 
+  const relationship =
+    document.getElementById(
+      "recipientRelationship"
+    )?.value || "";
+
+
+  /*
+    贈る相手の入力確認
+  */
+  let recipientIsValid = false;
+
+
+  if (
+    consultationMode ===
+    "personal"
+  ) {
+
+    recipientIsValid =
+      currentPerson !== null;
+
+  } else if (
+    recipientType ===
+    "registered"
+  ) {
+
+    recipientIsValid =
+      currentPerson !== null;
+
+  } else if (
+    recipientType ===
+    "unregistered"
+  ) {
+
+    recipientIsValid =
+      relationship !== "";
+
+  }
+
+
   const occasionIsValid =
     selectedOccasion !== "" &&
     (
@@ -1097,6 +1557,7 @@ function updateSubmitButton() {
 
   submitButton.disabled =
     !(
+      recipientIsValid &&
       occasionIsValid &&
       budgetIsValid
     );
@@ -1171,6 +1632,80 @@ function validateForm() {
   }
 
 
+  /*
+    一般相談：相手の種類
+  */
+  if (
+    consultationMode === "general" &&
+    !recipientType
+  ) {
+
+    if (message) {
+
+      message.textContent =
+        "贈る相手を選択してください。";
+
+    }
+
+
+    return false;
+
+  }
+
+
+  /*
+    一般相談：登録済み人物
+  */
+  if (
+    consultationMode === "general" &&
+    recipientType === "registered" &&
+    !currentPerson
+  ) {
+
+    if (message) {
+
+      message.textContent =
+        "登録済みの人物を選択してください。";
+
+    }
+
+
+    return false;
+
+  }
+
+
+  /*
+    一般相談：登録なし
+  */
+  const relationship =
+    document.getElementById(
+      "recipientRelationship"
+    )?.value || "";
+
+
+  if (
+    consultationMode === "general" &&
+    recipientType === "unregistered" &&
+    !relationship
+  ) {
+
+    if (message) {
+
+      message.textContent =
+        "相手との関係を選択してください。";
+
+    }
+
+
+    return false;
+
+  }
+
+
+  /*
+    贈る目的
+  */
   if (
     !selectedOccasion ||
     !selectedBudget
@@ -1212,6 +1747,9 @@ function validateForm() {
   }
 
 
+  /*
+    自由入力の予算
+  */
   const customBudget =
     document.getElementById(
       "customBudget"
@@ -1270,10 +1808,71 @@ function createConsultationData() {
       .trim() || "";
 
 
+  const relationship =
+    document.getElementById(
+      "recipientRelationship"
+    )?.value || "";
+
+
+  const ageGroup =
+    document.getElementById(
+      "recipientAgeGroup"
+    )?.value || "";
+
+
+  const likes =
+    document.getElementById(
+      "recipientLikes"
+    )?.value
+      .trim() || "";
+
+
+  const avoid =
+    document.getElementById(
+      "recipientAvoid"
+    )?.value
+      .trim() || "";
+
+
+  /*
+    登録していない相手の情報
+  */
+  const unregisteredRecipient =
+    (
+      consultationMode === "general" &&
+      recipientType === "unregistered"
+    )
+      ? {
+          relationship:
+            relationship,
+
+          ageGroup:
+            ageGroup,
+
+          likes:
+            likes,
+
+          avoid:
+            avoid
+        }
+      : null;
+
+
   return {
+
+    mode:
+      consultationMode,
+
+    recipientType:
+      consultationMode === "personal"
+        ? "registered"
+        : recipientType,
 
     person:
       currentPerson,
+
+    unregisteredRecipient:
+      unregisteredRecipient,
 
     giftHistory:
       giftLogs,
