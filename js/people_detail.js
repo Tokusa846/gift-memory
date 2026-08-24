@@ -72,6 +72,8 @@ document.addEventListener(
 
     setupGiftAddButton();
 
+    setupPersonalAiConsultButton();
+
     setupMemoAdd();
 
     setupMemoEdit();
@@ -328,6 +330,37 @@ function renderPersonDetail() {
       )}`;
 
 }
+
+
+/* ========================================
+   PERSONAL AI CONSULT BUTTON
+======================================== */
+
+function setupPersonalAiConsultButton() {
+
+  const button =
+    document.getElementById(
+      "personalAiConsultButton"
+    );
+
+
+  if (
+    !button ||
+    !currentPerson
+  ) {
+    return;
+  }
+
+
+  button.href =
+    `ai.html?person_id=${encodeURIComponent(
+      currentPerson.id
+    )}&return_to=${encodeURIComponent(
+      `people_detail.html?id=${currentPerson.id}`
+    )}`;
+
+}
+
 
 
 /* ========================================

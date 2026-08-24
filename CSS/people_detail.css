@@ -190,6 +190,117 @@
   font-weight: 700;
 }
 
+/* ========================================
+   PERSONAL AI CONSULTATION
+======================================== */
+
+.personal-ai-consult-button {
+  display: flex;
+  align-items: center;
+
+  gap: 12px;
+
+  width: 100%;
+
+  margin-bottom: 12px;
+  padding: 14px 15px;
+
+  box-sizing: border-box;
+
+  border: 1px solid #eadcf6;
+  border-radius: 16px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #fbf7ff 0%,
+      #fff8f3 100%
+    );
+
+  color: #4a423d;
+
+  text-decoration: none;
+
+  box-shadow:
+    0 3px 10px rgba(111, 72, 145, 0.06);
+
+  transition:
+    transform 0.15s,
+    box-shadow 0.15s;
+}
+
+
+.personal-ai-consult-button:hover {
+  box-shadow:
+    0 5px 14px rgba(111, 72, 145, 0.11);
+}
+
+
+.personal-ai-consult-button:active {
+  transform: scale(0.98);
+}
+
+
+.personal-ai-consult-icon {
+  width: 42px;
+  height: 42px;
+
+  flex-shrink: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 13px;
+
+  background-color: #efe4f7;
+
+  color: #8b5ca8;
+
+  font-size: 17px;
+}
+
+
+.personal-ai-consult-text {
+  min-width: 0;
+
+  flex: 1;
+
+  display: flex;
+  flex-direction: column;
+
+  gap: 3px;
+}
+
+
+.personal-ai-consult-text strong {
+  color: #4a3d50;
+
+  font-size: 13px;
+  font-weight: 700;
+
+  line-height: 1.5;
+}
+
+
+.personal-ai-consult-text small {
+  color: #8d828f;
+
+  font-size: 10px;
+  font-weight: 500;
+
+  line-height: 1.5;
+}
+
+
+.personal-ai-consult-arrow {
+  flex-shrink: 0;
+
+  color: #b8a9bd;
+
+  font-size: 11px;
+}
+
 
 /* ========================================
    GIFT COUNT
