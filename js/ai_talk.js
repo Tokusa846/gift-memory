@@ -374,14 +374,8 @@ function renderPersonInformation() {
   );
 
 
-  const giftHistoryText =
-    createGiftHistoryText();
-
-
-  addPersonInfoRow(
-    container,
-    "過去の贈り物",
-    giftHistoryText
+    addGiftHistoryReference(
+    container
   );
 
 
@@ -490,54 +484,223 @@ function addPersonInfoRow(
 
 
 /* ========================================
-   CREATE GIFT HISTORY TEXT
+   ADD GIFT HISTORY REFERENCE
 ======================================== */
 
-function createGiftHistoryText() {
+function addGiftHistoryReference(
+  container
+) {
 
   if (
     giftLogs.length === 0
   ) {
+    return;
+  }
 
-    return "";
+
+  const receivedGifts =
+    giftLogs.filter(
+      gift =>
+        gift.direction ===
+        "received"
+    );
+
+
+  const givenGifts =
+    giftLogs.filter(
+      gift =>
+        gift.direction ===
+        "given"
+    );
+
+
+  const wrapper =
+    document.createElement(
+      "div"
+    );
+
+
+  wrapper.className =
+    "ai-talk-person-row ai-talk-gift-history";
+
+
+  const label =
+    document.createElement(
+      "span"
+    );
+
+
+  label.className =
+    "ai-talk-person-label";
+
+
+  label.textContent =
+    "過去の贈り物";
+
+
+  const groups =
+    document.createElement(
+      "div"
+    );
+
+
+  groups.className =
+    "ai-talk-gift-history-groups";
+
+
+  /*
+    もらったプレゼントを上に表示
+  */
+  if (
+    receivedGifts.length > 0
+  ) {
+
+    groups.appendChild(
+      createGiftHistoryReferenceGroup(
+        receivedGifts,
+        "received"
+      )
+    );
 
   }
 
 
-  return giftLogs
-    .slice(
-      0,
-      5
-    )
-    .map(
-      gift => {
+  /*
+    贈ったプレゼントを下に表示
+  */
+  if (
+    givenGifts.length > 0
+  ) {
 
-        const direction =
-          gift.direction === "received"
-            ? "もらった"
-            : "贈った";
+    groups.appendChild(
+      createGiftHistoryReferenceGroup(
+        givenGifts,
+        "given"
+      )
+    );
 
-
-        const itemName =
-          gift.item_name ||
-          "内容未登録";
+  }
 
 
-        const occasion =
-          gift.occasion
-            ? `（${gift.occasion}）`
-            : "";
+  wrapper.appendChild(
+    label
+  );
 
 
-        return (
-          `${direction}：` +
-          `${itemName}` +
-          `${occasion}`
-        );
+  wrapper.appendChild(
+    groups
+  );
 
-      }
-    )
-    .join("、");
+
+  container.appendChild(
+    wrapper
+  );
+
+}
+
+
+/* ========================================
+   CREATE GIFT HISTORY REFERENCE GROUP
+======================================== */
+
+function createGiftHistoryReferenceGroup(
+  gifts,
+  direction
+) {
+
+  const group =
+    document.createElement(
+      "div"
+    );
+
+
+  group.className =
+    "ai-talk-gift-history-group";
+
+
+  const icon =
+    document.createElement(
+      "span"
+    );
+
+
+  icon.className =
+    `ai-talk-gift-history-icon ${direction}`;
+
+
+  const iconElement =
+    document.createElement(
+      "i"
+    );
+
+
+  iconElement.className =
+    "fa-solid fa-gift";
+
+
+  icon.appendChild(
+    iconElement
+  );
+
+
+  const text =
+    document.createElement(
+      "p"
+    );
+
+
+  text.className =
+    "ai-talk-gift-history-text";
+
+
+  text.textContent =
+    gifts
+      .map(
+        gift =>
+          formatGiftHistoryReferenceItem(
+            gift
+          )
+      )
+      .join("、");
+
+
+  group.appendChild(
+    icon
+  );
+
+
+  group.appendChild(
+    text
+  );
+
+
+  return group;
+
+}
+
+
+/* ========================================
+   FORMAT GIFT HISTORY REFERENCE ITEM
+======================================== */
+
+function formatGiftHistoryReferenceItem(
+  gift
+) {
+
+  const itemName =
+    gift.item_name ||
+    "内容未登録";
+
+
+  const occasion =
+    gift.occasion
+      ? `（${gift.occasion}）`
+      : "";
+
+
+  return (
+    `${itemName}${occasion}`
+  );
 
 }
 
