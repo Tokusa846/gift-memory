@@ -202,19 +202,19 @@
 
 .event-type-option input:checked
 + .event-type-button.birthday {
-  border-color: #e0a23b;
+  border-color: #d97898;
 
-  background-color: #fffaf0;
+  background-color: #fff5f8;
 
-  color: #9a6817;
+  color: #ad4f70;
 }
 
 
 .event-type-option input:checked
 + .event-type-button.birthday > i {
-  background-color: #faedcc;
+  background-color: #f9dce6;
 
-  color: #b77b1b;
+  color: #c45f82;
 }
 
 

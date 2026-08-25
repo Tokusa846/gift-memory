@@ -335,6 +335,10 @@ function updatePersonMode() {
     mode === "free";
 
 
+  const isRegistered =
+    mode === "registered";
+
+
   freeField.classList.toggle(
     "hidden",
     !isFree
@@ -343,7 +347,7 @@ function updatePersonMode() {
 
   registeredField.classList.toggle(
     "hidden",
-    isFree
+    !isRegistered
   );
 
 
@@ -352,7 +356,7 @@ function updatePersonMode() {
 
 
   personSelect.disabled =
-    isFree;
+    !isRegistered;
 
 }
 
@@ -362,7 +366,7 @@ function getSelectedPersonMode() {
   return (
     document.querySelector(
       'input[name="personMode"]:checked'
-    )?.value || "registered"
+    )?.value || ""
   );
 
 }
@@ -607,6 +611,17 @@ function validateEventForm() {
     return false;
 
   }
+
+  if (!personMode) {
+
+    showMessage(
+     "人物の入力方法を選択してください。",
+     "error"
+    );
+
+     return false;
+
+}
 
 
   showMessage(

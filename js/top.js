@@ -908,8 +908,10 @@ function createDateDetailEventHtml(
           <p class="date-detail-event-title">
 
             ${escapeHtml(
-              event.personName
-            )}さんの誕生日
+              formatPersonName(
+                event.personName
+              )
+            )}の誕生日
 
           </p>
 
@@ -947,7 +949,11 @@ function createDateDetailEventHtml(
     event.personName
       ? `
         <p class="date-detail-event-description">
-          ${escapeHtml(event.personName)}さん
+          ${escapeHtml(
+            formatPersonName(
+              event.personName
+            )
+          )}
         </p>
       `
       : "";
@@ -2371,6 +2377,35 @@ function formatDateForInput(
   );
 
 }
+
+/* ========================================
+   PERSON NAME FORMAT
+======================================== */
+
+function formatPersonName(
+  name
+) {
+
+  const trimmedName =
+    String(name ?? "").trim();
+
+
+  if (!trimmedName) {
+    return "";
+  }
+
+
+  const hasHonorific =
+    /(?:さん|様|さま|くん|君|ちゃん)$/
+      .test(trimmedName);
+
+
+  return hasHonorific
+    ? trimmedName
+    : `${trimmedName}さん`;
+
+}
+
 
 
 /* ========================================

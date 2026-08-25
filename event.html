@@ -126,7 +126,6 @@
                 type="radio"
                 name="eventType"
                 value="anniversary"
-                checked
               >
 
               <span class="event-type-button anniversary">
@@ -289,7 +288,6 @@
                 type="radio"
                 name="personMode"
                 value="registered"
-                checked
               >
 
               <span>
@@ -318,7 +316,7 @@
               type="text"
               id="eventPersonName"
               maxlength="100"
-              placeholder="例：田中さん"
+              placeholder="例：田中、田中さん（敬称は任意）"
               disabled
             >
 
@@ -328,7 +326,7 @@
           <!-- 登録済み人物 -->
           <div
             id="eventRegisteredPersonField"
-            class="event-person-field"
+            class="event-person-field hidden"
           >
 
             <label
@@ -343,7 +341,7 @@
               <select id="eventPersonSelect">
 
                 <option value="">
-                  人物を選択しない
+                  ー選択してくださいー
                 </option>
 
                 <!-- JavaScriptで人物を追加 -->

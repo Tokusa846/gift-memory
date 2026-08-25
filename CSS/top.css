@@ -193,7 +193,7 @@
 /* 誕生日 */
 
 .calendar-event-icon.birthday {
-  color: #e0a23b;
+  color: #c45f82;
 }
 
 
@@ -343,6 +343,24 @@
   border-radius: 14px;
 
   background-color: #ffffff;
+}
+
+.date-detail-event.birthday {
+  border-color: #efbfd0;
+
+  background-color: #fff7fa;
+}
+
+
+.date-detail-event-icon.birthday {
+  background-color: #f9dce6;
+
+  color: #c45f82;
+}
+
+
+.date-detail-event-label.birthday {
+  color: #ad4f70;
 }
 
 /* 記念日 */
