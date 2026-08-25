@@ -7,6 +7,8 @@ import { supabase } from "./supabase.js";
 
 let giftLogs = [];
 
+let calendarEvents = [];
+
 let currentFilter = "all";
 
 
@@ -21,6 +23,8 @@ document.addEventListener("DOMContentLoaded", async () => {
   await loadPeople();
 
   await loadGiftLogs();
+
+  await loadCalendarEvents();
 
   renderWeekStrip();
 
@@ -148,6 +152,48 @@ async function loadGiftLogs() {
 
 
   giftLogs = data ?? [];
+
+}
+
+/* ========================================
+   CALENDAR EVENT DATA
+======================================== */
+
+async function loadCalendarEvents() {
+
+  const { data, error } = await supabase
+    .from("events")
+    .select(`
+      id,
+      event_type,
+      title,
+      event_date,
+      person_id,
+      is_yearly,
+      memo,
+      people (
+        name
+      )
+    `)
+    .order("event_date", {
+      ascending: true
+    });
+
+
+  if (error) {
+
+    console.error(
+      "イベント情報の取得に失敗しました:",
+      error
+    );
+
+    calendarEvents = [];
+
+    return;
+  }
+
+
+  calendarEvents = data ?? [];
 
 }
 
@@ -443,12 +489,10 @@ function getEventsForDate(date) {
 
   const birthdayPeople =
     people.filter(person =>
-
       isBirthdayOnDate(
         person.birthday,
         date
       )
-
     );
 
 
@@ -465,33 +509,143 @@ function getEventsForDate(date) {
         person.id,
 
       personName:
-        person.name
+        person.name,
+
+      isYearly:
+        true
 
     });
 
   });
 
 
-  /*
-    今後ここに追加できます。
+  /* =========================
+     REGISTERED EVENTS
+  ========================== */
 
-    例：
+  const registeredEvents =
+    calendarEvents.filter(event =>
+      isRegisteredEventOnDate(
+        event,
+        date
+      )
+    );
+
+
+  registeredEvents.forEach(event => {
 
     events.push({
-      type: "gift",
-      title: "プレゼント予定"
+
+      id:
+        event.id,
+
+      type:
+        event.event_type,
+
+      title:
+        event.title,
+
+      eventDate:
+        event.event_date,
+
+      personId:
+        event.person_id,
+
+      personName:
+        event.people?.name ?? "",
+
+      isYearly:
+        event.is_yearly,
+
+      memo:
+        event.memo ?? ""
+
     });
 
-    events.push({
-      type: "anniversary",
-      title: "記念日"
-    });
-  */
+  });
 
 
   return events;
 
 }
+
+/* ========================================
+   REGISTERED EVENT CHECK
+======================================== */
+
+function isRegisteredEventOnDate(
+  event,
+  targetDate
+) {
+
+  if (
+    !event ||
+    !event.event_date
+  ) {
+
+    return false;
+
+  }
+
+
+  const dateParts =
+    event.event_date
+      .split("-")
+      .map(Number);
+
+
+  const eventYear =
+    dateParts[0];
+
+  const eventMonth =
+    dateParts[1];
+
+  const eventDay =
+    dateParts[2];
+
+
+  if (
+    event.is_yearly
+  ) {
+
+    return (
+
+      eventMonth ===
+        targetDate.getMonth() + 1
+
+      &&
+
+      eventDay ===
+        targetDate.getDate()
+
+    );
+
+  }
+
+
+  return (
+
+    eventYear ===
+      targetDate.getFullYear()
+
+    &&
+
+    eventMonth ===
+      targetDate.getMonth() + 1
+
+    &&
+
+    eventDay ===
+      targetDate.getDate()
+
+  );
+
+}
+
+
+/* ========================================
+   CALENDAR EVENT ICON
+======================================== */
 
 function createCalendarEventIcon(
   type
@@ -533,7 +687,7 @@ function createCalendarEventIcon(
 
       icon.setAttribute(
         "aria-label",
-        "プレゼント"
+        "プレゼント予定"
       );
 
       break;
@@ -554,9 +708,44 @@ function createCalendarEventIcon(
       break;
 
 
+    case "celebration":
+
+      icon.classList.add(
+        "fa-champagne-glasses",
+        "celebration"
+      );
+
+      icon.setAttribute(
+        "aria-label",
+        "お祝い"
+      );
+
+      break;
+
+
+    case "other":
+
+      icon.classList.add(
+        "fa-calendar",
+        "other"
+      );
+
+      icon.setAttribute(
+        "aria-label",
+        "その他のイベント"
+      );
+
+      break;
+
+
     default:
 
-      return null;
+      icon.classList.add(
+        "fa-calendar",
+        "other"
+      );
+
+      break;
 
   }
 
@@ -564,6 +753,7 @@ function createCalendarEventIcon(
   return icon;
 
 }
+
 
 /* ========================================
    DATE DETAIL MODAL
@@ -691,9 +881,9 @@ function createDateDetailEventHtml(
 
     return `
 
-      <article class="date-detail-event">
+      <article class="date-detail-event birthday">
 
-        <div class="date-detail-event-icon">
+        <div class="date-detail-event-icon birthday">
 
           <i
             class="
@@ -707,8 +897,8 @@ function createDateDetailEventHtml(
 
         <div class="date-detail-event-body">
 
-          <span class="date-detail-event-label">
-            イベントあり
+          <span class="date-detail-event-label birthday">
+            誕生日
           </span>
 
 
@@ -734,9 +924,146 @@ function createDateDetailEventHtml(
   }
 
 
-  return "";
+  /* =========================
+     REGISTERED EVENT
+  ========================== */
+
+  const settings =
+    getEventDisplaySettings(
+      event.type
+    );
+
+
+  const yearlyText =
+    event.isYearly
+      ? "・毎年"
+      : "";
+
+
+  const personHtml =
+    event.personName
+      ? `
+        <p class="date-detail-event-description">
+          ${escapeHtml(event.personName)}さんに関するイベント
+        </p>
+      `
+      : "";
+
+
+  const memoHtml =
+    event.memo
+      ? `
+        <p class="date-detail-event-description">
+          ${escapeHtml(event.memo)}
+        </p>
+      `
+      : "";
+
+
+  return `
+
+    <article
+      class="
+        date-detail-event
+        ${escapeHtml(event.type)}
+      "
+    >
+
+      <div
+        class="
+          date-detail-event-icon
+          ${escapeHtml(event.type)}
+        "
+      >
+
+        <i
+          class="
+            fa-solid
+            ${settings.iconClass}
+          "
+        ></i>
+
+      </div>
+
+
+      <div class="date-detail-event-body">
+
+        <span
+          class="
+            date-detail-event-label
+            ${escapeHtml(event.type)}
+          "
+        >
+          ${settings.label}${yearlyText}
+        </span>
+
+
+        <p class="date-detail-event-title">
+          ${escapeHtml(event.title)}
+        </p>
+
+
+        ${personHtml}
+
+        ${memoHtml}
+
+      </div>
+
+    </article>
+
+  `;
 
 }
+
+function getEventDisplaySettings(
+  type
+) {
+
+  switch (type) {
+
+    case "anniversary":
+
+      return {
+        label: "記念日",
+        iconClass: "fa-heart"
+      };
+
+
+    case "celebration":
+
+      return {
+        label: "お祝い",
+        iconClass: "fa-champagne-glasses"
+      };
+
+
+    case "gift":
+
+      return {
+        label: "プレゼント予定",
+        iconClass: "fa-gift"
+      };
+
+
+    case "other":
+
+      return {
+        label: "その他",
+        iconClass: "fa-calendar"
+      };
+
+
+    default:
+
+      return {
+        label: "イベント",
+        iconClass: "fa-calendar"
+      };
+
+  }
+
+}
+
 
 function closeDateDetailModal() {
 
@@ -783,7 +1110,6 @@ function setupDateDetailModal() {
 
 
   /* 閉じる */
-
   closeButton.addEventListener(
     "click",
     () => {
@@ -795,7 +1121,6 @@ function setupDateDetailModal() {
 
 
   /* 背景タップ */
-
   modal.addEventListener(
     "click",
     event => {
@@ -813,7 +1138,6 @@ function setupDateDetailModal() {
 
 
   /* Esc */
-
   document.addEventListener(
     "keydown",
     event => {
@@ -855,7 +1179,9 @@ function setupDateDetailModal() {
       */
 
       window.location.href =
-        `gifts.html?date=${selectedDate}`;
+        `event.html?date=${encodeURIComponent(
+          selectedDate
+        )}`;
 
     }
   );

@@ -197,22 +197,29 @@
 }
 
 
-/* 将来用：プレゼント */
-
+/* プレゼント */
 .calendar-event-icon.gift {
   color: #e86a58;
 }
 
 
-/* 将来用：記念日 */
-
+/* 記念日 */
 .calendar-event-icon.anniversary {
   color: #c27eb8;
 }
 
+/* お祝い */
+.calendar-event-icon.celebration {
+  color: #e0a23b;
+}
+
+
+/* その他 */
+.calendar-event-icon.other {
+  color: #6f849c;
+}
 
 /* イベントなしでも高さを維持 */
-
 .calendar-event-spacer {
   display: block;
 
@@ -324,7 +331,6 @@
 
 
 /* イベントカード */
-
 .date-detail-event {
   display: flex;
   align-items: flex-start;
@@ -333,12 +339,54 @@
 
   padding: 14px;
 
-  border: 1px solid #f4cf72;
+  border: 1px solid #eee9e4;
   border-radius: 14px;
 
-  background-color: #fffaf0;
+  background-color: #ffffff;
 }
 
+/* 記念日 */
+.date-detail-event-icon.anniversary {
+  background-color: #f8eafa;
+  color: #b46baa;
+}
+
+.date-detail-event-label.anniversary {
+  color: #9c5794;
+}
+
+
+/* お祝い */
+.date-detail-event-icon.celebration {
+  background-color: #fff1c9;
+  color: #dd991c;
+}
+
+.date-detail-event-label.celebration {
+  color: #9a6817;
+}
+
+
+/* プレゼント予定 */
+.date-detail-event-icon.gift {
+  background-color: #fde9e5;
+  color: #e86a58;
+}
+
+.date-detail-event-label.gift {
+  color: #c65343;
+}
+
+
+/* その他 */
+.date-detail-event-icon.other {
+  background-color: #eaf0f6;
+  color: #6f849c;
+}
+
+.date-detail-event-label.other {
+  color: #53677e;
+}
 
 .date-detail-event + .date-detail-event {
   margin-top: 10px;

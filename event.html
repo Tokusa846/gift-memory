@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+  >
+
+  <title>イベント登録 | Gift Memory</title>
+
+
+  <!-- Font Awesome -->
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+  >
+
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+
+  <link
+    rel="preconnect"
+    href="https://fonts.gstatic.com"
+    crossorigin
+  >
+
+  <link
+    href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;600;700&display=swap"
+    rel="stylesheet"
+  >
+
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="CSS/common.css">
+  <link rel="stylesheet" href="CSS/event.css">
+
+</head>
+
+
+<body>
+
+  <div class="app-container event-page">
+
+
+    <!-- ===============================================
+         HEADER
+    ================================================ -->
+    <header class="event-page-header">
+
+      <a
+        href="index.html"
+        id="eventBackButton"
+        class="event-back-button"
+        aria-label="戻る"
+      >
+        <i class="fa-solid fa-chevron-left"></i>
+      </a>
+
+
+      <h1>
+        イベントを登録
+      </h1>
+
+
+      <a
+        href="index.html"
+        id="eventCloseButton"
+        class="event-close-button"
+        aria-label="閉じる"
+      >
+        <i class="fa-solid fa-xmark"></i>
+      </a>
+
+    </header>
+
+
+    <!-- ===============================================
+         FORM
+    ================================================ -->
+    <main class="event-form-area">
+
+      <form id="eventForm">
+
+
+        <!-- EVENT TYPE -->
+        <div class="event-form-group">
+
+          <label class="event-form-label">
+            イベント種別
+          </label>
+
+
+          <div class="event-type-grid">
+
+
+            <!-- ANNIVERSARY -->
+            <label class="event-type-option">
+
+              <input
+                type="radio"
+                name="eventType"
+                value="anniversary"
+                checked
+              >
+
+              <span class="event-type-button anniversary">
+
+                <i class="fa-solid fa-heart"></i>
+
+                <span>
+                  記念日
+                </span>
+
+              </span>
+
+            </label>
+
+
+            <!-- CELEBRATION -->
+            <label class="event-type-option">
+
+              <input
+                type="radio"
+                name="eventType"
+                value="celebration"
+              >
+
+              <span class="event-type-button celebration">
+
+                <i class="fa-solid fa-champagne-glasses"></i>
+
+                <span>
+                  お祝い
+                </span>
+
+              </span>
+
+            </label>
+
+
+            <!-- GIFT -->
+            <label class="event-type-option">
+
+              <input
+                type="radio"
+                name="eventType"
+                value="gift"
+              >
+
+              <span class="event-type-button gift">
+
+                <i class="fa-solid fa-gift"></i>
+
+                <span>
+                  プレゼント予定
+                </span>
+
+              </span>
+
+            </label>
+
+
+            <!-- OTHER -->
+            <label class="event-type-option">
+
+              <input
+                type="radio"
+                name="eventType"
+                value="other"
+              >
+
+              <span class="event-type-button other">
+
+                <i class="fa-regular fa-calendar"></i>
+
+                <span>
+                  その他
+                </span>
+
+              </span>
+
+            </label>
+
+          </div>
+
+        </div>
+
+
+        <!-- TITLE -->
+        <div class="event-form-group">
+
+          <label
+            for="eventTitle"
+            class="event-form-label"
+          >
+            イベント名
+          </label>
+
+
+          <input
+            type="text"
+            id="eventTitle"
+            maxlength="100"
+            placeholder="例：結婚記念日、入学祝い"
+            required
+          >
+
+        </div>
+
+
+        <!-- DATE -->
+        <div class="event-form-group">
+
+          <label
+            for="eventDate"
+            class="event-form-label"
+          >
+            日付
+          </label>
+
+
+          <input
+            type="date"
+            id="eventDate"
+            required
+          >
+
+        </div>
+
+
+        <!-- PERSON -->
+        <div class="event-form-group">
+
+          <label
+            for="eventPersonSelect"
+            class="event-form-label"
+          >
+            関係する人物
+            <span class="event-optional-label">
+              任意
+            </span>
+          </label>
+
+
+          <div class="event-select-wrapper">
+
+            <select id="eventPersonSelect">
+
+              <option value="">
+                人物を選択しない
+              </option>
+
+              <!-- JavaScriptで人物を追加 -->
+
+            </select>
+
+
+            <i class="fa-solid fa-chevron-down"></i>
+
+          </div>
+
+        </div>
+
+
+        <!-- YEARLY -->
+        <div class="event-repeat-field">
+
+          <label class="event-repeat-label">
+
+            <input
+              type="checkbox"
+              id="eventIsYearly"
+            >
+
+
+            <span class="event-repeat-check">
+
+              <i class="fa-solid fa-check"></i>
+
+            </span>
+
+
+            <span class="event-repeat-text">
+
+              <strong>
+                毎年繰り返す
+              </strong>
+
+              <small>
+                記念日などを毎年カレンダーに表示します
+              </small>
+
+            </span>
+
+          </label>
+
+        </div>
+
+
+        <!-- MEMO -->
+        <div class="event-form-group">
+
+          <label
+            for="eventMemo"
+            class="event-form-label"
+          >
+            メモ
+            <span class="event-optional-label">
+              任意
+            </span>
+          </label>
+
+
+          <textarea
+            id="eventMemo"
+            rows="4"
+            maxlength="500"
+            placeholder="覚えておきたいことを入力"
+          ></textarea>
+
+        </div>
+
+
+        <!-- MESSAGE -->
+        <p
+          id="eventFormMessage"
+          class="event-form-message"
+          aria-live="polite"
+        ></p>
+
+
+        <!-- SUBMIT -->
+        <button
+          type="submit"
+          id="eventSubmitButton"
+          class="event-submit-button"
+        >
+
+          <span>
+            イベントを登録
+          </span>
+
+        </button>
+
+      </form>
+
+    </main>
+
+  </div>
+
+
+  <script
+    type="module"
+    src="js/event.js"
+  ></script>
+
+</body>
+
+</html>
