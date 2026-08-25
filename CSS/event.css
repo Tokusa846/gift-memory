@@ -198,6 +198,25 @@
   transform: scale(0.98);
 }
 
+/* 誕生日 */
+
+.event-type-option input:checked
++ .event-type-button.birthday {
+  border-color: #e0a23b;
+
+  background-color: #fffaf0;
+
+  color: #9a6817;
+}
+
+
+.event-type-option input:checked
++ .event-type-button.birthday > i {
+  background-color: #faedcc;
+
+  color: #b77b1b;
+}
+
 
 /* 記念日 */
 
@@ -341,6 +360,90 @@
   color: #b4aca7;
 }
 
+/* ========================================
+   PERSON MODE
+======================================== */
+
+.event-person-mode {
+  display: grid;
+
+  grid-template-columns:
+    repeat(2, minmax(0, 1fr));
+
+  gap: 8px;
+
+  margin-bottom: 12px;
+}
+
+
+.event-person-mode-option {
+  cursor: pointer;
+}
+
+
+.event-person-mode-option input {
+  position: absolute;
+
+  width: 1px;
+  height: 1px;
+
+  opacity: 0;
+
+  pointer-events: none;
+}
+
+
+.event-person-mode-option span {
+  min-height: 40px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  box-sizing: border-box;
+
+  border: 1px solid #ddd6d1;
+  border-radius: 10px;
+
+  background-color: #ffffff;
+
+  color: #746b65;
+
+  font-size: 11px;
+  font-weight: 600;
+}
+
+
+.event-person-mode-option input:checked
++ span {
+  border-color: #e38d7f;
+
+  background-color: #fff5f2;
+
+  color: #c95545;
+}
+
+
+.event-person-field {
+  margin-top: 8px;
+}
+
+
+.event-person-sub-label {
+  display: block;
+
+  margin-bottom: 6px;
+
+  color: #746b65;
+
+  font-size: 10px;
+  font-weight: 600;
+}
+
+
+.event-person-field.hidden {
+  display: none;
+}
 
 /* ========================================
    SELECT

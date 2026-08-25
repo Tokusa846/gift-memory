@@ -16,6 +16,10 @@ document.addEventListener(
 
     await loadPeople();
 
+    setupPersonMode();
+
+    setupEventTypeBehavior();
+
     setupEventForm();
 
   }
@@ -271,6 +275,184 @@ async function loadPeople() {
 
 
 /* ========================================
+   PERSON INPUT MODE
+======================================== */
+
+function setupPersonMode() {
+
+  const modeInputs =
+    document.querySelectorAll(
+      'input[name="personMode"]'
+    );
+
+
+  modeInputs.forEach(input => {
+
+    input.addEventListener(
+      "change",
+      updatePersonMode
+    );
+
+  });
+
+
+  updatePersonMode();
+
+}
+
+
+function updatePersonMode() {
+
+  const mode =
+    getSelectedPersonMode();
+
+
+  const freeField =
+    document.getElementById(
+      "eventFreePersonField"
+    );
+
+
+  const registeredField =
+    document.getElementById(
+      "eventRegisteredPersonField"
+    );
+
+
+  const freeInput =
+    document.getElementById(
+      "eventPersonName"
+    );
+
+
+  const personSelect =
+    document.getElementById(
+      "eventPersonSelect"
+    );
+
+
+  const isFree =
+    mode === "free";
+
+
+  freeField.classList.toggle(
+    "hidden",
+    !isFree
+  );
+
+
+  registeredField.classList.toggle(
+    "hidden",
+    isFree
+  );
+
+
+  freeInput.disabled =
+    !isFree;
+
+
+  personSelect.disabled =
+    isFree;
+
+}
+
+
+function getSelectedPersonMode() {
+
+  return (
+    document.querySelector(
+      'input[name="personMode"]:checked'
+    )?.value || "registered"
+  );
+
+}
+
+/* ========================================
+   EVENT TYPE BEHAVIOR
+======================================== */
+
+function setupEventTypeBehavior() {
+
+  const eventTypeInputs =
+    document.querySelectorAll(
+      'input[name="eventType"]'
+    );
+
+
+  eventTypeInputs.forEach(input => {
+
+    input.addEventListener(
+      "change",
+      updateEventTypeBehavior
+    );
+
+  });
+
+
+  updateEventTypeBehavior();
+
+}
+
+
+function updateEventTypeBehavior() {
+
+  const eventType =
+    getSelectedEventType();
+
+
+  const yearlyCheckbox =
+    document.getElementById(
+      "eventIsYearly"
+    );
+
+
+  if (!yearlyCheckbox) {
+    return;
+  }
+
+
+  const isBirthday =
+    eventType === "birthday";
+
+
+  if (isBirthday) {
+
+    yearlyCheckbox.dataset.previousChecked =
+      yearlyCheckbox.checked
+        ? "true"
+        : "false";
+
+
+    yearlyCheckbox.checked =
+      true;
+
+
+    yearlyCheckbox.disabled =
+      true;
+
+  } else {
+
+    if (
+      yearlyCheckbox.disabled
+    ) {
+
+      yearlyCheckbox.checked =
+        yearlyCheckbox.dataset
+          .previousChecked === "true";
+
+    }
+
+
+    yearlyCheckbox.disabled =
+      false;
+
+  }
+
+}
+
+
+
+/* ========================================
    EVENT FORM
 ======================================== */
 
@@ -334,13 +516,33 @@ function validateEventForm() {
       ?.value || "";
 
 
+  const personMode =
+    getSelectedPersonMode();
+
+
+  const freePersonName =
+    document
+      .getElementById(
+        "eventPersonName"
+      )
+      ?.value
+      .trim() || "";
+
+
+  const registeredPersonId =
+    document
+      .getElementById(
+        "eventPersonSelect"
+      )
+      ?.value || "";
+
+
   if (!eventType) {
 
     showMessage(
       "イベント種別を選択してください。",
       "error"
     );
-
 
     return false;
 
@@ -353,7 +555,6 @@ function validateEventForm() {
       "イベント名を入力してください。",
       "error"
     );
-
 
     return false;
 
@@ -372,6 +573,36 @@ function validateEventForm() {
       "error"
     );
 
+    return false;
+
+  }
+
+
+  if (
+    personMode === "free" &&
+    !freePersonName
+  ) {
+
+    showMessage(
+      "自由入力する人物名を入力してください。",
+      "error"
+    );
+
+    return false;
+
+  }
+
+
+  if (
+    eventType === "birthday" &&
+    personMode === "registered" &&
+    !registeredPersonId
+  ) {
+
+    showMessage(
+      "誕生日を登録する人物を選択してください。",
+      "error"
+    );
 
     return false;
 
@@ -422,7 +653,11 @@ async function saveEvent() {
       .value;
 
 
-  const personId =
+  const personMode =
+    getSelectedPersonMode();
+
+
+  const selectedPersonId =
     document
       .getElementById(
         "eventPersonSelect"
@@ -430,7 +665,17 @@ async function saveEvent() {
       .value;
 
 
+  const freePersonName =
+    document
+      .getElementById(
+        "eventPersonName"
+      )
+      .value
+      .trim();
+
+
   const isYearly =
+    eventType === "birthday" ||
     document
       .getElementById(
         "eventIsYearly"
@@ -447,6 +692,18 @@ async function saveEvent() {
       .trim();
 
 
+  const personId =
+    personMode === "registered"
+      ? selectedPersonId || null
+      : null;
+
+
+  const relatedPersonName =
+    personMode === "free"
+      ? freePersonName || null
+      : null;
+
+
   setSubmitState(
     submitButton,
     true
@@ -457,6 +714,7 @@ async function saveEvent() {
     await supabase
       .from("events")
       .insert({
+
         event_type:
           eventType,
 
@@ -467,13 +725,17 @@ async function saveEvent() {
           eventDate,
 
         person_id:
-          personId || null,
+          personId,
+
+        related_person_name:
+          relatedPersonName,
 
         is_yearly:
           isYearly,
 
         memo:
           memo || null
+
       });
 
 

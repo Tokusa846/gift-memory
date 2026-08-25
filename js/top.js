@@ -169,6 +169,7 @@ async function loadCalendarEvents() {
       title,
       event_date,
       person_id,
+      related_person_name,
       is_yearly,
       memo,
       people (
@@ -552,7 +553,9 @@ function getEventsForDate(date) {
         event.person_id,
 
       personName:
-        event.people?.name ?? "",
+        event.people?.name
+        ?? event.related_person_name
+        ?? "",
 
       isYearly:
         event.is_yearly,
@@ -944,7 +947,7 @@ function createDateDetailEventHtml(
     event.personName
       ? `
         <p class="date-detail-event-description">
-          ${escapeHtml(event.personName)}さんに関するイベント
+          ${escapeHtml(event.personName)}さん
         </p>
       `
       : "";

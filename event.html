@@ -97,6 +97,27 @@
 
           <div class="event-type-grid">
 
+            <!-- BIRTHDAY -->
+            <label class="event-type-option">
+
+              <input
+                type="radio"
+                name="eventType"
+                value="birthday"
+              >
+
+              <span class="event-type-button birthday">
+
+                <i class="fa-solid fa-cake-candles"></i>
+
+                <span>
+                  誕生日
+                </span>
+
+              </span>
+
+            </label>
+
 
             <!-- ANNIVERSARY -->
             <label class="event-type-option">
@@ -236,31 +257,102 @@
         <!-- PERSON -->
         <div class="event-form-group">
 
-          <label
-            for="eventPersonSelect"
-            class="event-form-label"
-          >
-            関係する人物
+          <span class="event-form-label">
+            関連する人物
             <span class="event-optional-label">
               任意
             </span>
-          </label>
+          </span>
 
 
-          <div class="event-select-wrapper">
+          <!-- 入力方法 -->
+          <div class="event-person-mode">
 
-            <select id="eventPersonSelect">
+            <label class="event-person-mode-option">
 
-              <option value="">
-                人物を選択しない
-              </option>
+              <input
+                type="radio"
+                name="personMode"
+                value="free"
+              >
 
-              <!-- JavaScriptで人物を追加 -->
+              <span>
+                自由入力
+              </span>
 
-            </select>
+            </label>
 
 
-            <i class="fa-solid fa-chevron-down"></i>
+            <label class="event-person-mode-option">
+
+              <input
+                type="radio"
+                name="personMode"
+                value="registered"
+                checked
+              >
+
+              <span>
+                登録済み人物
+              </span>
+
+            </label>
+
+          </div>
+
+
+          <!-- 自由入力 -->
+          <div
+            id="eventFreePersonField"
+            class="event-person-field hidden"
+          >
+
+            <label
+              for="eventPersonName"
+              class="event-person-sub-label"
+            >
+              人物名
+            </label>
+
+            <input
+              type="text"
+              id="eventPersonName"
+              maxlength="100"
+              placeholder="例：田中さん"
+              disabled
+            >
+
+          </div>
+
+
+          <!-- 登録済み人物 -->
+          <div
+            id="eventRegisteredPersonField"
+            class="event-person-field"
+          >
+
+            <label
+              for="eventPersonSelect"
+              class="event-person-sub-label"
+            >
+              登録済みの人物
+            </label>
+
+            <div class="event-select-wrapper">
+
+              <select id="eventPersonSelect">
+
+                <option value="">
+                  人物を選択しない
+                </option>
+
+                <!-- JavaScriptで人物を追加 -->
+
+              </select>
+
+              <i class="fa-solid fa-chevron-down"></i>
+
+            </div>
 
           </div>
 
