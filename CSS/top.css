@@ -542,6 +542,146 @@
 
 }
 
+/* ========================================
+   EVENT ACTION MENU
+======================================== */
+
+.date-detail-event {
+  position: relative;
+
+  overflow: visible;
+}
+
+
+.date-detail-actions {
+  position: relative;
+
+  flex-shrink: 0;
+}
+
+
+.date-detail-actions-toggle {
+  width: 32px;
+  height: 32px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 0;
+
+  border: none;
+  border-radius: 9px;
+
+  background-color: transparent;
+
+  color: #978d87;
+
+  font-size: 14px;
+
+  cursor: pointer;
+}
+
+
+.date-detail-actions-toggle:hover {
+  background-color: #f2efed;
+
+  color: #514943;
+}
+
+
+.date-detail-actions-toggle:active {
+  transform: scale(0.94);
+}
+
+
+.date-detail-actions-menu {
+  position: absolute;
+
+  top: 34px;
+  right: 0;
+
+  z-index: 20;
+
+  width: 112px;
+
+  box-sizing: border-box;
+
+  padding: 5px;
+
+  border: 1px solid #e8e2de;
+  border-radius: 10px;
+
+  background-color: #ffffff;
+
+  box-shadow:
+    0 8px 22px rgba(72, 59, 51, 0.15);
+}
+
+
+.date-detail-actions-menu.hidden {
+  display: none;
+}
+
+
+.date-detail-action-item {
+  width: 100%;
+  min-height: 34px;
+
+  display: flex;
+  align-items: center;
+
+  gap: 8px;
+
+  box-sizing: border-box;
+
+  padding: 7px 9px;
+
+  border: none;
+  border-radius: 7px;
+
+  background-color: transparent;
+
+  color: #514943;
+
+  font-family: inherit;
+  font-size: 11px;
+  font-weight: 600;
+
+  text-align: left;
+
+  cursor: pointer;
+}
+
+
+.date-detail-action-item:hover {
+  background-color: #f6f3f1;
+}
+
+
+.date-detail-action-item > i {
+  width: 14px;
+
+  text-align: center;
+}
+
+
+.date-detail-action-item.delete {
+  color: #d45e50;
+}
+
+
+.date-detail-action-item.delete:hover {
+  background-color: #fff0ed;
+}
+
+
+.date-detail-action-item:disabled {
+  cursor: wait;
+
+  opacity: 0.55;
+}
+
 
 
 
