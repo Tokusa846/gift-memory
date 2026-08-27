@@ -42,25 +42,67 @@
 
       <div class="date-header">
         <div class="date-title-area">
-          <h1 id="currentDateHeader">----.--.--.</h1>
+          <button
+            type="button"
+            id="currentDateHeader"
+            class="current-date-button"
+            aria-label="今週のカレンダーへ戻る"
+          >
+            ----.--.--.
+          </button>
           <span class="today-badge">Today</span>
         </div>
       </div>
 
-      <!-- 曜日 -->
-      <div class="weekday-row">
-        <div>日</div>
-        <div>月</div>
-        <div>火</div>
-        <div>水</div>
-        <div>木</div>
-        <div>金</div>
-        <div>土</div>
-      </div>
-
       <!-- 週間カレンダー -->
-      <div id="weeklyStrip" class="weekly-strip">
-        <!-- JSで生成 -->
+      <div class="week-calendar-navigation">
+
+        <!-- 前の週 -->
+        <button
+          type="button"
+          id="previousWeekButton"
+          class="week-navigation-button"
+          aria-label="前の週を表示"
+        >
+          <i class="fa-solid fa-chevron-left"></i>
+        </button>
+
+
+        <!-- 曜日・日付 -->
+        <div class="week-calendar-content">
+
+          <!-- 曜日 -->
+          <div class="weekday-row">
+            <div>日</div>
+            <div>月</div>
+            <div>火</div>
+            <div>水</div>
+            <div>木</div>
+            <div>金</div>
+            <div>土</div>
+          </div>
+
+          <!-- 日付 -->
+          <div
+            id="weeklyStrip"
+            class="weekly-strip"
+          >
+            <!-- JSで生成 -->
+          </div>
+
+        </div>
+
+
+        <!-- 次の週 -->
+        <button
+          type="button"
+          id="nextWeekButton"
+          class="week-navigation-button"
+          aria-label="次の週を表示"
+        >
+          <i class="fa-solid fa-chevron-right"></i>
+        </button>
+
       </div>
 
     </header>

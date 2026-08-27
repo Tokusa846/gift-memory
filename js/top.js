@@ -1,5 +1,30 @@
 import { supabase } from "./supabase.js";
 
+/* ========================================
+   DATE HELPERS
+======================================== */
+
+function getStartOfWeek(
+  date
+) {
+
+  const targetDate =
+    startOfDay(
+      new Date(date)
+    );
+
+
+  targetDate.setDate(
+    targetDate.getDate()
+    -
+    targetDate.getDay()
+  );
+
+
+  return targetDate;
+
+}
+
 
 /* ========================================
    STATE
@@ -11,6 +36,11 @@ let calendarEvents = [];
 
 let currentFilter = "all";
 
+let displayedWeekStart =
+  getStartOfWeek(
+    new Date()
+  );
+
 
 /* ========================================
    INITIALIZE
@@ -19,6 +49,8 @@ let currentFilter = "all";
 document.addEventListener("DOMContentLoaded", async () => {
 
   renderCurrentDate();
+  
+  setupWeekNavigation()
 
   await loadPeople();
 
@@ -76,6 +108,105 @@ function renderCurrentDate() {
     `${year}.${month}.${date}.`;
 }
 
+
+/* ========================================
+   WEEK NAVIGATION
+======================================== */
+
+function setupWeekNavigation() {
+
+  const previousButton =
+    document.getElementById(
+      "previousWeekButton"
+    );
+
+
+  const nextButton =
+    document.getElementById(
+      "nextWeekButton"
+    );
+
+
+  const currentDateButton =
+    document.getElementById(
+      "currentDateHeader"
+    );
+
+
+  /* 前の週へ移動 */
+  previousButton?.addEventListener(
+    "click",
+    () => {
+
+      displayedWeekStart =
+        addDays(
+          displayedWeekStart,
+          -7
+        );
+
+
+      renderWeekStrip();
+
+    }
+  );
+
+
+  /*　次の週へ移動　*/
+  nextButton?.addEventListener(
+    "click",
+    () => {
+
+      displayedWeekStart =
+        addDays(
+          displayedWeekStart,
+          7
+        );
+
+
+      renderWeekStrip();
+
+    }
+  );
+
+
+  /*　今週へ戻る*/
+  currentDateButton?.addEventListener(
+    "click",
+    () => {
+
+      displayedWeekStart =
+        getStartOfWeek(
+          new Date()
+        );
+
+      renderWeekStrip();
+
+    }
+  );
+
+}
+
+function addDays(
+  date,
+  numberOfDays
+) {
+
+  const result =
+    new Date(date);
+
+
+  result.setDate(
+    result.getDate()
+    +
+    numberOfDays
+  );
+
+
+  return startOfDay(
+    result
+  );
+
+}
 
 /* ========================================
    PEOPLE
@@ -208,27 +339,29 @@ async function loadCalendarEvents() {
 function renderWeekStrip() {
 
   const container =
-    document.getElementById("weeklyStrip");
+    document.getElementById(
+      "weeklyStrip"
+    );
+
+
+  if (!container) {
+    return;
+  }
+
 
   container.innerHTML = "";
 
 
   const today =
-    startOfDay(new Date());
-
-
-  const dayOfWeek =
-    today.getDay();
+    startOfDay(
+      new Date()
+    );
 
 
   const sunday =
-    new Date(today);
-
-
-  sunday.setDate(
-    today.getDate() - dayOfWeek
-  );
-
+    new Date(
+      displayedWeekStart
+    );
 
   for (let i = 0; i < 7; i++) {
 
