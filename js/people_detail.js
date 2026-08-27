@@ -78,11 +78,320 @@ document.addEventListener(
 
     setupMemoEdit();
 
+    setupPersonActions()
+
     setupModalEscape();
     
   }
 );
 
+/* ========================================
+   PERSON ACTIONS
+======================================== */
+
+function setupPersonActions() {
+
+  const toggleButton =
+    document.getElementById(
+      "personActionsToggle"
+    );
+
+
+  const menu =
+    document.getElementById(
+      "personActionsMenu"
+    );
+
+
+  const deleteButton =
+    document.getElementById(
+      "personDeleteButton"
+    );
+
+
+  if (
+    !toggleButton ||
+    !menu ||
+    !deleteButton
+  ) {
+    return;
+  }
+
+
+  /*
+    三点リーダー
+  */
+
+  toggleButton.addEventListener(
+    "click",
+    event => {
+
+      event.stopPropagation();
+
+
+      const willOpen =
+        menu.classList.contains(
+          "hidden"
+        );
+
+
+      menu.classList.toggle(
+        "hidden",
+        !willOpen
+      );
+
+
+      toggleButton.setAttribute(
+        "aria-expanded",
+        String(willOpen)
+      );
+
+    }
+  );
+
+
+  /*
+    人物削除
+  */
+
+  deleteButton.addEventListener(
+    "click",
+    async () => {
+
+      await confirmAndDeletePerson(
+        deleteButton
+      );
+
+    }
+  );
+
+
+  /*
+    メニュー外を押した場合
+  */
+
+  document.addEventListener(
+    "click",
+    event => {
+
+      if (
+        event.target.closest(
+          ".person-detail-actions"
+        )
+      ) {
+        return;
+      }
+
+
+      closePersonActionsMenu();
+
+    }
+  );
+
+}
+
+function closePersonActionsMenu() {
+
+  const menu =
+    document.getElementById(
+      "personActionsMenu"
+    );
+
+
+  const toggleButton =
+    document.getElementById(
+      "personActionsToggle"
+    );
+
+
+  menu?.classList.add(
+    "hidden"
+  );
+
+
+  toggleButton?.setAttribute(
+    "aria-expanded",
+    "false"
+  );
+
+}
+
+async function confirmAndDeletePerson(
+  deleteButton
+) {
+
+  if (!currentPerson) {
+    return;
+  }
+
+
+  closePersonActionsMenu();
+
+
+  const personName =
+    currentPerson.name ||
+    "この人物";
+
+
+  const shouldDelete =
+    window.confirm(
+      `${personName}さんを削除しますか？\n\n`
+      +
+      "プレゼント履歴・イベント・メモも削除されます。\n"
+      +
+      "この操作は取り消せません。"
+    );
+
+
+  if (!shouldDelete) {
+    return;
+  }
+
+
+  await deletePerson(
+    currentPerson.id,
+    deleteButton
+  );
+
+}
+
+async function deletePerson(
+  personId,
+  deleteButton
+) {
+
+  const originalHtml =
+    deleteButton.innerHTML;
+
+
+  deleteButton.disabled =
+    true;
+
+
+  deleteButton.innerHTML = `
+
+    <i class="fa-solid fa-spinner fa-spin"></i>
+
+    <span>
+      削除中...
+    </span>
+
+  `;
+
+
+  try {
+
+    /*　1. プレゼント履歴の削除　*/
+    const { error: giftsError } =
+      await supabase
+        .from("Gifts")
+        .delete()
+        .eq(
+          "person_id",
+          personId
+        );
+
+
+    if (giftsError) {
+      throw giftsError;
+    }
+
+
+    /*　2. 登録イベントの削除　*/
+    const { error: eventsError } =
+      await supabase
+        .from("events")
+        .delete()
+        .eq(
+          "person_id",
+          personId
+        );
+
+
+    if (eventsError) {
+      throw eventsError;
+    }
+
+
+    /*　3. 人物メモの削除　*/
+    const { error: memosError } =
+      await supabase
+        .from("person_memos")
+        .delete()
+        .eq(
+          "person_id",
+          personId
+        );
+
+
+    if (memosError) {
+      throw memosError;
+    }
+
+
+    /*　4. 人物情報の削除　*/
+    const {
+      data: deletedPerson,
+      error: personError
+    } =
+      await supabase
+        .from("people")
+        .delete()
+        .eq(
+          "id",
+          personId
+        )
+        .select("id")
+        .maybeSingle();
+
+
+    if (personError) {
+      throw personError;
+    }
+
+
+    if (!deletedPerson) {
+
+      throw new Error(
+        "削除対象の人物を確認できませんでした。"
+      );
+
+    }
+
+
+    window.alert(
+      "人物を削除しました。"
+    );
+
+
+    window.location.href =
+      "people_manage.html";
+
+  } catch (error) {
+
+    console.error(
+      "人物の削除に失敗しました:",
+      error
+    );
+
+
+    window.alert(
+      "人物を削除できませんでした。\n"
+      +
+      "時間をおいてもう一度お試しください。"
+    );
+
+
+    deleteButton.disabled =
+      false;
+
+
+    deleteButton.innerHTML =
+      originalHtml;
+
+  }
+
+}
 
 /* ========================================
    GET PERSON ID
@@ -302,40 +611,37 @@ function renderPersonDetail() {
 
 }
 
-  /* ========================================
-   GIFT ADD BUTTON
-  ======================================== */
+/* ========================================
+    GIFT ADD BUTTON
+======================================== */
+function setupGiftAddButton() {
 
-  function setupGiftAddButton() {
-
-    const button =
-      document.getElementById(
-        "giftAddButton"
-      );
-
-
-    if (
-      !button ||
-      !currentPerson
-    ) {
-      return;
-    }
+  const button =
+    document.getElementById(
+      "giftAddButton"
+    );
 
 
-    button.href =
-      `gifts.html?person_id=${encodeURIComponent(
-        currentPerson.id
-      )}&return_to=${encodeURIComponent(
-        `people_detail.html?id=${currentPerson.id}`
-      )}`;
+  if (
+    !button ||
+    !currentPerson
+  ) {
+    return;
+  }
 
+
+  button.href =
+    `gifts.html?person_id=${encodeURIComponent(
+      currentPerson.id
+    )}&return_to=${encodeURIComponent(
+      `people_detail.html?id=${currentPerson.id}`
+    )}`;
 }
 
 
 /* ========================================
    PERSONAL AI CONSULT BUTTON
 ======================================== */
-
 function setupPersonalAiConsultButton() {
 
   const button =
@@ -873,7 +1179,6 @@ function openBasicInfoEditModal() {
 /* ========================================
    SAVE BASIC INFO
 ======================================== */
-
 async function saveBasicInfo() {
 
   const nameInput =
@@ -1058,7 +1363,6 @@ async function saveBasicInfo() {
 /* ========================================
    BASIC PROFILE
 ======================================== */
-
 function renderBasicProfile() {
 
   setText(
@@ -1096,7 +1400,6 @@ function renderBasicProfile() {
 /* ========================================
    RESET BASIC SAVE BUTTON
 ======================================== */
-
 function resetBasicInfoSaveButton() {
 
   const saveButton =
@@ -1117,7 +1420,6 @@ function resetBasicInfoSaveButton() {
 /* ========================================
    PREFERENCE EDIT
 ======================================== */
-
 function setupPreferenceEdit() {
 
   const openButton =
@@ -1211,7 +1513,6 @@ function openPreferenceEditModal() {
   );
 
 }
-
 
 function setAllergyFormValues(
   allergyText
@@ -2047,7 +2348,6 @@ function openMemoEditModal(
   input.focus();
 
 }
-
 
 /* SupabaseのUPDATE処理 */
 async function saveEditedMemo() {

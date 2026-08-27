@@ -77,6 +77,125 @@
   font-weight: 700;
 }
 
+/* ========================================
+   PERSON ACTION MENU
+======================================== */
+
+.person-detail-actions {
+  position: relative;
+
+  margin-left: auto;
+}
+
+
+.person-detail-actions-toggle {
+  width: 34px;
+  height: 34px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 0;
+
+  border: none;
+  border-radius: 9px;
+
+  background-color: transparent;
+
+  color: #665d56;
+
+  font-size: 14px;
+
+  cursor: pointer;
+}
+
+
+.person-detail-actions-toggle:hover {
+  background-color: #f4f1ee;
+
+  color: #332d29;
+}
+
+
+.person-detail-actions-toggle:active {
+  transform: scale(0.94);
+}
+
+
+.person-detail-actions-menu {
+  position: absolute;
+
+  top: 38px;
+  right: 0;
+
+  z-index: 30;
+
+  width: 142px;
+
+  box-sizing: border-box;
+
+  padding: 5px;
+
+  border: 1px solid #e8e2de;
+  border-radius: 10px;
+
+  background-color: #ffffff;
+
+  box-shadow:
+    0 8px 22px rgba(72, 59, 51, 0.15);
+}
+
+
+.person-detail-actions-menu.hidden {
+  display: none;
+}
+
+
+.person-detail-action-item {
+  width: 100%;
+  min-height: 36px;
+
+  display: flex;
+  align-items: center;
+
+  gap: 8px;
+
+  box-sizing: border-box;
+
+  padding: 8px 9px;
+
+  border: none;
+  border-radius: 7px;
+
+  background-color: transparent;
+
+  font-family: inherit;
+  font-size: 11px;
+  font-weight: 600;
+
+  text-align: left;
+
+  cursor: pointer;
+}
+
+
+.person-detail-action-item.delete {
+  color: #d45e50;
+}
+
+
+.person-detail-action-item.delete:hover {
+  background-color: #fff0ed;
+}
+
+
+.person-detail-action-item:disabled {
+  cursor: wait;
+
+  opacity: 0.55;
+}
+
 
 /* ========================================
    PROFILE

@@ -67,7 +67,40 @@
         人物詳細
       </h1>
 
-      <div class="person-detail-header-spacer"></div>
+      <div class="person-detail-actions">
+        <button
+          type="button"
+          id="personActionsToggle"
+          class="person-detail-actions-toggle"
+          aria-label="人物の操作メニュー"
+          aria-expanded="false"
+        >
+          <i class="fa-solid fa-ellipsis"></i>
+        </button>
+
+
+        <div
+          id="personActionsMenu"
+          class="person-detail-actions-menu hidden"
+          role="menu"
+        >
+
+          <button
+            type="button"
+            id="personDeleteButton"
+            class="person-detail-action-item delete"
+            role="menuitem"
+          >
+            <i class="fa-regular fa-trash-can"></i>
+
+            <span>
+              削除
+            </span>
+          </button>
+
+        </div>
+
+      </div>
 
     </header>
 
