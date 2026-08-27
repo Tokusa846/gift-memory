@@ -2,6 +2,13 @@
 import { supabase } from "./supabase.js";
 
 
+
+/* ========================================
+   STATE
+======================================== */
+
+let editingEventId = null;
+
 /* ========================================
    INITIALIZE
 ======================================== */
@@ -20,10 +27,27 @@ document.addEventListener(
 
     setupEventTypeBehavior();
 
+
+    editingEventId =
+      getUrlParameter(
+        "event_id"
+      );
+
+
+    if (editingEventId) {
+
+      await loadEventForEdit(
+        editingEventId
+      );
+
+    }
+
+
     setupEventForm();
 
   }
 );
+
 
 
 /* ========================================
@@ -273,6 +297,248 @@ async function loadPeople() {
 
 }
 
+
+/* ========================================
+   LOAD EVENT FOR EDIT
+======================================== */
+
+async function loadEventForEdit(
+  eventId
+) {
+
+  const { data, error } =
+    await supabase
+      .from("events")
+      .select(`
+        id,
+        event_type,
+        title,
+        event_date,
+        person_id,
+        related_person_name,
+        is_yearly,
+        memo
+      `)
+      .eq(
+        "id",
+        eventId
+      )
+      .maybeSingle();
+
+
+  if (
+    error ||
+    !data
+  ) {
+
+    console.error(
+      "編集するイベントを取得できませんでした:",
+      error
+    );
+
+
+    showMessage(
+      "編集するイベントを取得できませんでした。",
+      "error"
+    );
+
+
+    disableEventForm();
+
+    return;
+
+  }
+
+
+  applyEditPageTitle();
+
+
+  /*
+    イベント種別
+  */
+
+  const eventTypeInput =
+    document.querySelector(
+      `input[name="eventType"][value="${data.event_type}"]`
+    );
+
+
+  if (eventTypeInput) {
+
+    eventTypeInput.checked =
+      true;
+
+  }
+
+
+  /*
+    基本情報
+  */
+
+  document.getElementById(
+    "eventTitle"
+  ).value =
+    data.title ?? "";
+
+
+  document.getElementById(
+    "eventDate"
+  ).value =
+    data.event_date ?? "";
+
+
+  document.getElementById(
+    "eventMemo"
+  ).value =
+    data.memo ?? "";
+
+
+  document.getElementById(
+    "eventIsYearly"
+  ).checked =
+    Boolean(
+      data.is_yearly
+    );
+
+
+  /*
+    関連人物
+  */
+
+  if (data.person_id) {
+
+    const registeredMode =
+      document.querySelector(
+        'input[name="personMode"][value="registered"]'
+      );
+
+
+    registeredMode.checked =
+      true;
+
+
+    document.getElementById(
+      "eventPersonSelect"
+    ).value =
+      data.person_id;
+
+  } else if (
+    data.related_person_name
+  ) {
+
+    const freeMode =
+      document.querySelector(
+        'input[name="personMode"][value="free"]'
+      );
+
+
+    freeMode.checked =
+      true;
+
+
+    document.getElementById(
+      "eventPersonName"
+    ).value =
+      data.related_person_name;
+
+  } else {
+
+    /*
+      人物との関連がない既存イベントは、
+      「登録済み人物・人物を選択しない」
+      として扱う
+    */
+
+    const registeredMode =
+      document.querySelector(
+        'input[name="personMode"][value="registered"]'
+      );
+
+
+    registeredMode.checked =
+      true;
+
+
+    document.getElementById(
+      "eventPersonSelect"
+    ).value =
+      "";
+
+  }
+
+
+  /*
+    選択内容を画面へ反映
+  */
+
+  updatePersonMode();
+
+  updateEventTypeBehavior();
+
+}
+
+function applyEditPageTitle() {
+
+  const pageTitle =
+    document.getElementById(
+      "eventPageTitle"
+    );
+
+
+  const submitButton =
+    document.getElementById(
+      "eventSubmitButton"
+    );
+
+
+  if (pageTitle) {
+
+    pageTitle.textContent =
+      "イベントを編集";
+
+  }
+
+
+  if (submitButton) {
+
+    submitButton.textContent =
+      "変更を保存";
+
+  }
+
+
+  document.title =
+    "イベントを編集 | Gift Memory";
+
+}
+
+function disableEventForm() {
+
+  const form =
+    document.getElementById(
+      "eventForm"
+    );
+
+
+  if (!form) {
+    return;
+  }
+
+
+  const controls =
+    form.querySelectorAll(
+      "input, select, textarea, button"
+    );
+
+
+  controls.forEach(control => {
+
+    control.disabled =
+      true;
+
+  });
+
+}
 
 /* ========================================
    PERSON INPUT MODE
@@ -725,33 +991,62 @@ async function saveEvent() {
   );
 
 
-  const { error } =
-    await supabase
-      .from("events")
-      .insert({
+  const eventData = {
 
-        event_type:
-          eventType,
+    event_type:
+      eventType,
 
-        title:
-          title,
+    title:
+      title,
 
-        event_date:
-          eventDate,
+    event_date:
+      eventDate,
 
-        person_id:
-          personId,
+    person_id:
+      personId,
 
-        related_person_name:
-          relatedPersonName,
+    related_person_name:
+      relatedPersonName,
 
-        is_yearly:
-          isYearly,
+    is_yearly:
+      isYearly,
 
-        memo:
-          memo || null
+    memo:
+      memo || null
 
-      });
+  };
+
+
+  let saveResult;
+
+
+  if (editingEventId) {
+
+    saveResult =
+      await supabase
+        .from("events")
+        .update(
+          eventData
+        )
+        .eq(
+          "id",
+          editingEventId
+        );
+
+  } else {
+
+    saveResult =
+      await supabase
+        .from("events")
+        .insert(
+          eventData
+        );
+
+  }
+
+
+const { error } =
+  saveResult;
 
 
   if (error) {
@@ -780,9 +1075,11 @@ async function saveEvent() {
 
 
   showMessage(
-    "イベントを登録しました。",
-    "success"
-  );
+  editingEventId
+    ? "イベントを更新しました。"
+    : "イベントを登録しました。",
+  "success"
+);
 
 
   window.setTimeout(
@@ -835,9 +1132,21 @@ function setSubmitState(
     isSubmitting;
 
 
+  if (isSubmitting) {
+
+    button.textContent =
+      editingEventId
+        ? "保存しています..."
+        : "登録しています...";
+
+    return;
+
+  }
+
+
   button.textContent =
-    isSubmitting
-      ? "登録しています..."
+    editingEventId
+      ? "変更を保存"
       : "イベントを登録";
 
 }

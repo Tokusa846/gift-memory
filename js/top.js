@@ -44,6 +44,8 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   setupDateDetailModal();
 
+  setupEventActions();
+
   setupAddButton();
 
 });
@@ -513,7 +515,10 @@ function getEventsForDate(date) {
         person.name,
 
       isYearly:
-        true
+        true,
+
+      source:
+        "people"
 
     });
 
@@ -561,7 +566,10 @@ function getEventsForDate(date) {
         event.is_yearly,
 
       memo:
-        event.memo ?? ""
+        event.memo ?? "",
+
+      source:
+        "events"
 
     });
 
@@ -841,11 +849,7 @@ function openDateDetailModal(
   }
 
 
-  /*
-    追加ボタンで使用するため
-    日付を保持
-  */
-
+  /*追加ボタンで使用するため日付を保持*/
   modal.dataset.date =
     formatDateForInput(date);
 
@@ -861,10 +865,7 @@ function openDateDetailModal(
   );
 
 
-  /*
-    背景スクロール防止
-  */
-
+  /*背景スクロール防止*/
   document.body.style.overflow =
     "hidden";
 
@@ -873,6 +874,71 @@ function openDateDetailModal(
 function createDateDetailEventHtml(
   event
 ) {
+
+const canManage =
+
+  event.source === "events" &&
+  event.id;
+
+
+const actionMenuHtml =
+  canManage
+    ? `
+      <div class="date-detail-actions">
+
+        <button
+          type="button"
+          class="date-detail-actions-toggle"
+          data-event-id="${escapeHtml(event.id)}"
+          aria-label="${escapeHtml(event.title)}の操作メニュー"
+          aria-expanded="false"
+        >
+          <i class="fa-solid fa-ellipsis"></i>
+        </button>
+
+
+        <div
+          class="date-detail-actions-menu hidden"
+          role="menu"
+        >
+
+          <button
+            type="button"
+            class="date-detail-action-item event-edit-button"
+            data-event-id="${escapeHtml(event.id)}"
+            role="menuitem"
+          >
+            <i class="fa-regular fa-pen-to-square"></i>
+
+            <span>
+              編集
+            </span>
+          </button>
+
+
+          <button
+            type="button"
+            class="
+              date-detail-action-item
+              delete
+              date-detail-delete-button
+            "
+            data-event-id="${escapeHtml(event.id)}"
+            role="menuitem"
+          >
+            <i class="fa-regular fa-trash-can"></i>
+
+            <span>
+              削除
+            </span>
+          </button>
+
+        </div>
+
+      </div>
+    `
+    : "";
+
 
   /* =========================
      BIRTHDAY
@@ -922,6 +988,9 @@ function createDateDetailEventHtml(
 
         </div>
 
+
+        ${actionMenuHtml}
+
       </article>
 
     `;
@@ -953,7 +1022,7 @@ function createDateDetailEventHtml(
             formatPersonName(
               event.personName
             )
-          )}
+          )}に関するイベント
         </p>
       `
       : "";
@@ -1017,6 +1086,9 @@ function createDateDetailEventHtml(
         ${memoHtml}
 
       </div>
+
+
+      ${actionMenuHtml}
 
     </article>
 
@@ -1193,6 +1265,322 @@ function setupDateDetailModal() {
         )}`;
 
     }
+  );
+
+}
+
+
+/* ========================================
+   EVENT ACTIONS
+======================================== */
+
+function setupEventActions() {
+
+  const content =
+    document.getElementById(
+      "dateDetailContent"
+    );
+
+
+  if (!content) {
+    return;
+  }
+
+
+  content.addEventListener(
+    "click",
+    async event => {
+
+      
+      /*三点リーダー*/
+      const toggleButton =
+        event.target.closest(
+          ".date-detail-actions-toggle"
+        );
+
+
+      if (toggleButton) {
+
+        event.stopPropagation();
+
+
+        const actions =
+          toggleButton.closest(
+            ".date-detail-actions"
+          );
+
+
+        const menu =
+          actions?.querySelector(
+            ".date-detail-actions-menu"
+          );
+
+
+        if (!menu) {
+          return;
+        }
+
+
+        const willOpen =
+          menu.classList.contains(
+            "hidden"
+          );
+
+
+        closeAllEventActionMenus();
+
+
+        menu.classList.toggle(
+          "hidden",
+          !willOpen
+        );
+
+
+        toggleButton.setAttribute(
+          "aria-expanded",
+          String(willOpen)
+        );
+
+
+        return;
+
+      }
+
+
+      /*編集*/
+      const editButton =
+        event.target.closest(
+          ".event-edit-button"
+        );
+
+
+      if (editButton) {
+
+        const eventId =
+          editButton.dataset.eventId;
+
+
+        if (!eventId) {
+          return;
+        }
+
+
+        window.location.href =
+          `event.html?event_id=${
+            encodeURIComponent(eventId)
+          }&return_to=${
+            encodeURIComponent("index.html")
+          }`;
+
+
+        return;
+
+      }
+
+
+      /*削除*/
+      const deleteButton =
+        event.target.closest(
+          ".date-detail-delete-button"
+        );
+
+
+      if (deleteButton) {
+
+        const eventId =
+          deleteButton.dataset.eventId;
+
+
+        if (!eventId) {
+          return;
+        }
+
+
+        const shouldDelete =
+          window.confirm(
+            "このイベントを削除しますか？\nこの操作は取り消せません。"
+          );
+
+
+        if (!shouldDelete) {
+          return;
+        }
+
+
+        await deleteCalendarEvent(
+          eventId,
+          deleteButton
+        );
+
+      }
+
+    }
+  );
+
+
+  /*メニュー外を押した場合は閉じる*/
+  document.addEventListener(
+    "click",
+    event => {
+
+      if (
+        event.target.closest(
+          ".date-detail-actions"
+        )
+      ) {
+
+        return;
+
+      }
+
+
+      closeAllEventActionMenus();
+
+    }
+  );
+
+}
+
+
+/* ========================================
+   CLOSE EVENT ACTION MENUS
+======================================== */
+
+function closeAllEventActionMenus() {
+
+  const menus =
+    document.querySelectorAll(
+      ".date-detail-actions-menu"
+    );
+
+
+  menus.forEach(menu => {
+
+    menu.classList.add(
+      "hidden"
+    );
+
+  });
+
+
+  const toggleButtons =
+    document.querySelectorAll(
+      ".date-detail-actions-toggle"
+    );
+
+
+  toggleButtons.forEach(button => {
+
+    button.setAttribute(
+      "aria-expanded",
+      "false"
+    );
+
+  });
+
+}
+
+async function deleteCalendarEvent(
+  eventId,
+  deleteButton
+) {
+
+  deleteButton.disabled =
+    true;
+
+
+  const originalHtml =
+    deleteButton.innerHTML;
+
+
+  deleteButton.innerHTML = `
+    <i class="fa-solid fa-spinner fa-spin"></i>
+  `;
+
+
+  const { error } =
+    await supabase
+      .from("events")
+      .delete()
+      .eq(
+        "id",
+        eventId
+      );
+
+
+  if (error) {
+
+    console.error(
+      "イベントの削除に失敗しました:",
+      error
+    );
+
+
+    window.alert(
+      "イベントを削除できませんでした。"
+    );
+
+
+    deleteButton.disabled =
+      false;
+
+
+    deleteButton.innerHTML =
+      originalHtml;
+
+
+    return;
+
+  }
+
+
+  calendarEvents =
+    calendarEvents.filter(
+      event =>
+        event.id !== eventId
+    );
+
+
+  renderWeekStrip();
+
+
+  reopenSelectedDateDetail();
+
+}
+
+function reopenSelectedDateDetail() {
+
+  const modal =
+    document.getElementById(
+      "dateDetailModal"
+    );
+
+
+  const selectedDate =
+    modal?.dataset.date;
+
+
+  if (!selectedDate) {
+    return;
+  }
+
+
+  const dateParts =
+    selectedDate
+      .split("-")
+      .map(Number);
+
+
+  const selectedDateObject =
+    new Date(
+      dateParts[0],
+      dateParts[1] - 1,
+      dateParts[2]
+    );
+
+
+  openDateDetailModal(
+    selectedDateObject
   );
 
 }
