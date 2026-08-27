@@ -12,7 +12,7 @@
   padding:
     env(safe-area-inset-top)
     16px
-    12px;
+    8px;
 
   padding-top: calc(env(safe-area-inset-top) + 18px);
 
@@ -806,7 +806,7 @@
 .main-content {
   flex: 1;
 
-  padding: 16px 16px 110px;
+  padding: 12px 16px 110px;
 }
 
 
