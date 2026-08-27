@@ -144,7 +144,6 @@ function setupWeekNavigation() {
           -7
         );
 
-
       renderWeekStrip();
 
     }
@@ -331,6 +330,98 @@ async function loadCalendarEvents() {
 
 }
 
+/* ========================================
+   DISPLAYED WEEK MONTH
+======================================== */
+
+function updateDisplayedWeekMonth(
+  weekStart
+) {
+
+  const label =
+    document.getElementById(
+      "displayedWeekMonth"
+    );
+
+
+  if (!label) {
+    return;
+  }
+
+
+  const weekEnd =
+    new Date(
+      weekStart
+    );
+
+
+  weekEnd.setDate(
+    weekStart.getDate() + 6
+  );
+
+
+  const startYear =
+    weekStart.getFullYear();
+
+
+  const startMonth =
+    weekStart.getMonth() + 1;
+
+
+  const endYear =
+    weekEnd.getFullYear();
+
+
+  const endMonth =
+    weekEnd.getMonth() + 1;
+
+
+  /*
+    同じ月
+    例：2026年8月
+  */
+  if (
+    startYear === endYear &&
+    startMonth === endMonth
+  ) {
+
+    label.textContent =
+      `${startYear}年${startMonth}月`;
+
+
+    return;
+
+  }
+
+
+  /*
+    同じ年で月をまたぐ
+    例：2026年8月–9月
+  */
+  if (
+    startYear === endYear
+  ) {
+
+    label.textContent =
+      `${startYear}年${startMonth}月–${endMonth}月`;
+
+
+    return;
+
+  }
+
+
+  /*
+    年をまたぐ
+    例：2026年12月–2027年1月
+  */
+  label.textContent =
+    `${startYear}年${startMonth}月`
+    +
+    `–${endYear}年${endMonth}月`;
+
+}
+
 
 /* ========================================
    WEEK CALENDAR
@@ -361,6 +452,10 @@ function renderWeekStrip() {
   const sunday =
     new Date(
       displayedWeekStart
+    );
+
+    updateDisplayedWeekMonth(
+      sunday
     );
 
   for (let i = 0; i < 7; i++) {
