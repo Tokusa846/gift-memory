@@ -96,6 +96,7 @@
 .gift-form-area input[type="text"],
 .gift-form-area input[type="number"],
 .gift-form-area input[type="date"],
+.gift-form-area input[type="url"],
 .gift-form-area select,
 .gift-form-area textarea {
   width: 100%;
@@ -391,4 +392,136 @@ input[value="given"]:checked
     grid-template-columns: 1fr;
   }
 
+}
+
+/* ========================================
+   GIFT IMAGE
+======================================== */
+
+.gift-image-field {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+
+  gap: 10px;
+}
+
+
+.gift-image-preview {
+  width: 100%;
+  aspect-ratio: 16 / 10;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  gap: 8px;
+
+  overflow: hidden;
+
+  box-sizing: border-box;
+
+  border: 1px dashed #d9d1cb;
+  border-radius: 14px;
+
+  background-color: #f8f6f4;
+
+  color: #aaa19a;
+}
+
+
+.gift-image-preview > i {
+  font-size: 28px;
+}
+
+
+.gift-image-preview > span {
+  font-size: 11px;
+  font-weight: 500;
+}
+
+
+.gift-image-preview img {
+  width: 100%;
+  height: 100%;
+
+  display: block;
+
+  object-fit: cover;
+}
+
+
+.gift-image-input {
+  position: absolute;
+
+  width: 1px;
+  height: 1px;
+
+  overflow: hidden;
+
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+
+  white-space: nowrap;
+}
+
+
+.gift-image-select-button {
+  min-height: 40px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  gap: 7px;
+
+  box-sizing: border-box;
+
+  padding: 9px 14px;
+
+  border: 1px solid #e4ddd8;
+  border-radius: 10px;
+
+  background-color: #ffffff;
+
+  color: #665d56;
+
+  font-size: 12px;
+  font-weight: 600;
+
+  cursor: pointer;
+}
+
+
+.gift-image-select-button:active {
+  transform: scale(0.98);
+}
+
+
+.gift-image-clear-button {
+  align-self: center;
+
+  padding: 4px 8px;
+
+  border: none;
+
+  background-color: transparent;
+
+  color: #b05c52;
+
+  font-family: inherit;
+  font-size: 11px;
+
+  cursor: pointer;
+}
+
+
+.gift-form-help {
+  margin: 7px 0 0;
+
+  color: #aaa19a;
+
+  font-size: 10px;
+  line-height: 1.5;
 }

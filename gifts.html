@@ -118,6 +118,98 @@
 
 
         <!-- =========================
+             プレゼント内容
+        ========================== -->
+        <div class="gift-form-group">
+
+          <label
+            for="itemName"
+            class="gift-form-label"
+          >
+            品名 / プレゼント内容
+          </label>
+
+          <input
+            type="text"
+            id="itemName"
+            placeholder="例: スキンケアセット、スタイ"
+            required
+          >
+
+        </div>
+
+        <!-- =========================
+             プレゼント写真
+        ========================== -->
+        <div class="gift-form-group">
+
+          <label
+            for="giftImage"
+            class="gift-form-label"
+          >
+            プレゼント写真（任意）
+          </label>
+
+
+          <div class="gift-image-field">
+
+            <!-- プレビュー -->
+            <div
+              id="giftImagePreview"
+              class="gift-image-preview"
+            >
+
+              <i class="fa-solid fa-gift"></i>
+
+              <span>
+                写真が選択されていません
+              </span>
+
+            </div>
+
+
+            <!-- ファイル選択 -->
+            <label
+              for="giftImage"
+              class="gift-image-select-button"
+            >
+
+              <i class="fa-regular fa-image"></i>
+
+              <span>
+                写真を選択
+              </span>
+
+            </label>
+
+
+            <input
+              type="file"
+              id="giftImage"
+              accept="image/jpeg,image/png,image/webp"
+              class="gift-image-input"
+            >
+
+
+            <!-- 選択解除 -->
+            <button
+              type="button"
+              id="giftImageClearButton"
+              class="gift-image-clear-button hidden"
+            >
+              選択を解除
+            </button>
+
+          </div>
+
+
+          <p class="gift-form-help">
+            JPEG・PNG・WebP、5MBまで
+          </p>
+
+        </div>
+
+        <!-- =========================
              人物
         ========================== -->
         <div class="gift-form-group">
@@ -155,29 +247,6 @@
           </a>
 
         </div>
-
-
-        <!-- =========================
-             プレゼント内容
-        ========================== -->
-        <div class="gift-form-group">
-
-          <label
-            for="itemName"
-            class="gift-form-label"
-          >
-            品名 / プレゼント内容
-          </label>
-
-          <input
-            type="text"
-            id="itemName"
-            placeholder="例: スキンケアセット、スタイ"
-            required
-          >
-
-        </div>
-
 
         <!-- =========================
              日付 + イベント
@@ -276,6 +345,26 @@
             placeholder="例: 5000"
           >
 
+        </div>
+
+        <!-- =========================
+              商品URL
+        ========================== -->
+        <div class="gift-form-group">
+
+          <label
+            for="productUrl"
+            class="gift-form-label"
+          >
+            商品URL（任意）
+          </label>
+
+          <input
+            type="url"
+            id="productUrl"
+            inputmode="url"
+            placeholder="https://example.com/item"
+          >
         </div>
 
 

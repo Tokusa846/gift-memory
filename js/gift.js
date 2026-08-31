@@ -31,6 +31,29 @@ const occasionSelect =
 const priceInput =
   document.getElementById("price");
 
+const productUrlInput =
+  document.getElementById(
+    "productUrl"
+  );
+
+
+const giftImageInput =
+  document.getElementById(
+    "giftImage"
+  );
+
+
+const giftImagePreview =
+  document.getElementById(
+    "giftImagePreview"
+  );
+
+
+const giftImageClearButton =
+  document.getElementById(
+    "giftImageClearButton"
+  );
+
 const returnField =
   document.getElementById("returnField");
 
@@ -55,6 +78,19 @@ const closeButton =
   document.getElementById(
     "giftCloseButton"
   );
+
+
+/* ========================================
+   IMAGE STATE
+======================================== */
+
+let selectedImageFile = null;
+
+let currentImagePath = null;
+
+let shouldRemoveCurrentImage = false;
+
+let previewObjectUrl = null;
 
 
 /* ========================================
@@ -95,6 +131,8 @@ document.addEventListener(
 
     setupDirectionSwitch();
 
+    setupGiftImage();
+
     setupReturnNavigation();
 
     await loadPeople();
@@ -109,6 +147,190 @@ document.addEventListener(
     }
   }
 );
+
+/* ========================================
+   GIFT IMAGE
+======================================== */
+
+function setupGiftImage() {
+
+  if (
+    !giftImageInput ||
+    !giftImagePreview ||
+    !giftImageClearButton
+  ) {
+    return;
+  }
+
+
+  giftImageInput.addEventListener(
+    "change",
+    () => {
+
+      const file =
+        giftImageInput.files?.[0];
+
+
+      if (!file) {
+        return;
+      }
+
+
+      const allowedTypes = [
+        "image/jpeg",
+        "image/png",
+        "image/webp"
+      ];
+
+
+      if (
+        !allowedTypes.includes(
+          file.type
+        )
+      ) {
+
+        window.alert(
+          "JPEG・PNG・WebP形式の画像を選択してください。"
+        );
+
+
+        giftImageInput.value = "";
+
+        return;
+
+      }
+
+
+      const maxFileSize =
+        5 * 1024 * 1024;
+
+
+      if (
+        file.size > maxFileSize
+      ) {
+
+        window.alert(
+          "5MB以下の画像を選択してください。"
+        );
+
+
+        giftImageInput.value = "";
+
+        return;
+
+      }
+
+
+      selectedImageFile =
+        file;
+
+
+      shouldRemoveCurrentImage =
+        false;
+
+
+      showLocalImagePreview(
+        file
+      );
+
+    }
+  );
+
+
+  giftImageClearButton.addEventListener(
+    "click",
+    () => {
+
+      selectedImageFile =
+        null;
+
+
+      giftImageInput.value =
+        "";
+
+
+      if (currentImagePath) {
+
+        shouldRemoveCurrentImage =
+          true;
+
+      }
+
+
+      showEmptyImagePreview();
+
+    }
+  );
+
+}
+
+function showLocalImagePreview(
+  file
+) {
+
+  if (previewObjectUrl) {
+
+    URL.revokeObjectURL(
+      previewObjectUrl
+    );
+
+  }
+
+
+  previewObjectUrl =
+    URL.createObjectURL(
+      file
+    );
+
+
+  giftImagePreview.innerHTML = `
+
+    <img
+      src="${previewObjectUrl}"
+      alt="選択したプレゼント写真"
+    >
+
+  `;
+
+
+  giftImageClearButton.classList.remove(
+    "hidden"
+  );
+
+}
+
+
+function showEmptyImagePreview() {
+
+  if (previewObjectUrl) {
+
+    URL.revokeObjectURL(
+      previewObjectUrl
+    );
+
+
+    previewObjectUrl =
+      null;
+
+  }
+
+
+  giftImagePreview.innerHTML = `
+
+    <i class="fa-solid fa-gift"></i>
+
+    <span>
+      写真が選択されていません
+    </span>
+
+  `;
+
+
+  giftImageClearButton.classList.add(
+    "hidden"
+  );
+
+}
 
 
 /* ========================================
