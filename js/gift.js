@@ -1,5 +1,7 @@
 import { supabase } from "./supabase.js";
 
+const GIFT_IMAGE_BUCKET =
+  "gift-images";
 
 /* ========================================
    ELEMENTS
@@ -92,6 +94,7 @@ let shouldRemoveCurrentImage = false;
 
 let previewObjectUrl = null;
 
+let currentReturnDone = false;
 
 /* ========================================
    URL PARAMS
@@ -299,6 +302,40 @@ function showLocalImagePreview(
 
 }
 
+function showStoredImagePreview(
+  imagePath
+) {
+
+  const { data } =
+    supabase
+      .storage
+      .from(GIFT_IMAGE_BUCKET)
+      .getPublicUrl(
+        imagePath
+      );
+
+
+  const imageUrl =
+    data.publicUrl;
+
+
+  giftImagePreview.innerHTML = `
+
+    <img
+      src="${imageUrl}"
+      alt="登録済みのプレゼント写真"
+    >
+
+  `;
+
+
+  giftImageClearButton
+    .classList
+    .remove(
+      "hidden"
+    );
+
+}
 
 function showEmptyImagePreview() {
 
@@ -332,6 +369,223 @@ function showEmptyImagePreview() {
 
 }
 
+/* ========================================
+   IMAGE STORAGE
+======================================== */
+
+async function syncGiftImage(
+  savedGiftId
+) {
+
+  /*
+    写真に変更がない場合
+  */
+
+  if (
+    !selectedImageFile &&
+    !shouldRemoveCurrentImage
+  ) {
+    return;
+  }
+
+
+  const previousImagePath =
+    currentImagePath;
+
+
+  let nextImagePath =
+    previousImagePath;
+
+
+  let uploadedImagePath =
+    null;
+
+
+  /*
+    新しい写真をアップロード
+  */
+
+  if (selectedImageFile) {
+
+    const extension =
+      getImageExtension(
+        selectedImageFile.type
+      );
+
+
+    const randomName =
+      createRandomFileName();
+
+
+    uploadedImagePath =
+      `${savedGiftId}/${randomName}.${extension}`;
+
+
+    const { error: uploadError } =
+      await supabase
+        .storage
+        .from(GIFT_IMAGE_BUCKET)
+        .upload(
+          uploadedImagePath,
+          selectedImageFile,
+          {
+            cacheControl: "3600",
+            upsert: false,
+            contentType:
+              selectedImageFile.type
+          }
+        );
+
+
+    if (uploadError) {
+      throw uploadError;
+    }
+
+
+    nextImagePath =
+      uploadedImagePath;
+
+  } else if (
+    shouldRemoveCurrentImage
+  ) {
+
+    nextImagePath =
+      null;
+
+  }
+
+
+  /*
+    Giftsテーブルを更新
+  */
+
+  const { error: updateError } =
+    await supabase
+      .from("Gifts")
+      .update({
+        image_path:
+          nextImagePath
+      })
+      .eq(
+        "id",
+        savedGiftId
+      );
+
+
+  if (updateError) {
+
+    /*
+      DB更新に失敗した場合、
+      今回アップロードした画像を削除
+    */
+
+    if (uploadedImagePath) {
+
+      await supabase
+        .storage
+        .from(GIFT_IMAGE_BUCKET)
+        .remove([
+          uploadedImagePath
+        ]);
+
+    }
+
+
+    throw updateError;
+
+  }
+
+
+  /*
+    古い写真を削除
+  */
+
+  if (
+    previousImagePath &&
+    previousImagePath !==
+      nextImagePath
+  ) {
+
+    const { error: removeError } =
+      await supabase
+        .storage
+        .from(GIFT_IMAGE_BUCKET)
+        .remove([
+          previousImagePath
+        ]);
+
+
+    if (removeError) {
+
+      console.warn(
+        "古い写真を削除できませんでした:",
+        removeError
+      );
+
+    }
+
+  }
+
+
+  currentImagePath =
+    nextImagePath;
+
+
+  selectedImageFile =
+    null;
+
+
+  shouldRemoveCurrentImage =
+    false;
+
+}
+
+function getImageExtension(
+  mimeType
+) {
+
+  const extensionMap = {
+
+    "image/jpeg":
+      "jpg",
+
+    "image/png":
+      "png",
+
+    "image/webp":
+      "webp"
+
+  };
+
+
+  return (
+    extensionMap[mimeType] ||
+    "jpg"
+  );
+
+}
+
+
+function createRandomFileName() {
+
+  if (
+    window.crypto?.randomUUID
+  ) {
+
+    return crypto.randomUUID();
+
+  }
+
+
+  return (
+    `${Date.now()}-`
+    +
+    Math.random()
+      .toString(36)
+      .slice(2)
+  );
+
+}
 
 /* ========================================
    TODAY
@@ -531,6 +785,9 @@ giftForm.addEventListener(
     const price =
       priceInput.value;
 
+    const productUrl =
+      productUrlInput.value.trim();
+
     const memo =
       memoInput.value.trim();
 
@@ -582,12 +839,13 @@ giftForm.addEventListener(
         : false;
 
 
-    /*
-      新規登録時点では
-      お返し済み = false
+    /*　新規登録時は未完了。
+  　　　編集時は現在の完了状態を維持する。
     */
     const returnDone =
-      false;
+      giftId
+        ? currentReturnDone
+        : false;
 
 
     /* -------------------------
@@ -615,6 +873,9 @@ giftForm.addEventListener(
         price
           ? Number(price)
           : null,
+      
+      product_url:
+        productUrl || null,
 
       memo:
         memo || null,
@@ -627,20 +888,52 @@ giftForm.addEventListener(
 
     };
 
+    if (
+      productUrl &&
+      !isValidProductUrl(
+        productUrl
+      )
+    ) {
+
+      showMessage(
+        "商品URLはhttp://またはhttps://から入力してください。",
+        "error"
+      );
+
+      return;
+
+    }
+
 
     /* -------------------------
-       SAVE
+      SAVE
     ------------------------- */
 
     submitButton.disabled =
       true;
 
+
     submitButton.textContent =
-      "保存中...";
+      giftId
+        ? "更新中..."
+        : "保存中...";
 
 
-    let error;
+    let savedGiftId =
+      giftId;
 
+
+    let isNewGift =
+      !giftId;
+
+
+    let databaseError =
+      null;
+
+
+    /*
+      ギフト情報を保存
+    */
 
     if (giftId) {
 
@@ -656,7 +949,7 @@ giftForm.addEventListener(
           );
 
 
-      error =
+      databaseError =
         result.error;
 
     } else {
@@ -666,34 +959,106 @@ giftForm.addEventListener(
           .from("Gifts")
           .insert([
             giftData
-          ]);
+          ])
+          .select("id")
+          .single();
 
 
-      error =
+      databaseError =
         result.error;
+
+
+      savedGiftId =
+        result.data?.id ?? null;
 
     }
 
 
-    if (error) {
+    /*
+      ギフト保存エラー
+    */
+
+    if (
+      databaseError ||
+      !savedGiftId
+    ) {
 
       console.error(
         "プレゼント登録エラー:",
-        error
+        databaseError
       );
+
 
       showMessage(
         "保存に失敗しました。",
         "error"
       );
 
-      submitButton.disabled =
-        false;
 
-      submitButton.textContent =
-        "保存する";
+      resetGiftSubmitButton();
 
       return;
+
+    }
+
+
+    /*
+      写真を保存
+    */
+
+    try {
+
+      await syncGiftImage(
+        savedGiftId
+      );
+
+    } catch (imageError) {
+
+      console.error(
+        "プレゼント写真の保存に失敗しました:",
+        imageError
+      );
+
+
+      /*
+        新規登録時に画像保存まで完了しなかった場合、
+        作成したギフト行を削除して重複登録を防ぐ
+      */
+
+      if (isNewGift) {
+
+        const { error: rollbackError } =
+          await supabase
+            .from("Gifts")
+            .delete()
+            .eq(
+              "id",
+              savedGiftId
+            );
+
+
+        if (rollbackError) {
+
+          console.error(
+            "ギフト登録の取り消しに失敗しました:",
+            rollbackError
+          );
+
+        }
+
+      }
+
+
+      showMessage(
+        "写真を保存できませんでした。Storageの設定を確認してください。",
+        "error"
+      );
+
+
+      resetGiftSubmitButton();
+
+      return;
+
     }
 
 
@@ -762,6 +1127,46 @@ function clearMessage() {
 
 }
 
+function resetGiftSubmitButton() {
+
+  submitButton.disabled =
+    false;
+
+
+  submitButton.textContent =
+    giftId
+      ? "変更を保存"
+      : "保存する";
+
+}
+
+/* ========================================
+   PRODUCT URL VALIDATION
+======================================== */
+
+function isValidProductUrl(
+  value
+) {
+
+  try {
+
+    const url =
+      new URL(value);
+
+
+    return (
+      url.protocol === "http:" ||
+      url.protocol === "https:"
+    );
+
+  } catch {
+
+    return false;
+
+  }
+
+}
+
 /* ========================================
    PRESET PERSON
 ======================================== */
@@ -813,6 +1218,8 @@ async function loadGiftForEdit(
         occasion,
         item_name,
         price,
+        product_url,
+        image_path,
         memo,
         need_return,
         return_done
@@ -844,7 +1251,6 @@ async function loadGiftForEdit(
 
 
   /* 区分 */
-
   const directionInput =
     document.querySelector(
       `input[name="direction"][value="${data.direction}"]`
@@ -860,54 +1266,73 @@ async function loadGiftForEdit(
 
 
   /* 人物 */
-
   personSelect.value =
     data.person_id ?? "";
 
 
   /* 品名 */
-
   itemNameInput.value =
     data.item_name ?? "";
 
 
   /* 日付 */
-
   giftDateInput.value =
     data.gift_date ?? "";
 
 
   /* 名目 */
-
   occasionSelect.value =
     data.occasion ?? "その他";
 
 
   /* 金額 */
-
   priceInput.value =
     data.price ?? "";
 
 
-  /* メモ */
+  /* 商品URL */
+  productUrlInput.value =
+    data.product_url ?? "";
 
+
+  /* メモ */
   memoInput.value =
     data.memo ?? "";
 
 
   /* お返し */
-
   needReturnInput.checked =
     data.need_return === true;
 
 
-  /* 区分に合わせてUI更新 */
+  /* お返し完了状態 */
+  currentReturnDone =
+    data.return_done === true;
 
+
+  /* 既存写真 */
+  currentImagePath =
+    data.image_path ?? null;
+
+
+  if (currentImagePath) {
+
+    showStoredImagePreview(
+      currentImagePath
+    );
+
+  } else {
+
+    showEmptyImagePreview();
+
+  }
+
+
+  /* 区分に合わせてUI更新 */
   updateDirectionUI();
 
 
   /* 見出し */
-
   const pageTitle =
     document.querySelector(
       ".gift-page-header h1"

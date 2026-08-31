@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+  >
+
+  <title>プレゼント詳細 | Gift Memory</title>
+
+
+  <!-- Font Awesome -->
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+  >
+
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+
+  <link
+    rel="preconnect"
+    href="https://fonts.gstatic.com"
+    crossorigin
+  >
+
+  <link
+    href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;600;700&display=swap"
+    rel="stylesheet"
+  >
+
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="CSS/common.css">
+
+  <link
+    rel="stylesheet"
+    href="CSS/gift_detail.css"
+  >
+
+</head>
+
+
+<body>
+
+  <div class="app-container gift-details-page">
+
+
+    <!-- ========================================
+         HEADER
+    ========================================= -->
+    <header class="gift-details-header">
+
+      <a
+        id="giftDetailsBackButton"
+        href="index.html"
+        class="gift-details-back"
+        aria-label="前の画面へ戻る"
+      >
+        <i class="fa-solid fa-chevron-left"></i>
+      </a>
+
+
+      <h1>
+        プレゼント詳細
+      </h1>
+
+
+      <div class="gift-details-actions">
+
+        <button
+          type="button"
+          id="giftDetailsActionsToggle"
+          class="gift-details-actions-toggle"
+          aria-label="プレゼントの操作メニュー"
+          aria-expanded="false"
+        >
+          <i class="fa-solid fa-ellipsis"></i>
+        </button>
+
+
+        <div
+          id="giftDetailsActionsMenu"
+          class="gift-details-actions-menu hidden"
+          role="menu"
+        >
+
+          <button
+            type="button"
+            id="giftDetailsEditButton"
+            class="gift-details-action-item"
+            role="menuitem"
+          >
+            <i class="fa-regular fa-pen-to-square"></i>
+
+            <span>
+              編集
+            </span>
+          </button>
+
+
+          <button
+            type="button"
+            id="giftDetailsDeleteButton"
+            class="gift-details-action-item delete"
+            role="menuitem"
+          >
+            <i class="fa-regular fa-trash-can"></i>
+
+            <span>
+              削除
+            </span>
+          </button>
+
+        </div>
+
+      </div>
+
+    </header>
+
+
+    <!-- ========================================
+         MAIN
+    ========================================= -->
+    <main class="gift-details-main">
+
+
+      <!-- 読み込み中 -->
+      <div
+        id="giftDetailsLoading"
+        class="gift-details-loading"
+      >
+        <i class="fa-solid fa-spinner fa-spin"></i>
+
+        <p>
+          プレゼント情報を読み込んでいます...
+        </p>
+      </div>
+
+
+      <!-- エラー -->
+      <div
+        id="giftDetailsError"
+        class="gift-details-error hidden"
+      >
+        <i class="fa-regular fa-circle-xmark"></i>
+
+        <p>
+          プレゼント情報を取得できませんでした。
+        </p>
+
+        <a
+          id="giftDetailsErrorBack"
+          href="index.html"
+        >
+          前の画面へ戻る
+        </a>
+      </div>
+
+
+      <!-- 詳細内容 -->
+      <div
+        id="giftDetailsContent"
+        class="gift-details-content hidden"
+      >
+
+
+        <!-- ====================================
+             PHOTO
+        ===================================== -->
+        <section class="gift-details-photo-section">
+
+          <div
+            id="giftDetailsPhoto"
+            class="gift-details-photo"
+          >
+            <i class="fa-solid fa-gift"></i>
+
+            <span>
+              写真が登録されていません
+            </span>
+          </div>
+
+
+          <label
+            for="giftDetailsImageInput"
+            class="gift-details-photo-button"
+          >
+            <i class="fa-regular fa-image"></i>
+
+            <span id="giftDetailsPhotoButtonText">
+              写真を登録
+            </span>
+          </label>
+
+
+          <input
+            type="file"
+            id="giftDetailsImageInput"
+            class="gift-details-image-input"
+            accept="image/jpeg,image/png,image/webp"
+          >
+
+
+          <button
+            type="button"
+            id="giftDetailsPhotoDeleteButton"
+            class="gift-details-photo-delete hidden"
+          >
+            写真を削除
+          </button>
+
+        </section>
+
+
+        <!-- ====================================
+             SUMMARY
+        ===================================== -->
+        <section class="gift-details-summary">
+
+          <span
+            id="giftDetailsDirection"
+            class="gift-details-direction"
+          >
+            -
+          </span>
+
+
+          <h2 id="giftDetailsItemName">
+            -
+          </h2>
+
+
+          <p
+            id="giftDetailsPerson"
+            class="gift-details-person"
+          >
+            -
+          </p>
+
+        </section>
+
+
+        <!-- ====================================
+             BASIC INFORMATION
+        ===================================== -->
+        <section class="gift-details-card">
+
+          <h3>
+            登録内容
+          </h3>
+
+
+          <!-- 相手 -->
+          <div class="gift-details-row">
+
+            <div class="gift-details-row-icon">
+              <i class="fa-regular fa-user"></i>
+            </div>
+
+            <div class="gift-details-row-content">
+              <span>相手</span>
+              <p id="giftDetailsPersonValue">-</p>
+            </div>
+
+          </div>
+
+
+          <!-- 日付 -->
+          <div class="gift-details-row">
+
+            <div class="gift-details-row-icon">
+              <i class="fa-regular fa-calendar"></i>
+            </div>
+
+            <div class="gift-details-row-content">
+              <span>日付</span>
+              <p id="giftDetailsDate">-</p>
+            </div>
+
+          </div>
+
+
+          <!-- イベント -->
+          <div class="gift-details-row">
+
+            <div class="gift-details-row-icon">
+              <i class="fa-regular fa-star"></i>
+            </div>
+
+            <div class="gift-details-row-content">
+              <span>目的・イベント</span>
+              <p id="giftDetailsOccasion">-</p>
+            </div>
+
+          </div>
+
+
+          <!-- 金額 -->
+          <div class="gift-details-row">
+
+            <div class="gift-details-row-icon">
+              <i class="fa-solid fa-yen-sign"></i>
+            </div>
+
+            <div class="gift-details-row-content">
+              <span>金額</span>
+              <p id="giftDetailsPrice">-</p>
+            </div>
+
+          </div>
+
+        </section>
+
+
+        <!-- ====================================
+             PRODUCT URL
+        ===================================== -->
+        <section class="gift-details-card">
+
+          <div class="gift-details-card-heading">
+
+            <h3>
+              商品URL
+            </h3>
+
+            <button
+              type="button"
+              id="giftDetailsUrlEditButton"
+              class="gift-details-small-button"
+            >
+              変更
+            </button>
+
+          </div>
+
+
+          <!-- URL表示 -->
+          <div id="giftDetailsUrlDisplay">
+
+            <a
+              id="giftDetailsProductUrl"
+              href="#"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="gift-details-product-link hidden"
+            >
+              <i class="fa-solid fa-arrow-up-right-from-square"></i>
+
+              <span id="giftDetailsProductUrlText">
+              </span>
+            </a>
+
+
+            <p
+              id="giftDetailsNoProductUrl"
+              class="gift-details-empty-text"
+            >
+              商品URLは登録されていません
+            </p>
+
+          </div>
+
+
+          <!-- URL編集 -->
+          <div
+            id="giftDetailsUrlForm"
+            class="gift-details-url-form hidden"
+          >
+
+            <input
+              type="url"
+              id="giftDetailsUrlInput"
+              inputmode="url"
+              placeholder="https://example.com/item"
+            >
+
+
+            <p
+              id="giftDetailsUrlMessage"
+              class="gift-details-message"
+            ></p>
+
+
+            <div class="gift-details-inline-actions">
+
+              <button
+                type="button"
+                id="giftDetailsUrlCancelButton"
+                class="gift-details-secondary-button"
+              >
+                キャンセル
+              </button>
+
+
+              <button
+                type="button"
+                id="giftDetailsUrlSaveButton"
+                class="gift-details-primary-button"
+              >
+                保存
+              </button>
+
+            </div>
+
+          </div>
+
+        </section>
+
+
+        <!-- ====================================
+             RETURN STATUS
+        ===================================== -->
+        <section
+          id="giftDetailsReturnSection"
+          class="gift-details-card"
+        >
+
+          <div class="gift-details-card-heading">
+
+            <h3>
+              お返し状況
+            </h3>
+
+            <button
+              type="button"
+              id="giftDetailsReturnToggleButton"
+              class="gift-details-small-button hidden"
+            >
+              完了にする
+            </button>
+
+          </div>
+
+
+          <div class="gift-details-return-status">
+
+            <div
+              id="giftDetailsReturnIcon"
+              class="gift-details-return-icon"
+            >
+              <i class="fa-solid fa-minus"></i>
+            </div>
+
+
+            <div>
+              <span>
+                現在の状態
+              </span>
+
+              <p id="giftDetailsReturnStatus">
+                -
+              </p>
+            </div>
+
+          </div>
+
+
+          <p
+            id="giftDetailsReturnMessage"
+            class="gift-details-message"
+          ></p>
+
+        </section>
+
+
+        <!-- ====================================
+             MEMO
+        ===================================== -->
+        <section class="gift-details-card">
+
+          <h3>
+            メモ
+          </h3>
+
+          <p
+            id="giftDetailsMemo"
+            class="gift-details-memo"
+          >
+            -
+          </p>
+
+        </section>
+
+      </div>
+
+    </main>
+
+  </div>
+
+
+  <!-- JavaScript -->
+  <script
+    type="module"
+    src="js/gift_detail.js"
+  ></script>
+
+</body>
+
+</html>
