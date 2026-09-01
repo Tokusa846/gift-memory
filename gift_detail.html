@@ -323,46 +323,53 @@
         ===================================== -->
         <section class="gift-details-card">
 
-          <div class="gift-details-card-heading">
+          <h3>
+            商品URL
+          </h3>
 
-            <h3>
-              商品URL
-            </h3>
+
+          <div
+            id="giftDetailsUrlNormalView"
+            class="gift-details-side-action-layout"
+          >
+
+            <!-- URL表示 -->
+            <div
+              id="giftDetailsUrlDisplay"
+              class="gift-details-side-action-content"
+            >
+
+              <a
+                id="giftDetailsProductUrl"
+                href="#"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="gift-details-product-link hidden"
+              >
+                <i class="fa-solid fa-arrow-up-right-from-square"></i>
+
+                <span id="giftDetailsProductUrlText">
+                </span>
+              </a>
+
+
+              <p
+                id="giftDetailsNoProductUrl"
+                class="gift-details-empty-text"
+              >
+                商品URLは登録されていません
+              </p>
+
+            </div>
+
 
             <button
               type="button"
               id="giftDetailsUrlEditButton"
-              class="gift-details-small-button"
+              class="gift-details-side-action-button"
             >
-              変更
+              追加
             </button>
-
-          </div>
-
-
-          <!-- URL表示 -->
-          <div id="giftDetailsUrlDisplay">
-
-            <a
-              id="giftDetailsProductUrl"
-              href="#"
-              target="_blank"
-              rel="noopener noreferrer"
-              class="gift-details-product-link hidden"
-            >
-              <i class="fa-solid fa-arrow-up-right-from-square"></i>
-
-              <span id="giftDetailsProductUrlText">
-              </span>
-            </a>
-
-
-            <p
-              id="giftDetailsNoProductUrl"
-              class="gift-details-empty-text"
-            >
-              商品URLは登録されていません
-            </p>
 
           </div>
 
@@ -418,45 +425,53 @@
         ===================================== -->
         <section
           id="giftDetailsReturnSection"
-          class="gift-details-card"
+          class="gift-details-card hidden"
         >
 
-          <div class="gift-details-card-heading">
+          <h3>
+            お返し状況
+          </h3>
 
-            <h3>
-              お返し状況
-            </h3>
+
+          <div class="gift-details-side-action-layout">
+
+            <div
+              class="
+                gift-details-return-status
+                gift-details-side-action-content
+              "
+            >
+
+              <div
+                id="giftDetailsReturnIcon"
+                class="gift-details-return-icon"
+              >
+                <i class="fa-solid fa-minus"></i>
+              </div>
+
+
+              <div>
+
+                <span>
+                  現在の状態
+                </span>
+
+                <p id="giftDetailsReturnStatus">
+                  -
+                </p>
+
+              </div>
+
+            </div>
+
 
             <button
               type="button"
               id="giftDetailsReturnToggleButton"
-              class="gift-details-small-button hidden"
+              class="gift-details-side-action-button hidden"
             >
               完了にする
             </button>
-
-          </div>
-
-
-          <div class="gift-details-return-status">
-
-            <div
-              id="giftDetailsReturnIcon"
-              class="gift-details-return-icon"
-            >
-              <i class="fa-solid fa-minus"></i>
-            </div>
-
-
-            <div>
-              <span>
-                現在の状態
-              </span>
-
-              <p id="giftDetailsReturnStatus">
-                -
-              </p>
-            </div>
 
           </div>
 

@@ -56,6 +56,14 @@ document.addEventListener(
 
     setupEditButton();
 
+    setupReturnStatusToggle();
+
+    setupProductUrlEdit();
+
+    setupDetailImage();
+
+    setupDeleteButton();
+
 
     if (!giftId) {
 
@@ -435,11 +443,17 @@ function renderProductUrl() {
       "giftDetailsNoProductUrl"
     );
 
+  const editButton =
+    document.getElementById(
+      "giftDetailsUrlEditButton"
+    );
+
 
   if (
     !link ||
     !linkText ||
-    !emptyText
+    !emptyText ||
+    !editButton
   ) {
     return;
   }
@@ -457,6 +471,9 @@ function renderProductUrl() {
     emptyText.classList.remove(
       "hidden"
     );
+
+    editButton.textContent =
+      "追加";
 
 
     return;
@@ -481,6 +498,9 @@ function renderProductUrl() {
     "hidden"
   );
 
+  editButton.textContent =
+    "変更";
+
 }
 
 
@@ -489,6 +509,11 @@ function renderProductUrl() {
 ======================================== */
 
 function renderReturnStatus() {
+
+  const section =
+  document.getElementById(
+    "giftDetailsReturnSection"
+  );
 
   const status =
     document.getElementById(
@@ -506,9 +531,11 @@ function renderReturnStatus() {
     document.getElementById(
       "giftDetailsReturnToggleButton"
     );
+    
 
 
   if (
+    !section ||
     !status ||
     !icon ||
     !toggleButton
@@ -523,37 +550,27 @@ function renderReturnStatus() {
   );
 
 
-  /*
-    あげたプレゼント
-  */
+  /* あげたプレゼントはお返し状況を表示しない */
 
   if (
     currentGift.direction !==
     "received"
   ) {
 
-    status.textContent =
-      "お返し対象外";
-
-
-    icon.innerHTML = `
-      <i class="fa-solid fa-minus"></i>
-    `;
-
-
-    toggleButton.classList.add(
+    section.classList.add(
       "hidden"
     );
-
 
     return;
 
   }
 
+  section.classList.remove(
+    "hidden"
+  );
 
-  /*
-    お返し不要
-  */
+
+  /* お返し不要 */
 
   if (
     currentGift.need_return !==
@@ -579,9 +596,7 @@ function renderReturnStatus() {
   }
 
 
-  /*
-    お返し完了
-  */
+  /* お返し完了 */
 
   if (
     currentGift.return_done ===
@@ -603,7 +618,7 @@ function renderReturnStatus() {
 
 
     toggleButton.textContent =
-      "未完了に戻す";
+      "未完了にする";
 
 
     toggleButton.classList.remove(
@@ -641,6 +656,1016 @@ function renderReturnStatus() {
   toggleButton.classList.remove(
     "hidden"
   );
+
+}
+
+/* ========================================
+   UPDATE RETURN STATUS
+======================================== */
+
+function setupReturnStatusToggle() {
+
+  const button =
+    document.getElementById(
+      "giftDetailsReturnToggleButton"
+    );
+
+
+  if (!button) {
+    return;
+  }
+
+
+  button.addEventListener(
+    "click",
+    async () => {
+
+      if (
+        !currentGift ||
+        currentGift.direction !==
+          "received" ||
+        currentGift.need_return !== true
+      ) {
+        return;
+      }
+
+
+      const nextReturnDone =
+        !currentGift.return_done;
+
+
+      button.disabled =
+        true;
+
+
+      button.textContent =
+        "更新中...";
+
+
+      const { error } =
+        await supabase
+          .from("Gifts")
+          .update({
+            return_done:
+              nextReturnDone
+          })
+          .eq(
+            "id",
+            currentGift.id
+          );
+
+
+      if (error) {
+
+        console.error(
+          "お返し状態の更新に失敗しました:",
+          error
+        );
+
+
+        showDetailMessage(
+          "giftDetailsReturnMessage",
+          "お返し状態を更新できませんでした。",
+          "error"
+        );
+
+
+        button.disabled =
+          false;
+
+
+        renderReturnStatus();
+
+        return;
+
+      }
+
+
+      currentGift.return_done =
+        nextReturnDone;
+
+
+      showDetailMessage(
+        "giftDetailsReturnMessage",
+        nextReturnDone
+          ? "お返し完了に変更しました。"
+          : "お返し未完了に戻しました。",
+        "success"
+      );
+
+
+      button.disabled =
+        false;
+
+
+      renderReturnStatus();
+
+    }
+  );
+
+}
+
+/* ========================================
+   PRODUCT URL EDIT
+======================================== */
+
+function setupProductUrlEdit() {
+
+  const editButton =
+    document.getElementById(
+      "giftDetailsUrlEditButton"
+    );
+
+
+  const form =
+    document.getElementById(
+      "giftDetailsUrlForm"
+    );
+
+
+  const display =
+    document.getElementById(
+      "giftDetailsUrlDisplay"
+    );
+
+
+  const input =
+    document.getElementById(
+      "giftDetailsUrlInput"
+    );
+
+
+  const saveButton =
+    document.getElementById(
+      "giftDetailsUrlSaveButton"
+    );
+
+
+  const cancelButton =
+    document.getElementById(
+      "giftDetailsUrlCancelButton"
+    );
+
+  const normalView =
+    document.getElementById(
+      "giftDetailsUrlNormalView"
+    );
+
+
+  if (
+    !editButton ||
+    !form ||
+    !display ||
+    !normalView ||
+    !input ||
+    !saveButton ||
+    !cancelButton
+  ) {
+    return;
+  }
+
+
+  editButton.addEventListener(
+    "click",
+    () => {
+
+      input.value =
+        currentGift?.product_url ??
+        "";
+
+
+      clearDetailMessage(
+        "giftDetailsUrlMessage"
+      );
+
+
+      normalView.classList.add(
+        "hidden"
+      );
+
+
+      form.classList.remove(
+        "hidden"
+      );
+
+
+      input.focus();
+
+    }
+  );
+
+
+  cancelButton.addEventListener(
+    "click",
+    () => {
+
+      form.classList.add(
+        "hidden"
+      );
+
+
+      normalView.classList.remove(
+        "hidden"
+      );
+
+
+      clearDetailMessage(
+        "giftDetailsUrlMessage"
+      );
+
+    }
+  );
+
+
+  saveButton.addEventListener(
+    "click",
+    async () => {
+
+      if (!currentGift) {
+        return;
+      }
+
+
+      const productUrl =
+        input.value.trim();
+
+
+      if (
+        productUrl &&
+        !isValidHttpUrl(
+          productUrl
+        )
+      ) {
+
+        showDetailMessage(
+          "giftDetailsUrlMessage",
+          "http://またはhttps://から始まるURLを入力してください。",
+          "error"
+        );
+
+        return;
+
+      }
+
+
+      saveButton.disabled =
+        true;
+
+
+      cancelButton.disabled =
+        true;
+
+
+      saveButton.textContent =
+        "保存中...";
+
+
+      const { error } =
+        await supabase
+          .from("Gifts")
+          .update({
+            product_url:
+              productUrl || null
+          })
+          .eq(
+            "id",
+            currentGift.id
+          );
+
+
+      if (error) {
+
+        console.error(
+          "商品URLの更新に失敗しました:",
+          error
+        );
+
+
+        showDetailMessage(
+          "giftDetailsUrlMessage",
+          "商品URLを保存できませんでした。",
+          "error"
+        );
+
+
+        resetUrlEditButtons(
+          saveButton,
+          cancelButton
+        );
+
+        return;
+
+      }
+
+
+      currentGift.product_url =
+        productUrl || null;
+
+
+      renderProductUrl();
+
+
+      form.classList.add(
+        "hidden"
+      );
+
+
+      display.classList.remove(
+        "hidden"
+      );
+
+
+      resetUrlEditButtons(
+        saveButton,
+        cancelButton
+      );
+
+    }
+  );
+
+}
+
+
+function resetUrlEditButtons(
+  saveButton,
+  cancelButton
+) {
+
+  saveButton.disabled =
+    false;
+
+
+  cancelButton.disabled =
+    false;
+
+
+  saveButton.textContent =
+    "保存";
+
+}
+
+
+function isValidHttpUrl(
+  value
+) {
+
+  try {
+
+    const url =
+      new URL(value);
+
+
+    return (
+      url.protocol === "http:" ||
+      url.protocol === "https:"
+    );
+
+  } catch {
+
+    return false;
+
+  }
+
+}
+
+/* ========================================
+   DETAIL IMAGE
+======================================== */
+
+function setupDetailImage() {
+
+  const input =
+    document.getElementById(
+      "giftDetailsImageInput"
+    );
+
+
+  const deleteButton =
+    document.getElementById(
+      "giftDetailsPhotoDeleteButton"
+    );
+
+
+  if (
+    !input ||
+    !deleteButton
+  ) {
+    return;
+  }
+
+
+  input.addEventListener(
+    "change",
+    async () => {
+
+      const file =
+        input.files?.[0];
+
+
+      if (!file) {
+        return;
+      }
+
+
+      if (
+        !validateDetailImage(
+          file
+        )
+      ) {
+
+        input.value = "";
+
+        return;
+
+      }
+
+
+      await saveDetailImage(
+        file
+      );
+
+
+      input.value = "";
+
+    }
+  );
+
+
+  deleteButton.addEventListener(
+    "click",
+    async () => {
+
+      if (
+        !currentGift?.image_path
+      ) {
+        return;
+      }
+
+
+      const shouldDelete =
+        window.confirm(
+          "登録済みの写真を削除しますか？"
+        );
+
+
+      if (!shouldDelete) {
+        return;
+      }
+
+
+      await deleteDetailImage(
+        deleteButton
+      );
+
+    }
+  );
+
+}
+
+
+function validateDetailImage(
+  file
+) {
+
+  const allowedTypes = [
+    "image/jpeg",
+    "image/png",
+    "image/webp"
+  ];
+
+
+  if (
+    !allowedTypes.includes(
+      file.type
+    )
+  ) {
+
+    window.alert(
+      "JPEG・PNG・WebP形式の画像を選択してください。"
+    );
+
+    return false;
+
+  }
+
+
+  const maxSize =
+    5 * 1024 * 1024;
+
+
+  if (
+    file.size > maxSize
+  ) {
+
+    window.alert(
+      "5MB以下の画像を選択してください。"
+    );
+
+    return false;
+
+  }
+
+
+  return true;
+
+}
+
+async function saveDetailImage(
+  file
+) {
+
+  if (!currentGift) {
+    return;
+  }
+
+
+  const buttonText =
+    document.getElementById(
+      "giftDetailsPhotoButtonText"
+    );
+
+
+  const previousButtonText =
+    buttonText?.textContent ??
+    "写真を登録";
+
+
+  if (buttonText) {
+
+    buttonText.textContent =
+      "保存中...";
+
+  }
+
+
+  const previousImagePath =
+    currentGift.image_path;
+
+
+  const extension =
+    getDetailImageExtension(
+      file.type
+    );
+
+
+  const newImagePath =
+    `${currentGift.id}/${
+      createDetailImageName()
+    }.${extension}`;
+
+
+  const { error: uploadError } =
+    await supabase
+      .storage
+      .from(
+        GIFT_IMAGE_BUCKET
+      )
+      .upload(
+        newImagePath,
+        file,
+        {
+          cacheControl:
+            "3600",
+
+          upsert:
+            false,
+
+          contentType:
+            file.type
+        }
+      );
+
+
+  if (uploadError) {
+
+    console.error(
+      "写真のアップロードに失敗しました:",
+      uploadError
+    );
+
+
+    window.alert(
+      "写真を保存できませんでした。"
+    );
+
+
+    if (buttonText) {
+
+      buttonText.textContent =
+        previousButtonText;
+
+    }
+
+
+    return;
+
+  }
+
+
+  const { error: updateError } =
+    await supabase
+      .from("Gifts")
+      .update({
+        image_path:
+          newImagePath
+      })
+      .eq(
+        "id",
+        currentGift.id
+      );
+
+
+  if (updateError) {
+
+    console.error(
+      "画像パスの更新に失敗しました:",
+      updateError
+    );
+
+
+    await supabase
+      .storage
+      .from(
+        GIFT_IMAGE_BUCKET
+      )
+      .remove([
+        newImagePath
+      ]);
+
+
+    window.alert(
+      "写真情報を保存できませんでした。"
+    );
+
+
+    if (buttonText) {
+
+      buttonText.textContent =
+        previousButtonText;
+
+    }
+
+
+    return;
+
+  }
+
+
+  currentGift.image_path =
+    newImagePath;
+
+
+  renderImage();
+
+
+  /*
+    新しい写真の保存完了後に
+    古い写真を削除
+  */
+
+  if (
+    previousImagePath &&
+    previousImagePath !==
+      newImagePath
+  ) {
+
+    const { error: removeError } =
+      await supabase
+        .storage
+        .from(
+          GIFT_IMAGE_BUCKET
+        )
+        .remove([
+          previousImagePath
+        ]);
+
+
+    if (removeError) {
+
+      console.warn(
+        "古い写真を削除できませんでした:",
+        removeError
+      );
+
+    }
+
+  }
+
+}
+
+async function deleteDetailImage(
+  deleteButton
+) {
+
+  const imagePath =
+    currentGift.image_path;
+
+
+  deleteButton.disabled =
+    true;
+
+
+  deleteButton.textContent =
+    "削除中...";
+
+
+  /*
+    先にDBから画像との関連を解除
+  */
+
+  const { error: updateError } =
+    await supabase
+      .from("Gifts")
+      .update({
+        image_path:
+          null
+      })
+      .eq(
+        "id",
+        currentGift.id
+      );
+
+
+  if (updateError) {
+
+    console.error(
+      "画像情報の削除に失敗しました:",
+      updateError
+    );
+
+
+    window.alert(
+      "写真を削除できませんでした。"
+    );
+
+
+    deleteButton.disabled =
+      false;
+
+
+    deleteButton.textContent =
+      "写真を削除";
+
+
+    return;
+
+  }
+
+
+  const { error: removeError } =
+    await supabase
+      .storage
+      .from(
+        GIFT_IMAGE_BUCKET
+      )
+      .remove([
+        imagePath
+      ]);
+
+
+  if (removeError) {
+
+    console.warn(
+      "Storageの写真を削除できませんでした:",
+      removeError
+    );
+
+  }
+
+
+  currentGift.image_path =
+    null;
+
+
+  deleteButton.disabled =
+    false;
+
+
+  deleteButton.textContent =
+    "写真を削除";
+
+
+  renderImage();
+
+}
+
+
+function getDetailImageExtension(
+  mimeType
+) {
+
+  const extensionMap = {
+
+    "image/jpeg":
+      "jpg",
+
+    "image/png":
+      "png",
+
+    "image/webp":
+      "webp"
+
+  };
+
+
+  return (
+    extensionMap[mimeType] ||
+    "jpg"
+  );
+
+}
+
+
+function createDetailImageName() {
+
+  if (
+    window.crypto?.randomUUID
+  ) {
+
+    return crypto.randomUUID();
+
+  }
+
+
+  return (
+    `${Date.now()}-`
+    +
+    Math.random()
+      .toString(36)
+      .slice(2)
+  );
+
+}
+
+/* ========================================
+   DELETE GIFT
+======================================== */
+
+function setupDeleteButton() {
+
+  const deleteButton =
+    document.getElementById(
+      "giftDetailsDeleteButton"
+    );
+
+
+  if (!deleteButton) {
+    return;
+  }
+
+
+  deleteButton.addEventListener(
+    "click",
+    async () => {
+
+      if (!currentGift) {
+        return;
+      }
+
+
+      closeActionMenu();
+
+
+      const shouldDelete =
+        window.confirm(
+          `「${
+            currentGift.item_name ||
+            "このプレゼント"
+          }」を削除しますか？\n`
+          +
+          "この操作は取り消せません。"
+        );
+
+
+      if (!shouldDelete) {
+        return;
+      }
+
+
+      await deleteCurrentGift(
+        deleteButton
+      );
+
+    }
+  );
+
+}
+
+
+async function deleteCurrentGift(
+  deleteButton
+) {
+
+  const imagePath =
+    currentGift.image_path;
+
+
+  deleteButton.disabled =
+    true;
+
+
+  deleteButton.innerHTML = `
+
+    <i class="fa-solid fa-spinner fa-spin"></i>
+
+    <span>
+      削除中...
+    </span>
+
+  `;
+
+
+  /*
+    先にGiftsテーブルから削除
+  */
+
+  const {
+    data: deletedGift,
+    error: deleteError
+  } =
+    await supabase
+      .from("Gifts")
+      .delete()
+      .eq(
+        "id",
+        currentGift.id
+      )
+      .select("id")
+      .maybeSingle();
+
+
+  if (
+    deleteError ||
+    !deletedGift
+  ) {
+
+    console.error(
+      "プレゼントの削除に失敗しました:",
+      deleteError
+    );
+
+
+    window.alert(
+      "プレゼントを削除できませんでした。"
+    );
+
+
+    deleteButton.disabled =
+      false;
+
+
+    deleteButton.innerHTML = `
+
+      <i class="fa-regular fa-trash-can"></i>
+
+      <span>
+        削除
+      </span>
+
+    `;
+
+
+    return;
+
+  }
+
+
+  /*
+    登録写真も削除
+  */
+
+  if (imagePath) {
+
+    const { error: imageError } =
+      await supabase
+        .storage
+        .from(
+          GIFT_IMAGE_BUCKET
+        )
+        .remove([
+          imagePath
+        ]);
+
+
+    if (imageError) {
+
+      console.warn(
+        "プレゼント写真を削除できませんでした:",
+        imageError
+      );
+
+    }
+
+  }
+
+
+  window.alert(
+    "プレゼントを削除しました。"
+  );
+
+
+  window.location.href =
+    returnTo;
 
 }
 
@@ -1082,5 +2107,56 @@ function escapeHtml(
       "'",
       "&#039;"
     );
+
+}
+
+function showDetailMessage(
+  elementId,
+  message,
+  type
+) {
+
+  const element =
+    document.getElementById(
+      elementId
+    );
+
+
+  if (!element) {
+    return;
+  }
+
+
+  element.textContent =
+    message;
+
+
+  element.className =
+    `gift-details-message ${type}`;
+
+}
+
+
+function clearDetailMessage(
+  elementId
+) {
+
+  const element =
+    document.getElementById(
+      elementId
+    );
+
+
+  if (!element) {
+    return;
+  }
+
+
+  element.textContent =
+    "";
+
+
+  element.className =
+    "gift-details-message";
 
 }
