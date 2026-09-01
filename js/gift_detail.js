@@ -271,7 +271,27 @@ function renderDirection() {
       : "given"
   );
 
+  const summary =
+    document.querySelector(
+      ".gift-details-summary"
+    );
+
+
+  summary?.classList.remove(
+    "received",
+    "given"
+  );
+
+
+  summary?.classList.add(
+    isReceived
+     ? "received"
+      : "given"
+  );
+
 }
+
+
 
 
 /* ========================================

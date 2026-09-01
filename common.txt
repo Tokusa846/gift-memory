@@ -1,0 +1,24 @@
+received
+    .person-detail-count.received
+        border-color: 無し
+        background-color: #e5f5ef;
+        color: #277b60;
+    
+    .gift-details-summary.received
+        border-color: #cde9df;
+        background-color: #e5f5ef;
+        color: #2f5146; 　　/* 商品名の文字色（h2） */
+
+
+
+
+given
+    .person-detail-count.given 
+        border-color: 無し
+        background-color: #ffefe9;
+        color: #c84e3e;
+    
+    .gift-details-summary.given 
+      border-color: #f5d8ce;
+      background-color: #ffefe9;
+      color: #65433c; 　　/* 商品名の文字色（h2） */

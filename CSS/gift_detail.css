@@ -863,3 +863,108 @@
   }
 
 }
+
+/* ========================================
+   SIDE ACTION LAYOUT
+======================================== */
+
+.gift-details-side-action-layout {
+  min-height: 48px;
+
+  display: grid;
+
+  grid-template-columns:
+    minmax(0, 1fr)
+    auto;
+
+  align-items: center;
+
+  gap: 14px;
+}
+
+
+.gift-details-side-action-content {
+  min-width: 0;
+}
+
+
+.gift-details-side-action-button {
+  min-width: 78px;
+  min-height: 36px;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 7px 12px;
+
+  box-sizing: border-box;
+
+  border: 1px solid #e3dcd7;
+  border-radius: 9px;
+
+  background-color: #faf8f6;
+
+  color: #665d56;
+
+  font-family: inherit;
+  font-size: 11px;
+  font-weight: 700;
+
+  white-space: nowrap;
+
+  cursor: pointer;
+}
+
+
+.gift-details-side-action-button:active {
+  transform: scale(0.96);
+}
+
+
+.gift-details-side-action-button:disabled {
+  cursor: wait;
+
+  opacity: 0.55;
+}
+
+/* ========================================
+   DIRECTION SUMMARY
+======================================== */
+
+.gift-details-summary {
+  padding: 16px 14px;
+
+  border: 1px solid transparent;
+  border-radius: 16px;
+
+  text-align: center;
+
+  transition:
+    background-color 0.2s,
+    border-color 0.2s;
+}
+
+
+.gift-details-summary.received {
+  border-color: #cde9df;
+
+  background-color: #e5f5ef;
+}
+
+
+.gift-details-summary.given {
+  border-color: #f5d8ce;
+
+  background-color: #ffefe9;
+}
+
+
+.gift-details-summary.received h2 {
+  color: #2f5146;
+}
+
+
+.gift-details-summary.given h2 {
+  color: #65433c;
+}
