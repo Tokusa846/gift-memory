@@ -186,35 +186,6 @@
             </span>
           </div>
 
-
-          <label
-            for="giftDetailsImageInput"
-            class="gift-details-photo-button"
-          >
-            <i class="fa-regular fa-image"></i>
-
-            <span id="giftDetailsPhotoButtonText">
-              写真を登録
-            </span>
-          </label>
-
-
-          <input
-            type="file"
-            id="giftDetailsImageInput"
-            class="gift-details-image-input"
-            accept="image/jpeg,image/png,image/webp"
-          >
-
-
-          <button
-            type="button"
-            id="giftDetailsPhotoDeleteButton"
-            class="gift-details-photo-delete hidden"
-          >
-            写真を削除
-          </button>
-
         </section>
 
 
@@ -311,7 +282,7 @@
 
 
         <!-- ====================================
-             PRODUCT URL
+            PRODUCT URL
         ===================================== -->
         <section class="gift-details-card">
 
@@ -320,92 +291,28 @@
           </h3>
 
 
-          <div
-            id="giftDetailsUrlNormalView"
-            class="gift-details-side-action-layout"
-          >
+          <div id="giftDetailsUrlDisplay">
 
-            <!-- URL表示 -->
-            <div
-              id="giftDetailsUrlDisplay"
-              class="gift-details-side-action-content"
+            <a
+              id="giftDetailsProductUrl"
+              href="#"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="gift-details-product-link hidden"
             >
+              <i class="fa-solid fa-arrow-up-right-from-square"></i>
 
-              <a
-                id="giftDetailsProductUrl"
-                href="#"
-                target="_blank"
-                rel="noopener noreferrer"
-                class="gift-details-product-link hidden"
-              >
-                <i class="fa-solid fa-arrow-up-right-from-square"></i>
-
-                <span id="giftDetailsProductUrlText">
-                </span>
-              </a>
-
-
-              <p
-                id="giftDetailsNoProductUrl"
-                class="gift-details-empty-text"
-              >
-                商品URLは登録されていません
-              </p>
-
-            </div>
-
-
-            <button
-              type="button"
-              id="giftDetailsUrlEditButton"
-              class="gift-details-side-action-button"
-            >
-              追加
-            </button>
-
-          </div>
-
-
-          <!-- URL編集 -->
-          <div
-            id="giftDetailsUrlForm"
-            class="gift-details-url-form hidden"
-          >
-
-            <input
-              type="url"
-              id="giftDetailsUrlInput"
-              inputmode="url"
-              placeholder="https://example.com/item"
-            >
+              <span id="giftDetailsProductUrlText">
+              </span>
+            </a>
 
 
             <p
-              id="giftDetailsUrlMessage"
-              class="gift-details-message"
-            ></p>
-
-
-            <div class="gift-details-inline-actions">
-
-              <button
-                type="button"
-                id="giftDetailsUrlCancelButton"
-                class="gift-details-secondary-button"
-              >
-                キャンセル
-              </button>
-
-
-              <button
-                type="button"
-                id="giftDetailsUrlSaveButton"
-                class="gift-details-primary-button"
-              >
-                保存
-              </button>
-
-            </div>
+              id="giftDetailsNoProductUrl"
+              class="gift-details-empty-text"
+            >
+              商品URLは登録されていません
+            </p>
 
           </div>
 

@@ -321,68 +321,6 @@
 }
 
 
-.gift-details-image-input {
-  position: absolute;
-
-  width: 1px;
-  height: 1px;
-
-  overflow: hidden;
-
-  clip: rect(0 0 0 0);
-  clip-path: inset(50%);
-
-  white-space: nowrap;
-}
-
-
-.gift-details-photo-button {
-  min-height: 36px;
-
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-
-  gap: 6px;
-
-  padding: 7px 14px;
-
-  box-sizing: border-box;
-
-  border: 1px solid #e6dfda;
-  border-radius: 9px;
-
-  background-color: #ffffff;
-
-  color: #665d56;
-
-  font-size: 11px;
-  font-weight: 600;
-
-  cursor: pointer;
-}
-
-
-.gift-details-photo-button:active {
-  transform: scale(0.97);
-}
-
-
-.gift-details-photo-delete {
-  padding: 3px 8px;
-
-  border: none;
-
-  background-color: transparent;
-
-  color: #b05c52;
-
-  font-family: inherit;
-  font-size: 10px;
-
-  cursor: pointer;
-}
-
 
 /* ========================================
    SUMMARY
@@ -599,44 +537,6 @@
 }
 
 
-.gift-details-url-form {
-  display: flex;
-  flex-direction: column;
-
-  gap: 9px;
-}
-
-
-.gift-details-url-form input {
-  width: 100%;
-
-  box-sizing: border-box;
-
-  padding: 10px 11px;
-
-  border: 1px solid #ddd5cf;
-  border-radius: 9px;
-
-  background-color: #ffffff;
-
-  color: #4b443f;
-
-  font-family: inherit;
-  font-size: 12px;
-}
-
-
-.gift-details-url-form input:focus {
-  outline: none;
-
-  border-color: #e88b7d;
-
-  box-shadow:
-    0 0 0 3px
-    rgba(232, 106, 88, 0.1);
-}
-
-
 /* ========================================
    RETURN STATUS
 ======================================== */
@@ -748,49 +648,6 @@
 
 .gift-details-small-button:active {
   transform: scale(0.96);
-}
-
-
-.gift-details-inline-actions {
-  display: grid;
-
-  grid-template-columns: 1fr 1fr;
-
-  gap: 8px;
-}
-
-
-.gift-details-primary-button,
-.gift-details-secondary-button {
-  min-height: 38px;
-
-  padding: 8px 12px;
-
-  border-radius: 9px;
-
-  font-family: inherit;
-  font-size: 11px;
-  font-weight: 700;
-
-  cursor: pointer;
-}
-
-
-.gift-details-primary-button {
-  border: none;
-
-  background-color: #e86a58;
-
-  color: #ffffff;
-}
-
-
-.gift-details-secondary-button {
-  border: 1px solid #e4ddd8;
-
-  background-color: #ffffff;
-
-  color: #766c65;
 }
 
 

@@ -58,10 +58,6 @@ document.addEventListener(
 
     setupReturnStatusToggle();
 
-    setupProductUrlEdit();
-
-    setupDetailImage();
-
     setupDeleteButton();
 
 
@@ -354,21 +350,9 @@ function renderPerson() {
 
 function renderImage() {
 
-    const container =
+  const container =
     document.getElementById(
       "giftDetailsPhoto"
-    );
-
-
-  const buttonText =
-    document.getElementById(
-      "giftDetailsPhotoButtonText"
-    );
-
-
-  const deleteButton =
-    document.getElementById(
-      "giftDetailsPhotoDeleteButton"
     );
 
 
@@ -376,6 +360,10 @@ function renderImage() {
     return;
   }
 
+
+  /*
+    写真未登録
+  */
 
   if (
     !currentGift.image_path
@@ -392,23 +380,14 @@ function renderImage() {
     `;
 
 
-    if (buttonText) {
-
-      buttonText.textContent =
-        "写真を登録";
-
-    }
-
-
-    deleteButton?.classList.add(
-      "hidden"
-    );
-
-
     return;
 
   }
 
+
+  /*
+    写真登録済み
+  */
 
   const { data } =
     supabase
@@ -419,11 +398,6 @@ function renderImage() {
       .getPublicUrl(
         currentGift.image_path
       );
-
-    console.log(
-        "画像公開URL:",
-        data.publicUrl
-    );
 
 
   container.innerHTML = `
@@ -439,19 +413,6 @@ function renderImage() {
     >
 
   `;
-
-
-  if (buttonText) {
-
-    buttonText.textContent =
-      "写真を変更";
-
-  }
-
-
-  deleteButton?.classList.remove(
-    "hidden"
-  );
 
 }
 
@@ -479,21 +440,19 @@ function renderProductUrl() {
       "giftDetailsNoProductUrl"
     );
 
-  const editButton =
-    document.getElementById(
-      "giftDetailsUrlEditButton"
-    );
-
 
   if (
     !link ||
     !linkText ||
-    !emptyText ||
-    !editButton
+    !emptyText
   ) {
     return;
   }
 
+
+  /*
+    URL未登録
+  */
 
   if (
     !currentGift.product_url
@@ -504,18 +463,28 @@ function renderProductUrl() {
     );
 
 
+    link.removeAttribute(
+      "href"
+    );
+
+
+    linkText.textContent =
+      "";
+
+
     emptyText.classList.remove(
       "hidden"
     );
-
-    editButton.textContent =
-      "追加";
 
 
     return;
 
   }
 
+
+  /*
+    URL登録済み
+  */
 
   link.href =
     currentGift.product_url;
@@ -533,9 +502,6 @@ function renderProductUrl() {
   emptyText.classList.add(
     "hidden"
   );
-
-  editButton.textContent =
-    "変更";
 
 }
 
@@ -801,737 +767,7 @@ function setupReturnStatusToggle() {
 
 }
 
-/* ========================================
-   PRODUCT URL EDIT
-======================================== */
 
-function setupProductUrlEdit() {
-
-  const editButton =
-    document.getElementById(
-      "giftDetailsUrlEditButton"
-    );
-
-
-  const form =
-    document.getElementById(
-      "giftDetailsUrlForm"
-    );
-
-
-  const display =
-    document.getElementById(
-      "giftDetailsUrlDisplay"
-    );
-
-
-  const input =
-    document.getElementById(
-      "giftDetailsUrlInput"
-    );
-
-
-  const saveButton =
-    document.getElementById(
-      "giftDetailsUrlSaveButton"
-    );
-
-
-  const cancelButton =
-    document.getElementById(
-      "giftDetailsUrlCancelButton"
-    );
-
-  const normalView =
-    document.getElementById(
-      "giftDetailsUrlNormalView"
-    );
-
-
-  if (
-    !editButton ||
-    !form ||
-    !display ||
-    !normalView ||
-    !input ||
-    !saveButton ||
-    !cancelButton
-  ) {
-    return;
-  }
-
-
-  editButton.addEventListener(
-    "click",
-    () => {
-
-      input.value =
-        currentGift?.product_url ??
-        "";
-
-
-      clearDetailMessage(
-        "giftDetailsUrlMessage"
-      );
-
-
-      normalView.classList.add(
-        "hidden"
-      );
-
-
-      form.classList.remove(
-        "hidden"
-      );
-
-
-      input.focus();
-
-    }
-  );
-
-
-  cancelButton.addEventListener(
-    "click",
-    () => {
-
-      form.classList.add(
-        "hidden"
-      );
-
-
-      normalView.classList.remove(
-        "hidden"
-      );
-
-
-      clearDetailMessage(
-        "giftDetailsUrlMessage"
-      );
-
-    }
-  );
-
-
-  saveButton.addEventListener(
-    "click",
-    async () => {
-
-      if (!currentGift) {
-        return;
-      }
-
-
-      const productUrl =
-        input.value.trim();
-
-
-      if (
-        productUrl &&
-        !isValidHttpUrl(
-          productUrl
-        )
-      ) {
-
-        showDetailMessage(
-          "giftDetailsUrlMessage",
-          "http://またはhttps://から始まるURLを入力してください。",
-          "error"
-        );
-
-        return;
-
-      }
-
-
-      saveButton.disabled =
-        true;
-
-
-      cancelButton.disabled =
-        true;
-
-
-      saveButton.textContent =
-        "保存中...";
-
-
-      const { error } =
-        await supabase
-          .from("Gifts")
-          .update({
-            product_url:
-              productUrl || null
-          })
-          .eq(
-            "id",
-            currentGift.id
-          );
-
-
-      if (error) {
-
-        console.error(
-          "商品URLの更新に失敗しました:",
-          error
-        );
-
-
-        showDetailMessage(
-          "giftDetailsUrlMessage",
-          "商品URLを保存できませんでした。",
-          "error"
-        );
-
-
-        resetUrlEditButtons(
-          saveButton,
-          cancelButton
-        );
-
-        return;
-
-      }
-
-
-      currentGift.product_url =
-        productUrl || null;
-
-
-      renderProductUrl();
-
-
-      form.classList.add(
-        "hidden"
-      );
-
-
-      display.classList.remove(
-        "hidden"
-      );
-
-
-      resetUrlEditButtons(
-        saveButton,
-        cancelButton
-      );
-
-    }
-  );
-
-}
-
-
-function resetUrlEditButtons(
-  saveButton,
-  cancelButton
-) {
-
-  saveButton.disabled =
-    false;
-
-
-  cancelButton.disabled =
-    false;
-
-
-  saveButton.textContent =
-    "保存";
-
-}
-
-
-function isValidHttpUrl(
-  value
-) {
-
-  try {
-
-    const url =
-      new URL(value);
-
-
-    return (
-      url.protocol === "http:" ||
-      url.protocol === "https:"
-    );
-
-  } catch {
-
-    return false;
-
-  }
-
-}
-
-/* ========================================
-   DETAIL IMAGE
-======================================== */
-
-function setupDetailImage() {
-
-  const input =
-    document.getElementById(
-      "giftDetailsImageInput"
-    );
-
-
-  const deleteButton =
-    document.getElementById(
-      "giftDetailsPhotoDeleteButton"
-    );
-
-
-  if (
-    !input ||
-    !deleteButton
-  ) {
-    return;
-  }
-
-
-  input.addEventListener(
-    "change",
-    async () => {
-
-      const file =
-        input.files?.[0];
-
-
-      if (!file) {
-        return;
-      }
-
-
-      if (
-        !validateDetailImage(
-          file
-        )
-      ) {
-
-        input.value = "";
-
-        return;
-
-      }
-
-
-      await saveDetailImage(
-        file
-      );
-
-
-      input.value = "";
-
-    }
-  );
-
-
-  deleteButton.addEventListener(
-    "click",
-    async () => {
-
-      if (
-        !currentGift?.image_path
-      ) {
-        return;
-      }
-
-
-      const shouldDelete =
-        window.confirm(
-          "登録済みの写真を削除しますか？"
-        );
-
-
-      if (!shouldDelete) {
-        return;
-      }
-
-
-      await deleteDetailImage(
-        deleteButton
-      );
-
-    }
-  );
-
-}
-
-
-function validateDetailImage(
-  file
-) {
-
-  const allowedTypes = [
-    "image/jpeg",
-    "image/png",
-    "image/webp"
-  ];
-
-
-  if (
-    !allowedTypes.includes(
-      file.type
-    )
-  ) {
-
-    window.alert(
-      "JPEG・PNG・WebP形式の画像を選択してください。"
-    );
-
-    return false;
-
-  }
-
-
-  const maxSize =
-    5 * 1024 * 1024;
-
-
-  if (
-    file.size > maxSize
-  ) {
-
-    window.alert(
-      "5MB以下の画像を選択してください。"
-    );
-
-    return false;
-
-  }
-
-
-  return true;
-
-}
-
-async function saveDetailImage(
-  file
-) {
-
-  if (!currentGift) {
-    return;
-  }
-
-
-  const buttonText =
-    document.getElementById(
-      "giftDetailsPhotoButtonText"
-    );
-
-
-  const previousButtonText =
-    buttonText?.textContent ??
-    "写真を登録";
-
-
-  if (buttonText) {
-
-    buttonText.textContent =
-      "保存中...";
-
-  }
-
-
-  const previousImagePath =
-    currentGift.image_path;
-
-
-  const extension =
-    getDetailImageExtension(
-      file.type
-    );
-
-
-  const newImagePath =
-    `${currentGift.id}/${
-      createDetailImageName()
-    }.${extension}`;
-
-
-  const { error: uploadError } =
-    await supabase
-      .storage
-      .from(
-        GIFT_IMAGE_BUCKET
-      )
-      .upload(
-        newImagePath,
-        file,
-        {
-          cacheControl:
-            "3600",
-
-          upsert:
-            false,
-
-          contentType:
-            file.type
-        }
-      );
-
-
-  if (uploadError) {
-
-    console.error(
-      "写真のアップロードに失敗しました:",
-      uploadError
-    );
-
-
-    window.alert(
-      "写真を保存できませんでした。"
-    );
-
-
-    if (buttonText) {
-
-      buttonText.textContent =
-        previousButtonText;
-
-    }
-
-
-    return;
-
-  }
-
-
-  const { error: updateError } =
-    await supabase
-      .from("Gifts")
-      .update({
-        image_path:
-          newImagePath
-      })
-      .eq(
-        "id",
-        currentGift.id
-      );
-
-
-  if (updateError) {
-
-    console.error(
-      "画像パスの更新に失敗しました:",
-      updateError
-    );
-
-
-    await supabase
-      .storage
-      .from(
-        GIFT_IMAGE_BUCKET
-      )
-      .remove([
-        newImagePath
-      ]);
-
-
-    window.alert(
-      "写真情報を保存できませんでした。"
-    );
-
-
-    if (buttonText) {
-
-      buttonText.textContent =
-        previousButtonText;
-
-    }
-
-
-    return;
-
-  }
-
-
-  currentGift.image_path =
-    newImagePath;
-
-
-  renderImage();
-
-
-  /*
-    新しい写真の保存完了後に
-    古い写真を削除
-  */
-
-  if (
-    previousImagePath &&
-    previousImagePath !==
-      newImagePath
-  ) {
-
-    const { error: removeError } =
-      await supabase
-        .storage
-        .from(
-          GIFT_IMAGE_BUCKET
-        )
-        .remove([
-          previousImagePath
-        ]);
-
-
-    if (removeError) {
-
-      console.warn(
-        "古い写真を削除できませんでした:",
-        removeError
-      );
-
-    }
-
-  }
-
-}
-
-async function deleteDetailImage(
-  deleteButton
-) {
-
-  const imagePath =
-    currentGift.image_path;
-
-
-  deleteButton.disabled =
-    true;
-
-
-  deleteButton.textContent =
-    "削除中...";
-
-
-  /*
-    先にDBから画像との関連を解除
-  */
-
-  const { error: updateError } =
-    await supabase
-      .from("Gifts")
-      .update({
-        image_path:
-          null
-      })
-      .eq(
-        "id",
-        currentGift.id
-      );
-
-
-  if (updateError) {
-
-    console.error(
-      "画像情報の削除に失敗しました:",
-      updateError
-    );
-
-
-    window.alert(
-      "写真を削除できませんでした。"
-    );
-
-
-    deleteButton.disabled =
-      false;
-
-
-    deleteButton.textContent =
-      "写真を削除";
-
-
-    return;
-
-  }
-
-
-  const { error: removeError } =
-    await supabase
-      .storage
-      .from(
-        GIFT_IMAGE_BUCKET
-      )
-      .remove([
-        imagePath
-      ]);
-
-
-  if (removeError) {
-
-    console.warn(
-      "Storageの写真を削除できませんでした:",
-      removeError
-    );
-
-  }
-
-
-  currentGift.image_path =
-    null;
-
-
-  deleteButton.disabled =
-    false;
-
-
-  deleteButton.textContent =
-    "写真を削除";
-
-
-  renderImage();
-
-}
-
-
-function getDetailImageExtension(
-  mimeType
-) {
-
-  const extensionMap = {
-
-    "image/jpeg":
-      "jpg",
-
-    "image/png":
-      "png",
-
-    "image/webp":
-      "webp"
-
-  };
-
-
-  return (
-    extensionMap[mimeType] ||
-    "jpg"
-  );
-
-}
-
-
-function createDetailImageName() {
-
-  if (
-    window.crypto?.randomUUID
-  ) {
-
-    return crypto.randomUUID();
-
-  }
-
-
-  return (
-    `${Date.now()}-`
-    +
-    Math.random()
-      .toString(36)
-      .slice(2)
-  );
-
-}
 
 /* ========================================
    DELETE GIFT
