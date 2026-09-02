@@ -91,6 +91,36 @@ document.addEventListener(
   }
 );
 
+/* ========================================
+   RESTORE FROM BROWSER CACHE
+======================================== */
+
+window.addEventListener(
+  "pageshow",
+  async event => {
+
+    if (
+      !event.persisted ||
+      !giftId
+    ) {
+      return;
+    }
+
+
+    await loadGiftDetail(
+      giftId
+    );
+
+
+    if (currentGift) {
+
+      renderGiftDetail();
+
+    }
+
+  }
+);
+
 
 /* ========================================
    LOAD GIFT
@@ -309,20 +339,6 @@ function renderPerson() {
     formatPersonName(
       personName
     );
-
-
-  const relationshipText =
-    currentGift.direction ===
-      "received"
-      ? `${formattedName}からもらったプレゼント`
-      : `${formattedName}にあげたプレゼント`;
-
-
-  setText(
-    "giftDetailsPerson",
-    relationshipText
-  );
-
 
   setText(
     "giftDetailsPersonValue",
@@ -1888,6 +1904,10 @@ function createCurrentDetailUrl() {
       encodeURIComponent(
         returnTo
       )
+    }`
+    +
+    `&refresh=${
+      Date.now()
     }`
   );
 
