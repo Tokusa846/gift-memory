@@ -772,10 +772,32 @@ function createGiftItemHtml(
       `
       : "";
 
+  
+  const detailUrl =
+    `gift_detail.html?gift_id=${
+      encodeURIComponent(
+        gift.id
+      )
+    }&return_to=${
+      encodeURIComponent(
+        `people_detail.html?id=${
+          currentPerson.id
+        }`
+      )
+    }`;
+
+
 
   return `
 
-    <article class="person-detail-gift-item">
+    <a 
+      class="person-detail-gift-item"
+      href="${detailUrl}"
+      aria-label="${escapeHtml(
+        gift.item_name ||
+        "プレゼント"
+        )}の詳細を表示"
+      >
 
       <div
         class="
@@ -827,19 +849,14 @@ function createGiftItemHtml(
 
       </div>
 
-      <a
-        class="person-detail-gift-menu"
-        href="gifts.html?gift_id=${encodeURIComponent(
-          gift.id
-        )}&return_to=${encodeURIComponent(
-          `people_detail.html?id=${currentPerson.id}`
-        )}"
-        aria-label="プレゼントを編集"
+      <span
+        class="person-detail-gift-arrow"
+        aria-hidden="true"
       >
-        <i class="fa-solid fa-ellipsis-vertical"></i>
-      </a>
+        <i class="fa-solid fa-chevron-right"></i>
+      </span>
 
-    </article>
+    </a>
 
   `;
 

@@ -2285,6 +2285,17 @@ function createGiftLogHtml(log) {
         </p>
       `
       : "";
+    
+  const detailUrl =
+     `gift_detail.html?gift_id=${
+        encodeURIComponent(
+          log.id
+        )
+      }&return_to=${
+        encodeURIComponent(
+          "index.html"
+        )
+     }`;
 
 
   return `
@@ -2294,7 +2305,14 @@ function createGiftLogHtml(log) {
         class="timeline-dot ${directionClass}"
       ></span>
 
-      <div class="gift-card">
+      <a 
+        class="gift-card"
+        href="${detailUrl}"
+        aria-label="${escapeHtml(
+          log.item_name ||
+          "プレゼント"
+        )}の詳細を表示"
+      >
 
         <div class="gift-card-top">
 
@@ -2362,7 +2380,7 @@ function createGiftLogHtml(log) {
 
         ${memoHtml}
 
-      </div>
+      </a>
 
     </article>
   `;

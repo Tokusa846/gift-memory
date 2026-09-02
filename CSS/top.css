@@ -1168,15 +1168,43 @@
 
 
 .gift-card {
+  display: block;
+
   padding: 14px;
+
+  border: 1px solid #e8e3de;
+  border-radius: 17px;
 
   background-color: #ffffff;
 
-  border: 1px solid #e8e3de;
+  color: inherit;
 
-  border-radius: 17px;
+  text-decoration: none;
 
-  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.025);
+  cursor: pointer;
+
+  box-shadow:
+    0 3px 10px
+    rgba(0, 0, 0, 0.025);
+
+  transition:
+    border-color 0.15s,
+    box-shadow 0.15s,
+    transform 0.1s;
+}
+
+
+.gift-card:hover {
+  border-color: #ddd4ce;
+
+  box-shadow:
+    0 5px 14px
+    rgba(72, 59, 51, 0.08);
+}
+
+
+.gift-card:active {
+  transform: scale(0.99);
 }
 
 
