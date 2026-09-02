@@ -199,7 +199,7 @@ function renderPersonList() {
 
       <div class="person-list-empty">
 
-        <i class="fa-regular fa-user"></i>
+        <i class="fa-solid fa-user"></i>
 
         <p>
           該当する人物はいません
@@ -315,7 +315,7 @@ function createPersonCardHtml(
 
     <div class="person-no-gift">
 
-      <i class="fa-regular fa-gift"></i>
+      <i class="fa-solid fa-gift"></i>
 
       <span>
         まだプレゼント履歴はありません

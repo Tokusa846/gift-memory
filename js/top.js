@@ -49,6 +49,10 @@ let displayedWeekStart =
 document.addEventListener("DOMContentLoaded", async () => {
 
   renderCurrentDate();
+
+  setupNavigation();
+
+  applyInitialTab();
   
   setupWeekNavigation()
 
@@ -65,10 +69,6 @@ document.addEventListener("DOMContentLoaded", async () => {
   setupReturnButtons();
 
   renderTimeline();
-
-  setupNavigation();
-
-  applyInitialTab();
 
   setupFilters();
 

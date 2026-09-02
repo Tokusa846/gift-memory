@@ -106,10 +106,7 @@ personForm.addEventListener(
         dislikes || null,
 
       allergies:
-        allergies || null,
-
-      memo:
-        memo || null
+        allergies || null
 
     };
 
@@ -124,7 +121,8 @@ personForm.addEventListener(
         .insert([
           personData
         ])
-        .select();
+        .select("id")
+        .single();
 
 
     /* -------------------------
@@ -144,6 +142,42 @@ personForm.addEventListener(
       return;
     }
 
+    /*
+      登録時のメモをperson_memosへ保存
+    */
+
+    if (memo) {
+
+      const { error: memoError } =
+        await supabase
+          .from("person_memos")
+          .insert([
+            {
+              person_id:
+                data.id,
+
+              content:
+                memo
+            }
+          ]);
+
+
+      if (memoError) {
+
+        console.error(
+          "人物メモ登録エラー:",
+          memoError
+        );
+
+        message.textContent =
+          "人物は登録されましたが、メモの保存に失敗しました。";
+
+        return;
+
+      }
+
+    }
+
 
     /* -------------------------
        SUCCESS
@@ -158,7 +192,9 @@ personForm.addEventListener(
       "人物を登録しました。";
 
 
-    personForm.reset();
+    window.location.replace(
+      "people_manage.html"
+    );
 
   }
 );
@@ -207,4 +243,4 @@ function buildAllergyText() {
 
   return checked.join(", ");
 
-}
+    }

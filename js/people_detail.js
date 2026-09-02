@@ -689,7 +689,7 @@ function renderGiftList() {
 
       <div class="person-detail-no-gifts">
 
-        <i class="fa-regular fa-gift"></i>
+        <i class="fa-solid fa-gift"></i>
 
         <p>
           まだプレゼント履歴はありません
