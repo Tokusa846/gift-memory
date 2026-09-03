@@ -271,27 +271,6 @@ function createPersonCardHtml(
 
 
   /* =========================
-     LATEST GIFT
-  ========================== */
-
-  const latestGift =
-    [...personLogs]
-      .sort((a, b) => {
-
-        return (
-          parseDate(
-            b.gift_date
-          )
-          -
-          parseDate(
-            a.gift_date
-          )
-        );
-
-      })[0];
-
-
-  /* =========================
      BASIC INFO
   ========================== */
 
@@ -305,97 +284,6 @@ function createPersonCardHtml(
     formatPersonBirthday(
       person.birthday
     );
-
-
-  /* =========================
-     LATEST GIFT HTML
-  ========================== */
-
-  let latestGiftHtml = `
-
-    <div class="person-no-gift">
-
-      <i class="fa-solid fa-gift"></i>
-
-      <span>
-        まだプレゼント履歴はありません
-      </span>
-
-    </div>
-
-  `;
-
-
-  if (latestGift) {
-
-    const directionText =
-      latestGift.direction ===
-      "received"
-        ? "もらった"
-        : "あげた";
-
-
-    const directionClass =
-      latestGift.direction ===
-      "received"
-        ? "received"
-        : "given";
-
-
-    latestGiftHtml = `
-
-      <div class="person-latest-gift">
-
-        <div
-          class="
-            person-latest-icon
-            ${directionClass}
-          "
-        >
-
-          <i class="fa-solid fa-gift"></i>
-
-        </div>
-
-
-        <div class="person-latest-content">
-
-          <span class="person-latest-label">
-            直近のプレゼント
-          </span>
-
-
-          <span class="person-latest-title">
-
-            ${escapeHtml(
-              latestGift.item_name
-            )}
-
-          </span>
-
-        </div>
-
-
-        <div class="person-latest-meta">
-
-          <span>
-            ${directionText}
-          </span>
-
-          <time>
-            ${formatGiftDate(
-              latestGift.gift_date
-            )}
-          </time>
-
-        </div>
-
-      </div>
-
-    `;
-
-  }
-
 
   /* =========================
      RETURN HTML
@@ -442,11 +330,6 @@ function createPersonCardHtml(
                 </span>
             </div>
         </div>
-
-
-        <!-- LATEST GIFT -->
-        ${latestGiftHtml}
-
 
     </article>
 
@@ -538,54 +421,6 @@ function formatPersonBirthday(
     `${date.getMonth() + 1}月`
     +
     `${date.getDate()}日`
-  );
-
-}
-
-
-/* ========================================
-   GIFT DATE FORMAT
-======================================== */
-
-function formatGiftDate(
-  dateString
-) {
-
-  if (!dateString) {
-    return "";
-  }
-
-
-  const date =
-    parseDate(
-      dateString
-    );
-
-
-  const year =
-    date.getFullYear();
-
-
-  const month =
-    String(
-      date.getMonth() + 1
-    ).padStart(
-      2,
-      "0"
-    );
-
-
-  const day =
-    String(
-      date.getDate()
-    ).padStart(
-      2,
-      "0"
-    );
-
-
-  return (
-    `${year}.${month}.${day}`
   );
 
 }
