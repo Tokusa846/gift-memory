@@ -424,6 +424,7 @@ async function loadPerson(
       .select(`
         id,
         name,
+        name_kana,
         birthday,
         relationship,
         likes,
@@ -1151,6 +1152,11 @@ function openBasicInfoEditModal() {
       "basicEditName"
     );
 
+    const nameKanaInput =
+      document.getElementById(
+        "basicEditNameKana"
+    );
+
 
   const birthdayInput =
     document.getElementById(
@@ -1173,6 +1179,9 @@ function openBasicInfoEditModal() {
   /*　現在の値をフォームへセット　*/
   nameInput.value =
     currentPerson.name ?? "";
+
+  nameKanaInput.value =
+  currentPerson.name_kana ?? "";
 
   birthdayInput.value =
     currentPerson.birthday ?? "";
@@ -1203,6 +1212,10 @@ async function saveBasicInfo() {
       "basicEditName"
     );
 
+  const nameKanaInput =
+    document.getElementById(
+      "basicEditNameKana"
+    );
 
   const birthdayInput =
     document.getElementById(
@@ -1235,6 +1248,8 @@ async function saveBasicInfo() {
   const name =
     nameInput.value.trim();
 
+  const nameKana =
+  nameKanaInput.value.trim();
 
   const birthday =
     birthdayInput.value;
@@ -1292,6 +1307,9 @@ async function saveBasicInfo() {
 
         name:
           name,
+
+         name_kana:
+          nameKana || null,
 
         birthday:
           birthday || null,
@@ -1395,6 +1413,34 @@ function renderBasicProfile() {
     currentPerson.name
   );
 
+  const nameKanaElement =
+  document.getElementById(
+    "detailNameKana"
+  );
+
+if (nameKanaElement) {
+
+  if (currentPerson.name_kana) {
+
+    nameKanaElement.textContent =
+      currentPerson.name_kana;
+
+    nameKanaElement.classList.remove(
+      "hidden"
+    );
+
+  } else {
+
+    nameKanaElement.textContent =
+      "";
+
+    nameKanaElement.classList.add(
+      "hidden"
+    );
+
+  }
+
+}
 
   setText(
     "detailBirthday",

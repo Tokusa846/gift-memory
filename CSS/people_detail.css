@@ -244,6 +244,16 @@
   font-weight: 700;
 }
 
+.person-detail-name-kana {
+  margin: 2px 0 0;
+
+  color: #aaa19a;
+
+  font-size: 10px;
+  font-weight: 500;
+
+  line-height: 1.4;
+}
 
 .person-detail-birthday {
   margin: 5px 0 7px;
@@ -819,18 +829,52 @@
 ======================================== */
 
 .person-detail-name-row {
-  display: flex;
+  display: grid;
+
+  grid-template-columns: 28px minmax(0, auto) 28px;
 
   align-items: center;
-
   justify-content: center;
 
-  gap: 7px;
+  column-gap: 6px;
+
+  width: 100%;
+}
+
+
+.person-detail-name-row::before {
+  content: "";
+
+  width: 28px;
+  height: 28px;
 }
 
 
 .person-detail-name-row h2 {
   margin: 0;
+
+  max-width: 260px;
+
+  text-align: center;
+
+  line-height: 1.4;
+
+  overflow-wrap: anywhere;
+}
+
+
+.person-detail-name-row
+.person-section-edit-button {
+  position: static;
+
+  width: 28px;
+  height: 28px;
+
+  transform: none;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 
