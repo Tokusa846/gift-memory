@@ -11,6 +11,9 @@ const personForm =
 const nameInput =
   document.getElementById("name");
 
+const nameKanaInput =
+  document.getElementById("nameKana");
+
 const birthdayInput =
   document.getElementById("birthday");
 
@@ -53,6 +56,9 @@ personForm.addEventListener(
     const name =
       nameInput.value.trim();
 
+    const nameKana =
+      nameKanaInput.value.trim();
+
     const birthday =
       birthdayInput.value;
 
@@ -92,6 +98,9 @@ personForm.addEventListener(
     const personData = {
 
       name: name,
+
+      name_kana:
+        nameKana || null,
 
       birthday:
         birthday || null,
