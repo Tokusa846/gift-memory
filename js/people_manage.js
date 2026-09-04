@@ -264,6 +264,10 @@ function renderPersonIndex() {
 
   const hasKana =
     kanaIndexes.size > 0;
+  
+  const isSingleIndex =
+    (hasAlphabet && !hasKana) ||
+    (!hasAlphabet && hasKana);
 
 
   /* =========================
@@ -286,52 +290,7 @@ function renderPersonIndex() {
   }
 
 
-  let html = "";
-
-
-  /* =========================
-     ALPHABET
-  ========================== */
-
-  if (hasAlphabet) {
-
-    const alphabet =
-      "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-        .split("");
-
-
-    html += `
-      <div class="person-index-group">
-    `;
-
-
-    alphabet.forEach(letter => {
-
-      const isActive =
-        alphabetIndexes.has(
-          letter
-        );
-
-
-      html += `
-        <span
-          class="
-            person-index-item
-            ${isActive ? "active" : ""}
-          "
-        >
-          ${isActive ? letter : "・"}
-        </span>
-      `;
-
-    });
-
-
-    html += `
-      </div>
-    `;
-
-  }
+    let html = "";
 
 
   /* =========================
@@ -356,7 +315,10 @@ function renderPersonIndex() {
 
 
     html += `
-      <div class="person-index-group">
+      <div class="
+        person-index-group
+        kana-index
+      ">
     `;
 
 
@@ -389,12 +351,65 @@ function renderPersonIndex() {
   }
 
 
+  /* =========================
+     ALPHABET
+  ========================== */
+
+  if (hasAlphabet) {
+
+    const alphabet =
+      "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+        .split("");
+
+
+    html += `
+      <div class="
+        person-index-group
+        alphabet-index
+      ">
+    `;
+
+
+    alphabet.forEach(letter => {
+
+      const isActive =
+        alphabetIndexes.has(
+          letter
+        );
+
+
+      html += `
+        <span
+          class="
+            person-index-item
+            ${isActive ? "active" : ""}
+          "
+        >
+          ${isActive ? letter : "・"}
+        </span>
+      `;
+
+    });
+
+
+    html += `
+      </div>
+    `;
+
+  }
+
+
   indexContainer.innerHTML =
     html;
 
 
   indexContainer.classList.remove(
     "hidden"
+  );
+
+  indexContainer.classList.toggle(
+   "single-index",
+    isSingleIndex
   );
 
 }
