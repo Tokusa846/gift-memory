@@ -381,6 +381,8 @@
 
 .person-list-section {
   width: 100%;
+
+  scroll-margin-top: 8px;
 }
 
 
@@ -528,7 +530,8 @@
 
 .person-index-item.active {
   color: #6d625b;
-
   font-size: 13px;
   font-weight: 700;
+
+  cursor: pointer;
 }

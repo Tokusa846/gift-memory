@@ -716,6 +716,15 @@ function renderPersonIndex() {
             person-index-item
             ${isActive ? "active" : ""}
           "
+          ${
+            isActive
+              ? `
+                data-target-id="person-section-kana-${row}"
+                role="button"
+                tabindex="0"
+              `
+              : ""
+          }
         >
           ${isActive ? row : "・"}
         </span>
@@ -764,6 +773,15 @@ function renderPersonIndex() {
             person-index-item
             ${isActive ? "active" : ""}
           "
+          ${
+            isActive
+              ? `
+                data-target-id="person-section-alphabet-${letter}"
+                role="button"
+                tabindex="0"
+              `
+              : ""
+          }
         >
           ${isActive ? letter : "・"}
         </span>
@@ -791,6 +809,80 @@ function renderPersonIndex() {
    "single-index",
     isSingleIndex
   );
+
+  setupPersonIndexLinks();
+
+}
+
+/* ========================================
+   PERSON INDEX LINK
+======================================== */
+
+function setupPersonIndexLinks() {
+
+  const activeIndexes =
+    document.querySelectorAll(
+      ".person-index-item.active[data-target-id]"
+    );
+
+
+  activeIndexes.forEach(indexItem => {
+
+    const jumpToSection = () => {
+
+      const targetId =
+        indexItem.dataset.targetId;
+
+
+      if (!targetId) {
+        return;
+      }
+
+
+      const target =
+        document.getElementById(
+          targetId
+        );
+
+
+      if (!target) {
+        return;
+      }
+
+
+      target.scrollIntoView({
+        behavior: "smooth",
+        block: "start"
+      });
+
+    };
+
+
+    indexItem.addEventListener(
+      "click",
+      jumpToSection
+    );
+
+
+    indexItem.addEventListener(
+      "keydown",
+      event => {
+
+        if (
+          event.key === "Enter" ||
+          event.key === " "
+        ) {
+
+          event.preventDefault();
+
+          jumpToSection();
+
+        }
+
+      }
+    );
+
+  });
 
 }
 
