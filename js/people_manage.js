@@ -217,11 +217,361 @@ function renderPersonList() {
 
 
   /* =========================
-     RENDER
+        RENDER
   ========================== */
 
+  const sections =
+    createPersonSections(
+      filteredPeople
+    );
+
+
   container.innerHTML =
-    filteredPeople
+    sections
+      .map(section =>
+        createPersonSectionHtml(
+          section
+        )
+      )
+      .join("");
+
+
+  setupPersonCardLinks();
+
+}
+
+/* ========================================
+   PERSON SECTIONS
+======================================== */
+
+function createPersonSections(
+  personList
+) {
+
+  const kanaOrder = [
+    "あ",
+    "か",
+    "さ",
+    "た",
+    "な",
+    "は",
+    "ま",
+    "や",
+    "ら",
+    "わ",
+    "他"
+  ];
+
+
+  const kanaGroups =
+    new Map();
+
+
+  const alphabetGroups =
+    new Map();
+
+
+  const noKanaPeople = [];
+
+
+  personList.forEach(person => {
+
+    const name =
+      (person.name ?? "")
+        .trim();
+
+
+    const nameKana =
+      (person.name_kana ?? "")
+        .trim();
+
+
+    if (!name) {
+      return;
+    }
+
+
+    /* =========================
+       ENGLISH NAME
+    ========================== */
+
+    const firstCharacter =
+      name.charAt(0);
+
+
+    if (
+      /^[A-Za-z]$/.test(
+        firstCharacter
+      )
+    ) {
+
+      const alphabetIndex =
+        firstCharacter
+          .toUpperCase();
+
+
+      if (
+        !alphabetGroups.has(
+          alphabetIndex
+        )
+      ) {
+
+        alphabetGroups.set(
+          alphabetIndex,
+          []
+        );
+
+      }
+
+
+      alphabetGroups
+        .get(alphabetIndex)
+        .push(person);
+
+
+      return;
+
+    }
+
+
+    /* =========================
+       JAPANESE NAME
+    ========================== */
+
+    if (nameKana) {
+
+      const kanaIndex =
+        getKanaIndex(
+          nameKana
+        );
+
+
+      if (
+        !kanaGroups.has(
+          kanaIndex
+        )
+      ) {
+
+        kanaGroups.set(
+          kanaIndex,
+          []
+        );
+
+      }
+
+
+      kanaGroups
+        .get(kanaIndex)
+        .push(person);
+
+
+      return;
+
+    }
+
+
+    /* =========================
+       NO FURIGANA
+    ========================== */
+
+    noKanaPeople.push(
+      person
+    );
+
+  });
+
+
+  /* =========================
+     SORT KANA
+  ========================== */
+
+  kanaGroups.forEach(
+    groupPeople => {
+
+      groupPeople.sort(
+        (a, b) => {
+
+          return (
+            (a.name_kana ?? "")
+              .localeCompare(
+                b.name_kana ?? "",
+                "ja"
+              )
+          );
+
+        }
+      );
+
+    }
+  );
+
+
+  /* =========================
+     SORT ALPHABET
+  ========================== */
+
+  alphabetGroups.forEach(
+    groupPeople => {
+
+      groupPeople.sort(
+        (a, b) => {
+
+          return (
+            (a.name ?? "")
+              .localeCompare(
+                b.name ?? "",
+                "en",
+                {
+                  sensitivity: "base"
+                }
+              )
+          );
+
+        }
+      );
+
+    }
+  );
+
+
+  /* =========================
+     SORT NO KANA
+  ========================== */
+
+  noKanaPeople.sort(
+    (a, b) => {
+
+      return (
+        (a.name ?? "")
+          .localeCompare(
+            b.name ?? "",
+            "ja"
+          )
+      );
+
+    }
+  );
+
+
+  /* =========================
+     CREATE SECTIONS
+  ========================== */
+
+  const sections = [];
+
+
+  kanaOrder.forEach(index => {
+
+    const groupPeople =
+      kanaGroups.get(
+        index
+      );
+
+
+    if (
+      !groupPeople ||
+      groupPeople.length === 0
+    ) {
+
+      return;
+
+    }
+
+
+    sections.push({
+
+      type:
+        "kana",
+
+      label:
+        index,
+
+      id:
+        `person-section-kana-${index}`,
+
+      people:
+        groupPeople
+
+    });
+
+  });
+
+
+  const alphabet =
+    "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+      .split("");
+
+
+  alphabet.forEach(index => {
+
+    const groupPeople =
+      alphabetGroups.get(
+        index
+      );
+
+
+    if (
+      !groupPeople ||
+      groupPeople.length === 0
+    ) {
+
+      return;
+
+    }
+
+
+    sections.push({
+
+      type:
+        "alphabet",
+
+      label:
+        index,
+
+      id:
+        `person-section-alphabet-${index}`,
+
+      people:
+        groupPeople
+
+    });
+
+  });
+
+
+  if (
+    noKanaPeople.length > 0
+  ) {
+
+    sections.push({
+
+      type:
+        "no-kana",
+
+      label:
+        "ふりがな未登録",
+
+      id:
+        "person-section-no-kana",
+
+      people:
+        noKanaPeople
+
+    });
+
+  }
+
+
+  return sections;
+
+}
+
+function createPersonSectionHtml(
+  section
+) {
+
+  const cardsHtml =
+    section.people
       .map(person =>
         createPersonCardHtml(
           person
@@ -229,7 +579,37 @@ function renderPersonList() {
       )
       .join("");
 
-      setupPersonCardLinks();
+
+  return `
+
+    <section
+      class="
+        person-list-section
+        person-list-section-${section.type}
+      "
+      id="${section.id}"
+    >
+
+      <div class="person-list-index-heading">
+
+        <span>
+          ${escapeHtml(
+            section.label
+          )}
+        </span>
+
+      </div>
+
+
+      <div class="person-list-section-cards">
+
+        ${cardsHtml}
+
+      </div>
+
+    </section>
+
+  `;
 
 }
 

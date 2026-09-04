@@ -375,6 +375,62 @@
   min-width: 0;
 }
 
+/* ========================================
+   PERSON LIST SECTION
+======================================== */
+
+.person-list-section {
+  width: 100%;
+}
+
+
+.person-list-section + .person-list-section {
+  margin-top: 12px;
+}
+
+
+.person-list-index-heading {
+  display: flex;
+
+  align-items: center;
+
+  gap: 8px;
+
+  margin: 0 0 6px;
+
+  color: #8f857e;
+
+  font-size: 12px;
+  font-weight: 700;
+}
+
+
+.person-list-index-heading::after {
+  content: "";
+
+  flex: 1;
+
+  height: 1px;
+
+  background: #e8e3df;
+}
+
+
+.person-list-section-no-kana
+.person-list-index-heading {
+  color: #aaa19a;
+
+  font-size: 11px;
+}
+
+
+.person-list-section-cards {
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 8px;
+}
 
 /* ========================================
    PERSON INDEX
