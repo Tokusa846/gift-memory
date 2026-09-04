@@ -185,7 +185,8 @@ function renderPersonList() {
 
   count.textContent =
     `${filteredPeople.length}人`;
-
+  
+  renderPersonIndex();
 
   /* =========================
      EMPTY
@@ -232,6 +233,358 @@ function renderPersonList() {
 
 }
 
+/* ========================================
+   PERSON INDEX
+======================================== */
+
+function renderPersonIndex() {
+
+  const indexContainer =
+    document.getElementById(
+      "personIndex"
+    );
+
+
+  if (!indexContainer) {
+    return;
+  }
+
+
+  const alphabetIndexes =
+    getRegisteredAlphabetIndexes();
+
+
+  const kanaIndexes =
+    getRegisteredKanaIndexes();
+
+
+  const hasAlphabet =
+    alphabetIndexes.size > 0;
+
+
+  const hasKana =
+    kanaIndexes.size > 0;
+
+
+  /* =========================
+     NO INDEX
+  ========================== */
+
+  if (
+    !hasAlphabet &&
+    !hasKana
+  ) {
+
+    indexContainer.innerHTML = "";
+
+    indexContainer.classList.add(
+      "hidden"
+    );
+
+    return;
+
+  }
+
+
+  let html = "";
+
+
+  /* =========================
+     ALPHABET
+  ========================== */
+
+  if (hasAlphabet) {
+
+    const alphabet =
+      "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+        .split("");
+
+
+    html += `
+      <div class="person-index-group">
+    `;
+
+
+    alphabet.forEach(letter => {
+
+      const isActive =
+        alphabetIndexes.has(
+          letter
+        );
+
+
+      html += `
+        <span
+          class="
+            person-index-item
+            ${isActive ? "active" : ""}
+          "
+        >
+          ${isActive ? letter : "・"}
+        </span>
+      `;
+
+    });
+
+
+    html += `
+      </div>
+    `;
+
+  }
+
+
+  /* =========================
+     KANA
+  ========================== */
+
+  if (hasKana) {
+
+    const kanaRows = [
+      "あ",
+      "か",
+      "さ",
+      "た",
+      "な",
+      "は",
+      "ま",
+      "や",
+      "ら",
+      "わ",
+      "他"
+    ];
+
+
+    html += `
+      <div class="person-index-group">
+    `;
+
+
+    kanaRows.forEach(row => {
+
+      const isActive =
+        kanaIndexes.has(
+          row
+        );
+
+
+      html += `
+        <span
+          class="
+            person-index-item
+            ${isActive ? "active" : ""}
+          "
+        >
+          ${isActive ? row : "・"}
+        </span>
+      `;
+
+    });
+
+
+    html += `
+      </div>
+    `;
+
+  }
+
+
+  indexContainer.innerHTML =
+    html;
+
+
+  indexContainer.classList.remove(
+    "hidden"
+  );
+
+}
+
+/* ========================================
+   ALPHABET INDEX
+======================================== */
+
+function getRegisteredAlphabetIndexes() {
+
+  const indexes =
+    new Set();
+
+
+  people.forEach(person => {
+
+    const name =
+      (person.name ?? "")
+        .trim();
+
+
+    if (!name) {
+      return;
+    }
+
+
+    const firstCharacter =
+      name.charAt(0);
+
+
+    if (
+      /^[A-Za-z]$/.test(
+        firstCharacter
+      )
+    ) {
+
+      indexes.add(
+        firstCharacter.toUpperCase()
+      );
+
+    }
+
+  });
+
+
+  return indexes;
+
+}
+
+/* ========================================
+   KANA INDEX
+======================================== */
+
+function getRegisteredKanaIndexes() {
+
+  const indexes =
+    new Set();
+
+
+  people.forEach(person => {
+
+    const nameKana =
+      (person.name_kana ?? "")
+        .trim();
+
+
+    if (!nameKana) {
+
+      return;
+
+    }
+
+
+    const index =
+      getKanaIndex(
+        nameKana
+      );
+
+
+    if (index) {
+
+      indexes.add(
+        index
+      );
+
+    }
+
+  });
+
+
+  return indexes;
+
+}
+
+function getKanaIndex(
+  nameKana
+) {
+
+  if (!nameKana) {
+    return null;
+  }
+
+
+  let firstCharacter =
+    nameKana
+      .trim()
+      .charAt(0);
+
+
+  if (!firstCharacter) {
+    return null;
+  }
+
+
+  /* カタカナ → ひらがな */
+  const code =
+    firstCharacter.charCodeAt(0);
+
+
+  if (
+    code >= 0x30A1 &&
+    code <= 0x30F6
+  ) {
+
+    firstCharacter =
+      String.fromCharCode(
+        code - 0x60
+      );
+
+  }
+
+
+  const kanaGroups = {
+
+    "あ":
+      "あいうえおぁぃぅぇぉ",
+
+    "か":
+      "かきくけこがぎぐげご",
+
+    "さ":
+      "さしすせそざじずぜぞ",
+
+    "た":
+      "たちつてとだぢづでどっ",
+
+    "な":
+      "なにぬねの",
+
+    "は":
+      "はひふへほばびぶべぼぱぴぷぺぽ",
+
+    "ま":
+      "まみむめも",
+
+    "や":
+      "やゆよゃゅょ",
+
+    "ら":
+      "らりるれろ",
+
+    "わ":
+      "わをんゎ"
+
+  };
+
+
+  for (
+    const [index, characters]
+    of Object.entries(
+      kanaGroups
+    )
+  ) {
+
+    if (
+      characters.includes(
+        firstCharacter
+      )
+    ) {
+
+      return index;
+
+    }
+
+  }
+
+
+  return "他";
+
+}
 
 /* ========================================
    PERSON CARD

@@ -337,10 +337,6 @@
   font-size: 11px;
 }
 
-
-
-
-
 .person-card-link {
   cursor: pointer;
 
@@ -356,4 +352,82 @@
 .person-card-link:focus-visible {
   outline: 2px solid #e86a58;
   outline-offset: 2px;
+}
+
+/* ========================================
+   PERSON LIST LAYOUT
+======================================== */
+
+.person-list-layout {
+  display: flex;
+
+  align-items: flex-start;
+
+  gap: 8px;
+
+  width: 100%;
+}
+
+
+.person-list-container {
+  flex: 1;
+
+  min-width: 0;
+}
+
+
+/* ========================================
+   PERSON INDEX
+======================================== */
+
+.person-index {
+  flex: 0 0 20px;
+
+  width: 20px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  gap: 2px;
+
+  padding-top: 6px;
+}
+
+
+.person-index-group {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  gap: 1px;
+}
+
+
+.person-index-group + .person-index-group {
+  margin-top: 6px;
+}
+
+
+.person-index-item {
+  width: 20px;
+  height: 18px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  color: #b5aca5;
+
+  font-size: 10px;
+  font-weight: 600;
+
+  line-height: 1;
+}
+
+
+.person-index-item.active {
+  color: #6d625b;
+
+  font-weight: 700;
 }

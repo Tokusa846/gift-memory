@@ -88,18 +88,33 @@
 
 
       <!-- =========================
-           PERSON LIST
+          PERSON LIST
       ========================== -->
-      <section
-        id="personListContainer"
-        class="person-list-container"
-      >
+      <div class="person-list-layout">
 
-        <div class="empty-message">
-          人物情報を読み込んでいます...
-        </div>
+        <!-- 左側インデックス -->
+        <nav
+          id="personIndex"
+          class="person-index hidden"
+          aria-label="人物インデックス"
+        >
+          <!-- JavaScriptで生成 -->
+        </nav>
 
-      </section>
+
+        <!-- 人物一覧 -->
+        <section
+          id="personListContainer"
+          class="person-list-container"
+        >
+
+          <div class="empty-message">
+            人物情報を読み込んでいます...
+          </div>
+
+        </section>
+
+      </div>
 
 
     </main>
