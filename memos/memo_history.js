@@ -1,13 +1,12 @@
 /* Import */
-import { supabase } from "./supabase.js";
+import { supabase } from "../common/supabase.js";
 
 import {
   openModal,
   closeModal,
   setupModalClose,
   setupModalEscape
-} from "./common/modal.js";
-
+} from "../common/modal.js";
 
 /* ========================================
    STATE
@@ -399,7 +398,7 @@ function setupBackLink() {
 
 
   backLink.href =
-    `people_detail.html?id=${
+    `../people/people_detail.html?id=${
       encodeURIComponent(
         currentPerson.id
       )

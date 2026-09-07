@@ -1,4 +1,4 @@
-import { supabase } from "./supabase.js";
+import { supabase } from "../common/supabase.js";
 
 const GIFT_IMAGE_BUCKET =
   "gift-images";
@@ -1089,7 +1089,7 @@ giftForm.addEventListener(
 
         window.location.href =
           returnTo ||
-          "index.html";
+          "../index.html";
 
       },
       700
@@ -1360,7 +1360,7 @@ function setupReturnNavigation() {
 
   const destination =
     returnTo ||
-    "index.html";
+    "../index.html";
 
 
   if (backButton) {

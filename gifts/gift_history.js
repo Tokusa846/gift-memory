@@ -1,5 +1,5 @@
 /* Import */
-import { supabase } from "./supabase.js";
+import { supabase } from "../common/supabase.js";
 
 
 /* ========================================
@@ -515,7 +515,7 @@ function setupBackLink() {
 
 
   backLink.href =
-    `people_detail.html?id=${
+    `../people/people_detail.html?id=${
       encodeURIComponent(
         currentPerson.id
       )

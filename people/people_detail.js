@@ -1,11 +1,11 @@
 /* Import */
-import { supabase } from "./supabase.js";
+import { supabase } from "../common/supabase.js";
 import {
   openModal,
   closeModal,
   setupModalClose,
   setupModalEscape
-} from "./common/modal.js";
+} from "../common/modal.js";
 
 
 /* ========================================
@@ -632,10 +632,10 @@ function setupGiftAddButton() {
 
 
   button.href =
-    `gifts.html?person_id=${encodeURIComponent(
+    `../gifts/gifts.html?person_id=${encodeURIComponent(
       currentPerson.id
     )}&return_to=${encodeURIComponent(
-      `people_detail.html?id=${currentPerson.id}`
+      `../people/people_detail.html?id=${currentPerson.id}`
     )}`;
 }
 
@@ -660,10 +660,10 @@ function setupPersonalAiConsultButton() {
 
 
   button.href =
-    `ai_talk.html?person_id=${encodeURIComponent(
+    `../ai_talk.html?person_id=${encodeURIComponent(
       currentPerson.id
     )}&return_to=${encodeURIComponent(
-      `people_detail.html?id=${currentPerson.id}`
+      `../people/people_detail.html?id=${currentPerson.id}`
     )}`;
 
 }
@@ -726,7 +726,7 @@ function renderGiftList() {
     container.innerHTML += `
       <a
         class="person-detail-more-button"
-        href="gift_history.html?person_id=${encodeURIComponent(
+        href="../gifts/gift_history.html?person_id=${encodeURIComponent(
           currentPerson.id
         )}"
       >
@@ -775,13 +775,13 @@ function createGiftItemHtml(
 
   
   const detailUrl =
-    `gift_detail.html?gift_id=${
+    `../gifts/gift_detail.html?gift_id=${
       encodeURIComponent(
         gift.id
       )
     }&return_to=${
       encodeURIComponent(
-        `people_detail.html?id=${
+        `../people/people_detail.html?id=${
           currentPerson.id
         }`
       )
@@ -1955,7 +1955,7 @@ function renderMemoList() {
     container.innerHTML += `
       <a
         class="person-detail-more-button"
-        href="memo_history.html?person_id=${encodeURIComponent(
+        href="../memos/memo_history.html?person_id=${encodeURIComponent(
           currentPerson.id
         )}"
       >

@@ -1,6 +1,6 @@
 import {
   supabase
-} from "./supabase.js";
+} from "../common/supabase.js";
 
 
 /* ========================================
@@ -1299,7 +1299,7 @@ function getSafeReturnTo(
 ) {
 
   if (!value) {
-    return "index.html";
+    return "../index.html";
   }
 
 
@@ -1314,7 +1314,7 @@ function getSafeReturnTo(
     )
   ) {
 
-    return "index.html";
+    return "../index.html";
 
   }
 

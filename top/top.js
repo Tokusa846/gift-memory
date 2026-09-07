@@ -1,4 +1,4 @@
-import { supabase } from "./supabase.js";
+import { supabase } from "../common/supabase.js";
 
 /* ========================================
    DATE HELPERS
@@ -1597,7 +1597,7 @@ function setupEventActions() {
           `event.html?event_id=${
             encodeURIComponent(eventId)
           }&return_to=${
-            encodeURIComponent("index.html")
+            encodeURIComponent("../index.html")
           }`;
 
 
@@ -2287,13 +2287,13 @@ function createGiftLogHtml(log) {
       : "";
     
   const detailUrl =
-     `gift_detail.html?gift_id=${
+     `gifts/gift_detail.html?gift_id=${
         encodeURIComponent(
           log.id
         )
       }&return_to=${
         encodeURIComponent(
-          "index.html"
+          "../index.html"
         )
      }`;
 
