@@ -442,11 +442,10 @@
   position: sticky;
   top: 8px;
 
-  flex: 0 0 24px;
+  flex: 0 0 38px;
+  width: 38px;
 
-  width: 24px;
-
-  max-height: calc(100dvh - 80px);
+  height: calc(100dvh - 88px);
 
   box-sizing: border-box;
 
@@ -454,7 +453,10 @@
   flex-direction: column;
   align-items: center;
 
-  padding: 4px 0 8px;
+  padding: 8px 3px;
+
+  background: #f3eee9;
+  border-radius: 14px;
 }
 
 
@@ -484,11 +486,11 @@
 
 .person-index:not(.single-index)
 .person-index-group.alphabet-index {
-  flex: 26;
+  flex: 8;
 
   justify-content: space-between;
 
-  margin-top: 8px;
+  margin-top: 30px;
 }
 
 
@@ -499,7 +501,9 @@
 /* かなだけ、または英字だけの場合 */
 .person-index.single-index
 .person-index-group {
-  height: calc(100dvh - 92px);
+  flex: 1;
+
+  height: 100%;
 
   justify-content: space-between;
 }
@@ -510,7 +514,7 @@
 ======================================== */
 
 .person-index-item {
-  width: 24px;
+  width: 100%;
   height: 16px;
 
   flex-shrink: 0;
@@ -519,19 +523,43 @@
   align-items: center;
   justify-content: center;
 
-  color: #b5aca5;
-
   font-size: 11px;
   font-weight: 600;
-
   line-height: 1;
+
+  white-space: nowrap;
 }
 
 
+/* 登録あり */
 .person-index-item.active {
   color: #6d625b;
+
   font-size: 13px;
   font-weight: 700;
 
   cursor: pointer;
+}
+
+
+/* 登録なし */
+.person-index-item.inactive {
+  color: #c8c1bc;
+
+  font-size: 13px;
+  font-weight: 500;
+
+  cursor: default;
+}
+
+
+/* ABC / DEF ... */
+.person-index-item.alphabet-group-item {
+  font-size: 11px;
+  letter-spacing: -0.3px;
+}
+
+.person-index-item.alphabet-group-item.active {
+  font-size: 11px;
+  font-weight: 700;
 }

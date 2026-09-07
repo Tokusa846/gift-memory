@@ -714,7 +714,7 @@ function renderPersonIndex() {
         <span
           class="
             person-index-item
-            ${isActive ? "active" : ""}
+            ${isActive ? "active" : "inactive"}
           "
           ${
             isActive
@@ -726,7 +726,7 @@ function renderPersonIndex() {
               : ""
           }
         >
-          ${isActive ? row : "・"}
+          ${row}
         </span>
       `;
 
@@ -746,9 +746,16 @@ function renderPersonIndex() {
 
   if (hasAlphabet) {
 
-    const alphabet =
-      "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-        .split("");
+    const alphabetGroups = [
+      "ABC",
+      "DEF",
+      "GHI",
+      "JKL",
+      "MNO",
+      "PQRS",
+      "TUV",
+      "WXYZ"
+    ];
 
 
     html += `
@@ -759,11 +766,23 @@ function renderPersonIndex() {
     `;
 
 
-    alphabet.forEach(letter => {
+    alphabetGroups.forEach(group => {
+
+      const letters =
+        group.split("");
+
+
+      const registeredLetter =
+        letters.find(letter =>
+          alphabetIndexes.has(
+            letter
+          )
+        );
+
 
       const isActive =
-        alphabetIndexes.has(
-          letter
+        Boolean(
+          registeredLetter
         );
 
 
@@ -771,19 +790,20 @@ function renderPersonIndex() {
         <span
           class="
             person-index-item
-            ${isActive ? "active" : ""}
+            alphabet-group-item
+            ${isActive ? "active" : "inactive"}
           "
           ${
             isActive
               ? `
-                data-target-id="person-section-alphabet-${letter}"
+                data-target-id="person-section-alphabet-${registeredLetter}"
                 role="button"
                 tabindex="0"
               `
               : ""
           }
         >
-          ${isActive ? letter : "・"}
+          ${group}
         </span>
       `;
 
@@ -795,7 +815,6 @@ function renderPersonIndex() {
     `;
 
   }
-
 
   indexContainer.innerHTML =
     html;
@@ -1374,5 +1393,4 @@ function setupPersonCardLinks() {
     );
 
   });
-
 }
