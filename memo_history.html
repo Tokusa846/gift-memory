@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+
+  <title>メモ一覧 | Gift Memory</title>
+
+
+  <!-- Font Awesome -->
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+  >
+
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+
+  <link
+    rel="preconnect"
+    href="https://fonts.gstatic.com"
+    crossorigin
+  >
+
+  <link
+    href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;600;700&display=swap"
+    rel="stylesheet"
+  >
+
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="CSS/common.css">
+  <link rel="stylesheet" href="CSS/memo_history.css">
+
+</head>
+
+
+<body>
+
+  <div class="app-container">
+
+
+    <!-- ========================================
+         HEADER
+    ========================================= -->
+    <header class="memo-history-header">
+
+      <a
+        id="memoHistoryBack"
+        href="people_manage.html"
+        class="memo-history-back"
+        aria-label="人物詳細へ戻る"
+      >
+        <i class="fa-solid fa-chevron-left"></i>
+      </a>
+
+
+      <h1>
+        メモ一覧
+      </h1>
+
+
+      <div class="memo-history-header-spacer"></div>
+
+    </header>
+
+
+    <!-- ========================================
+         MAIN
+    ========================================= -->
+    <main class="memo-history-main">
+
+
+      <!-- LOADING -->
+      <div
+        id="memoHistoryLoading"
+        class="memo-history-loading"
+      >
+        メモを読み込んでいます...
+      </div>
+
+
+      <!-- CONTENT -->
+      <div
+        id="memoHistoryContent"
+        class="hidden"
+      >
+
+        <!-- PERSON INFO -->
+        <section class="memo-history-person">
+
+          <div
+            id="memoHistoryAvatar"
+            class="memo-history-avatar"
+          >
+            ?
+          </div>
+
+          <div class="memo-history-person-text">
+
+            <p
+              id="memoHistoryNameKana"
+              class="memo-history-name-kana hidden"
+            >
+            </p>
+
+            <h2 id="memoHistoryName">
+              -
+            </h2>
+
+          </div>
+
+        </section>
+
+
+        <!-- MEMO HEADER -->
+        <section class="memo-history-section">
+
+          <div class="memo-history-section-title">
+
+            <h3>
+              メモ
+            </h3>
+
+            <button
+              type="button"
+              id="memoHistoryAddButton"
+              class="memo-history-add-button"
+              aria-label="メモを追加"
+            >
+              <i class="fa-solid fa-plus"></i>
+            </button>
+
+          </div>
+
+
+          <div
+            id="memoHistoryList"
+            class="memo-history-list"
+          >
+          </div>
+
+        </section>
+
+      </div>
+
+
+      <!-- ERROR -->
+      <div
+        id="memoHistoryError"
+        class="memo-history-error hidden"
+      >
+
+        <i class="fa-regular fa-circle-xmark"></i>
+
+        <p>
+          メモを取得できませんでした。
+        </p>
+
+        <a href="people_manage.html">
+          人物一覧へ戻る
+        </a>
+
+      </div>
+
+    </main>
+
+
+    <!-- ========================================
+         BOTTOM NAVIGATION
+    ========================================= -->
+    <nav class="bottom-nav">
+
+      <a
+        href="index.html"
+        class="nav-link-button"
+      >
+        <i class="fa-solid fa-house"></i>
+        <span>ホーム</span>
+      </a>
+
+
+      <a
+        href="people_manage.html"
+        class="nav-link-button active-tab"
+      >
+        <i class="fa-solid fa-user"></i>
+        <span>人物</span>
+      </a>
+
+
+      <a
+        href="index.html?tab=schedule"
+        class="nav-link-button"
+      >
+        <i class="fa-regular fa-calendar"></i>
+        <span>予定</span>
+      </a>
+
+
+      <a
+        href="ai_talk.html"
+        class="nav-link-button"
+      >
+        <i class="fa-solid fa-wand-magic-sparkles"></i>
+        <span>AI</span>
+      </a>
+
+
+      <a
+        href="index.html?tab=setting"
+        class="nav-link-button"
+      >
+        <i class="fa-solid fa-gear"></i>
+        <span>設定</span>
+      </a>
+
+    </nav>
+
+
+    <!-- ========================================
+         MEMO ADD MODAL
+    ========================================= -->
+    <div
+      id="memoHistoryAddModal"
+      class="memo-history-overlay hidden"
+      aria-hidden="true"
+    >
+
+      <div
+        class="memo-history-modal"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="memoHistoryAddTitle"
+      >
+
+        <div class="memo-history-modal-header">
+
+          <h2 id="memoHistoryAddTitle">
+            メモを追加
+          </h2>
+
+          <button
+            type="button"
+            id="memoHistoryAddClose"
+            class="memo-history-modal-close"
+            aria-label="閉じる"
+          >
+            <i class="fa-solid fa-xmark"></i>
+          </button>
+
+        </div>
+
+
+        <form id="memoHistoryAddForm">
+
+          <div class="memo-history-form-group">
+
+            <label for="memoHistoryAddContent">
+              メモ
+            </label>
+
+            <textarea
+              id="memoHistoryAddContent"
+              rows="5"
+              placeholder="覚えておきたいことを入力"
+              required
+            ></textarea>
+
+          </div>
+
+
+          <p
+            id="memoHistoryAddMessage"
+            class="memo-history-message"
+          ></p>
+
+
+          <div class="memo-history-actions">
+
+            <button
+              type="button"
+              id="memoHistoryAddCancel"
+              class="memo-history-cancel-button"
+            >
+              キャンセル
+            </button>
+
+            <button
+              type="submit"
+              id="memoHistoryAddSave"
+              class="memo-history-save-button"
+            >
+              追加
+            </button>
+
+          </div>
+
+        </form>
+
+      </div>
+
+    </div>
+
+
+    <!-- ========================================
+         MEMO EDIT MODAL
+    ========================================= -->
+    <div
+      id="memoHistoryEditModal"
+      class="memo-history-overlay hidden"
+      aria-hidden="true"
+    >
+
+      <div
+        class="memo-history-modal"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="memoHistoryEditTitle"
+      >
+
+        <div class="memo-history-modal-header">
+
+          <h2 id="memoHistoryEditTitle">
+            メモを編集
+          </h2>
+
+          <button
+            type="button"
+            id="memoHistoryEditClose"
+            class="memo-history-modal-close"
+            aria-label="閉じる"
+          >
+            <i class="fa-solid fa-xmark"></i>
+          </button>
+
+        </div>
+
+
+        <form id="memoHistoryEditForm">
+
+          <div class="memo-history-form-group">
+
+            <label for="memoHistoryEditContent">
+              メモ
+            </label>
+
+            <textarea
+              id="memoHistoryEditContent"
+              rows="5"
+              required
+            ></textarea>
+
+          </div>
+
+
+          <p
+            id="memoHistoryEditMessage"
+            class="memo-history-message"
+          ></p>
+
+
+          <div class="memo-history-actions">
+
+            <button
+              type="button"
+              id="memoHistoryEditCancel"
+              class="memo-history-cancel-button"
+            >
+              キャンセル
+            </button>
+
+            <button
+              type="submit"
+              id="memoHistoryEditSave"
+              class="memo-history-save-button"
+            >
+              保存
+            </button>
+
+          </div>
+
+        </form>
+
+      </div>
+
+    </div>
+
+
+  </div>
+
+
+  <script
+    type="module"
+    src="js/memo_history.js"
+  ></script>
+
+</body>
+
+</html>

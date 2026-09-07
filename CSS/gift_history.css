@@ -1,0 +1,448 @@
+/* ========================================
+   GIFT HISTORY PAGE
+======================================== */
+
+.gift-history-main {
+  padding: 20px 16px 110px;
+}
+
+
+/* ========================================
+   HEADER
+======================================== */
+
+.gift-history-header {
+  position: relative;
+
+  min-height: 54px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  padding: 8px 16px;
+
+  border-bottom: 1px solid #eee9e5;
+
+  background-color: #ffffff;
+}
+
+
+.gift-history-header h1 {
+  position: absolute;
+
+  left: 50%;
+
+  margin: 0;
+
+  transform: translateX(-50%);
+
+  color: #332d29;
+
+  font-size: 16px;
+  font-weight: 700;
+}
+
+
+.gift-history-back {
+  width: 34px;
+  height: 34px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  color: #665d56;
+
+  text-decoration: none;
+
+  font-size: 13px;
+}
+
+
+.gift-history-header-spacer {
+  width: 34px;
+  height: 34px;
+}
+
+
+/* ========================================
+   PERSON
+======================================== */
+
+.gift-history-person {
+  display: flex;
+  align-items: center;
+
+  gap: 11px;
+
+  margin-bottom: 14px;
+  padding: 14px;
+
+  border: 1px solid #e8e3de;
+  border-radius: 16px;
+
+  background-color: #ffffff;
+}
+
+
+.gift-history-avatar {
+  width: 46px;
+  height: 46px;
+
+  flex-shrink: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 50%;
+
+  background-color: #eef3f7;
+
+  color: #58708d;
+
+  font-size: 16px;
+  font-weight: 700;
+}
+
+
+.gift-history-person-text {
+  min-width: 0;
+
+  display: flex;
+  flex-direction: column;
+
+  gap: 2px;
+}
+
+
+.gift-history-person-text h2 {
+  margin: 0;
+
+  overflow: hidden;
+
+  color: #332d29;
+
+  font-size: 16px;
+  font-weight: 700;
+
+  text-overflow: ellipsis;
+
+  white-space: nowrap;
+}
+
+
+.gift-history-name-kana {
+  margin: 0;
+
+  color: #aaa19a;
+
+  font-size: 10px;
+  font-weight: 500;
+}
+
+
+/* ========================================
+   COUNTS
+======================================== */
+
+.gift-history-counts {
+  display: grid;
+
+  grid-template-columns: 1fr 1fr;
+
+  gap: 8px;
+
+  margin-bottom: 14px;
+}
+
+
+.gift-history-count {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  padding: 10px 12px;
+
+  border-radius: 11px;
+}
+
+
+.gift-history-count span {
+  font-size: 11px;
+  font-weight: 600;
+}
+
+
+.gift-history-count strong {
+  font-size: 17px;
+}
+
+
+.gift-history-count.received {
+  background-color: #e5f5ef;
+
+  color: #277b60;
+}
+
+
+.gift-history-count.given {
+  background-color: #ffefe9;
+
+  color: #c84e3e;
+}
+
+
+/* ========================================
+   HISTORY SECTION
+======================================== */
+
+.gift-history-section {
+  padding: 4px 15px 8px;
+
+  border: 1px solid #e8e3de;
+  border-radius: 16px;
+
+  background-color: #ffffff;
+
+  box-shadow:
+    0 3px 10px rgba(0, 0, 0, 0.025);
+}
+
+
+.gift-history-list {
+  display: flex;
+  flex-direction: column;
+}
+
+
+/* ========================================
+   HISTORY ITEM
+======================================== */
+
+.gift-history-item {
+  display: flex;
+  align-items: center;
+
+  gap: 10px;
+
+  padding: 13px 0;
+
+  border-bottom: 1px solid #f2eeeb;
+
+  color: inherit;
+
+  text-decoration: none;
+
+  cursor: pointer;
+
+  transition:
+    background-color 0.15s,
+    transform 0.1s;
+}
+
+
+.gift-history-item:last-child {
+  border-bottom: none;
+}
+
+
+.gift-history-item:hover {
+  background-color: #faf8f6;
+}
+
+
+.gift-history-item:active {
+  transform: scale(0.99);
+}
+
+
+.gift-history-icon {
+  width: 34px;
+  height: 34px;
+
+  flex-shrink: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 9px;
+
+  font-size: 11px;
+}
+
+
+.gift-history-icon.received {
+  background-color: #e5f5ef;
+
+  color: #277b60;
+}
+
+
+.gift-history-icon.given {
+  background-color: #ffefe9;
+
+  color: #c84e3e;
+}
+
+
+.gift-history-item-content {
+  min-width: 0;
+
+  flex: 1;
+}
+
+
+.gift-history-item-heading {
+  display: flex;
+  align-items: center;
+
+  gap: 5px;
+
+  margin-bottom: 3px;
+}
+
+
+.gift-history-direction {
+  font-size: 10px;
+  font-weight: 700;
+}
+
+
+.gift-history-direction.received {
+  color: #277b60;
+}
+
+
+.gift-history-direction.given {
+  color: #c84e3e;
+}
+
+
+.gift-history-occasion {
+  overflow: hidden;
+
+  color: #aaa19a;
+
+  font-size: 10px;
+
+  text-overflow: ellipsis;
+
+  white-space: nowrap;
+}
+
+
+.gift-history-name {
+  margin: 0 0 3px;
+
+  overflow: hidden;
+
+  color: #554d47;
+
+  font-size: 13px;
+  font-weight: 600;
+
+  text-overflow: ellipsis;
+
+  white-space: nowrap;
+}
+
+
+.gift-history-date {
+  color: #aaa19a;
+
+  font-size: 10px;
+}
+
+
+.gift-history-arrow {
+  width: 28px;
+  height: 28px;
+
+  flex-shrink: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  color: #b1aaa4;
+
+  font-size: 10px;
+}
+
+
+/* ========================================
+   EMPTY
+======================================== */
+
+.gift-history-empty {
+  padding: 42px 10px;
+
+  color: #aaa19a;
+
+  text-align: center;
+}
+
+
+.gift-history-empty i {
+  margin-bottom: 9px;
+
+  font-size: 24px;
+}
+
+
+.gift-history-empty p {
+  margin: 0;
+
+  font-size: 11px;
+}
+
+
+/* ========================================
+   LOADING / ERROR
+======================================== */
+
+.gift-history-loading {
+  padding: 60px 10px;
+
+  color: #aaa19a;
+
+  text-align: center;
+
+  font-size: 12px;
+}
+
+
+.gift-history-error {
+  padding: 60px 15px;
+
+  color: #aaa19a;
+
+  text-align: center;
+}
+
+
+.gift-history-error i {
+  margin-bottom: 10px;
+
+  font-size: 28px;
+}
+
+
+.gift-history-error p {
+  margin: 0 0 15px;
+
+  font-size: 12px;
+}
+
+
+.gift-history-error a {
+  color: #e86a58;
+
+  font-size: 12px;
+  font-weight: 700;
+
+  text-decoration: none;
+}

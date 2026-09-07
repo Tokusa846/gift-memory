@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+
+  <title>プレゼント履歴 | Gift Memory</title>
+
+
+  <!-- Font Awesome -->
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+  >
+
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+
+  <link
+    rel="preconnect"
+    href="https://fonts.gstatic.com"
+    crossorigin
+  >
+
+  <link
+    href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;600;700&display=swap"
+    rel="stylesheet"
+  >
+
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="CSS/common.css">
+  <link rel="stylesheet" href="CSS/gift_history.css">
+
+</head>
+
+
+<body>
+
+  <div class="app-container">
+
+
+    <!-- ========================================
+         HEADER
+    ========================================= -->
+    <header class="gift-history-header">
+
+      <a
+        id="giftHistoryBack"
+        href="people_manage.html"
+        class="gift-history-back"
+        aria-label="人物詳細へ戻る"
+      >
+        <i class="fa-solid fa-chevron-left"></i>
+      </a>
+
+
+      <h1>
+        プレゼント履歴
+      </h1>
+
+
+      <div class="gift-history-header-spacer"></div>
+
+    </header>
+
+
+    <!-- ========================================
+         MAIN
+    ========================================= -->
+    <main class="gift-history-main">
+
+
+      <!-- LOADING -->
+      <div
+        id="giftHistoryLoading"
+        class="gift-history-loading"
+      >
+        プレゼント履歴を読み込んでいます...
+      </div>
+
+
+      <!-- CONTENT -->
+      <div
+        id="giftHistoryContent"
+        class="hidden"
+      >
+
+        <!-- PERSON INFO -->
+        <section class="gift-history-person">
+
+          <div
+            id="giftHistoryAvatar"
+            class="gift-history-avatar"
+          >
+            ?
+          </div>
+
+          <div class="gift-history-person-text">
+
+            <p
+              id="giftHistoryNameKana"
+              class="gift-history-name-kana hidden"
+            >
+            </p>
+
+            <h2 id="giftHistoryName">
+              -
+            </h2>
+
+          </div>
+
+        </section>
+
+
+        <!-- COUNTS -->
+        <section class="gift-history-counts">
+
+          <div class="gift-history-count received">
+
+            <span>
+              もらった
+            </span>
+
+            <strong id="giftHistoryReceivedCount">
+              0
+            </strong>
+
+          </div>
+
+
+          <div class="gift-history-count given">
+
+            <span>
+              あげた
+            </span>
+
+            <strong id="giftHistoryGivenCount">
+              0
+            </strong>
+
+          </div>
+
+        </section>
+
+
+        <!-- HISTORY LIST -->
+        <section class="gift-history-section">
+
+          <div
+            id="giftHistoryList"
+            class="gift-history-list"
+          >
+          </div>
+
+        </section>
+
+      </div>
+
+
+      <!-- ERROR -->
+      <div
+        id="giftHistoryError"
+        class="gift-history-error hidden"
+      >
+
+        <i class="fa-regular fa-circle-xmark"></i>
+
+        <p>
+          プレゼント履歴を取得できませんでした。
+        </p>
+
+        <a href="people_manage.html">
+          人物一覧へ戻る
+        </a>
+
+      </div>
+
+    </main>
+
+
+    <!-- ========================================
+         BOTTOM NAVIGATION
+    ========================================= -->
+    <nav class="bottom-nav">
+
+      <a
+        href="index.html"
+        class="nav-link-button"
+      >
+        <i class="fa-solid fa-house"></i>
+        <span>ホーム</span>
+      </a>
+
+
+      <a
+        href="people_manage.html"
+        class="nav-link-button active-tab"
+      >
+        <i class="fa-solid fa-user"></i>
+        <span>人物</span>
+      </a>
+
+
+      <a
+        href="index.html?tab=schedule"
+        class="nav-link-button"
+      >
+        <i class="fa-regular fa-calendar"></i>
+        <span>予定</span>
+      </a>
+
+
+      <a
+        href="ai_talk.html"
+        class="nav-link-button"
+      >
+        <i class="fa-solid fa-wand-magic-sparkles"></i>
+        <span>AI</span>
+      </a>
+
+
+      <a
+        href="index.html?tab=setting"
+        class="nav-link-button"
+      >
+        <i class="fa-solid fa-gear"></i>
+        <span>設定</span>
+      </a>
+
+    </nav>
+
+
+  </div>
+
+
+  <script
+    type="module"
+    src="js/gift_history.js"
+  ></script>
+
+</body>
+
+</html>
