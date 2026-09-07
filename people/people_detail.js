@@ -660,7 +660,7 @@ function setupPersonalAiConsultButton() {
 
 
   button.href =
-    `../ai_talk.html?person_id=${encodeURIComponent(
+    `../ai/ai_talk.html?person_id=${encodeURIComponent(
       currentPerson.id
     )}&return_to=${encodeURIComponent(
       `../people/people_detail.html?id=${currentPerson.id}`

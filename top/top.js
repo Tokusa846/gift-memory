@@ -1488,7 +1488,7 @@ function setupDateDetailModal() {
       */
 
       window.location.href =
-        `event.html?date=${encodeURIComponent(
+        `events/event.html?date=${encodeURIComponent(
           selectedDate
         )}`;
 
@@ -1594,7 +1594,7 @@ function setupEventActions() {
 
 
         window.location.href =
-          `event.html?event_id=${
+          `events/event.html?event_id=${
             encodeURIComponent(eventId)
           }&return_to=${
             encodeURIComponent("../index.html")

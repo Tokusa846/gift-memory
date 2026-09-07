@@ -1,5 +1,5 @@
 /* Import */
-import { supabase } from "./supabase.js";
+import { supabase } from "../common/supabase.js";
 
 
 /* ========================================
@@ -32,11 +32,7 @@ document.addEventListener(
 
     setupBackButton();
 
-    setupBackButton();
-
     setupRecipientSelection();
-
-    setupOccasionOptions();
 
     setupOccasionOptions();
 
@@ -157,7 +153,7 @@ function setupBackButton() {
   if (!returnTo) {
 
     button.href =
-      "people_manage.html";
+      "../people/people_manage.html";
 
     return;
 
@@ -172,7 +168,7 @@ function setupBackButton() {
 
   button.href =
     safeReturnUrl ||
-    "people_manage.html";
+    "../people/people_manage.html";
 
 }
 
@@ -185,44 +181,28 @@ function getSafeReturnUrl(
   returnTo
 ) {
 
-  try {
-
-    const url =
-      new URL(
-        returnTo,
-        window.location.href
-      );
+  if (!returnTo) {
+    return null;
+  }
 
 
-    if (
-      url.origin !==
-      window.location.origin
-    ) {
-
-      return null;
-
-    }
+  const trimmedValue =
+    returnTo.trim();
 
 
-    return (
-      url.pathname
-        .split("/")
-        .pop() +
-      url.search +
-      url.hash
-    );
-
-  } catch (error) {
-
-    console.error(
-      "戻り先URLを確認できませんでした:",
-      error
-    );
-
+  if (
+    trimmedValue.startsWith("//") ||
+    /^[a-z][a-z\d+.-]*:/i.test(
+      trimmedValue
+    )
+  ) {
 
     return null;
 
   }
+
+
+  return trimmedValue;
 
 }
 

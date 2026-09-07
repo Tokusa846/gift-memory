@@ -1,5 +1,5 @@
 /* Import */
-import { supabase } from "./supabase.js";
+import { supabase } from "../common/supabase.js";
 
 
 
@@ -94,7 +94,7 @@ function setupReturnButtons() {
       getUrlParameter(
         "return_to"
       )
-    ) || "index.html";
+    ) || "../index.html";
 
 
   if (backButton) {
@@ -128,44 +128,23 @@ function getSafeReturnUrl(
   }
 
 
-  try {
-
-    const url =
-      new URL(
-        returnTo,
-        window.location.href
-      );
+  const trimmedValue =
+    returnTo.trim();
 
 
-    if (
-      url.origin !==
-      window.location.origin
-    ) {
-
-      return null;
-
-    }
-
-
-    return (
-      url.pathname
-        .split("/")
-        .pop() +
-      url.search +
-      url.hash
-    );
-
-  } catch (error) {
-
-    console.error(
-      "戻り先URLを確認できませんでした:",
-      error
-    );
-
+  if (
+    trimmedValue.startsWith("//") ||
+    /^[a-z][a-z\d+.-]*:/i.test(
+      trimmedValue
+    )
+  ) {
 
     return null;
 
   }
+
+
+  return trimmedValue;
 
 }
 
@@ -1090,7 +1069,7 @@ const { error } =
           getUrlParameter(
             "return_to"
           )
-        ) || "index.html";
+        ) || "../index.html";
 
     },
     700
