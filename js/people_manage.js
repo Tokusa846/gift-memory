@@ -157,26 +157,36 @@ function renderPersonList() {
   const filteredPeople =
     people.filter(person => {
 
-      if (
-        searchQuery === ""
-      ) {
+    if (
+      searchQuery === ""
+    ) {
 
-        return true;
+      return true;
 
-      }
-
-
-      const name =
-        person.name ?? "";
+    }
 
 
-      return name
-        .toLowerCase()
-        .includes(
-          searchQuery
-        );
+    const name =
+      (person.name ?? "")
+        .toLowerCase();
 
-    });
+
+    const nameKana =
+      (person.name_kana ?? "")
+        .toLowerCase();
+
+
+    return (
+      name.includes(
+        searchQuery
+      )
+      ||
+      nameKana.includes(
+        searchQuery
+      )
+    );
+
+  });
 
 
   /* =========================
@@ -186,7 +196,31 @@ function renderPersonList() {
   count.textContent =
     `${filteredPeople.length}人`;
   
-  renderPersonIndex();
+  if (
+    searchQuery === ""
+  ) {
+
+    renderPersonIndex();
+
+  } else {
+
+    const indexContainer =
+      document.getElementById(
+        "personIndex"
+     );
+
+
+    if (indexContainer) {
+
+     indexContainer.innerHTML = "";
+
+     indexContainer.classList.add(
+       "hidden"
+      );
+
+    }
+
+  }
 
   /* =========================
      EMPTY
