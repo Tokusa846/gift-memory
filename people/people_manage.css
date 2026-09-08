@@ -6,7 +6,7 @@
   flex: 1;
 
   padding:
-    calc(env(safe-area-inset-top) + 24px)
+    16px
     16px
     80px;
 }
@@ -17,19 +17,40 @@
 ======================================== */
 
 .people-manage-header {
+  position: relative;
+
+  min-height: 72px;
+
   display: flex;
-
   align-items: center;
-
   justify-content: space-between;
 
   gap: 12px;
 
-  margin-bottom: 16px;
+  box-sizing: border-box;
+
+  padding:
+    calc(env(safe-area-inset-top) + 10px)
+    16px
+    10px;
+
+  border-bottom: 1px solid #eee9e5;
+
+  background-color: #ffffff;
 }
 
 
 .people-manage-header h1 {
+  position: absolute;
+
+  left: 50%;
+  top: 50%;
+
+  transform: translate(-50%, -50%);
+
+  width: max-content;
+  max-width: calc(100% - 32px);
+
   margin: 0;
 
   color: #332d29;
@@ -37,15 +58,17 @@
   font-size: 18px;
 
   font-weight: 700;
+
+  text-align: center;
 }
 
 
 .people-manage-header p {
-  margin: 4px 0 0;
+  margin: 30px 0 0;
 
-  color: #aaa19a;
+  color: #625a54;
 
-  font-size: 10px;
+  font-size: 13px;
 }
 
 
@@ -107,7 +130,7 @@
 
   transform: translateY(-50%);
 
-  color: #aaa19a;
+  color: #625a54;
 
   font-size: 11px;
 
@@ -314,7 +337,7 @@
 .person-list-empty {
   padding: 48px 15px;
 
-  color: #aaa19a;
+  color: #625a54;
 
   text-align: center;
 }
@@ -420,7 +443,7 @@
 
 .person-list-section-no-kana
 .person-list-index-heading {
-  color: #aaa19a;
+  color: #625a54;
 
   font-size: 11px;
 }
