@@ -136,6 +136,7 @@ async function loadGiftLogs(
         person_id,
         direction,
         gift_date,
+        created_at,
         occasion,
         item_name,
         price,
@@ -147,6 +148,12 @@ async function loadGiftLogs(
       )
       .order(
         "gift_date",
+        {
+          ascending: false
+        }
+      )
+      .order(
+        "created_at",
         {
           ascending: false
         }

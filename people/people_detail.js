@@ -490,6 +490,12 @@ async function loadGiftLogs(
         {
           ascending: false
         }
+      )
+      .order(
+        "created_at",
+        {
+          ascending: false
+        }
       );
 
 
