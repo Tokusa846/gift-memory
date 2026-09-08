@@ -11,71 +11,7 @@
    HEADER
 ======================================== */
 
-.person-detail-header {
-  position: relative;
-
-  min-height: 54px;
-
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-
-  padding: 8px 16px;
-
-  border-bottom: 1px solid #eee9e5;
-
-  background-color: #ffffff;
-}
-
-
-.person-detail-header h1 {
-  position: absolute;
-
-  left: 50%;
-
-  margin: 0;
-
-  transform: translateX(-50%);
-
-  color: #332d29;
-
-  font-size: 16px;
-  font-weight: 700;
-}
-
-
-.person-detail-back {
-  width: 34px;
-  height: 34px;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  color: #665d56;
-
-  text-decoration: none;
-
-  font-size: 13px;
-}
-
-
-.person-detail-edit {
-  margin-left: auto;
-
-  padding: 6px 10px;
-
-  border: none;
-
-  background: none;
-
-  color: #e86a58;
-
-  font-family: inherit;
-
-  font-size: 12px;
-  font-weight: 700;
-}
+/* Common\common に統合 */
 
 /* ========================================
    PERSON ACTION MENU
