@@ -150,10 +150,16 @@ function setupBackButton() {
     );
 
 
+  /*
+    return_to がない場合は、
+    TOPなどの下部メニューからの遷移とみなし、
+    戻るボタンを非表示にする
+  */
   if (!returnTo) {
 
-    button.href =
-      "../people/people_manage.html";
+    button.classList.add(
+      "hidden"
+    );
 
     return;
 
@@ -166,9 +172,28 @@ function setupBackButton() {
     );
 
 
+  /*
+    不正な戻り先の場合も
+    戻るボタンは表示しない
+  */
+  if (!safeReturnUrl) {
+
+    button.classList.add(
+      "hidden"
+    );
+
+    return;
+
+  }
+
+
   button.href =
-    safeReturnUrl ||
-    "../people/people_manage.html";
+    safeReturnUrl;
+
+
+  button.classList.remove(
+    "hidden"
+  );
 
 }
 
