@@ -199,7 +199,7 @@
 ======================================== */
 
 .gift-history-section {
-  padding: 4px 15px 8px;
+  padding: 0px 15px 8px;
 
   border: 1px solid #e8e3de;
   border-radius: 16px;
@@ -216,6 +216,73 @@
   flex-direction: column;
 }
 
+/* ========================================
+   HISTORY SECTION HEADER
+======================================== */
+
+.gift-history-section-header {
+  min-height: 55px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 10px;
+
+  border-bottom: 1px solid #f0ece8;
+}
+
+
+.gift-history-section-header h3 {
+  margin: 0;
+
+  color: #4a423d;
+
+  font-size: 14px;
+  font-weight: 700;
+}
+
+
+.gift-history-add-button {
+  width: 30px;
+  height: 30px;
+
+  flex-shrink: 0;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  border: 1px solid #ebe6e1;
+  border-radius: 50%;
+
+  background-color: #faf8f6;
+
+  color: #aaa19a;
+
+  text-decoration: none;
+
+  font-size: 11px;
+
+  cursor: pointer;
+
+  transition:
+    background-color 0.15s,
+    color 0.15s,
+    transform 0.1s;
+}
+
+
+.gift-history-add-button:hover {
+  background-color: #f3efec;
+
+  color: #e86a58;
+}
+
+
+.gift-history-add-button:active {
+  transform: scale(0.94);
+}
 
 /* ========================================
    HISTORY ITEM

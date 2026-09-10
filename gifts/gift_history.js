@@ -195,6 +195,8 @@ function renderGiftHistory() {
 
   setupBackLink();
 
+  setupAddGiftLink();
+
 
   const loading =
     document.getElementById(
@@ -530,6 +532,46 @@ function setupBackLink() {
 
 }
 
+/* ========================================
+   ADD GIFT LINK
+======================================== */
+
+function setupAddGiftLink() {
+
+  const addButton =
+    document.getElementById(
+      "giftHistoryAddButton"
+    );
+
+
+  if (
+    !addButton ||
+    !currentPerson
+  ) {
+    return;
+  }
+
+
+  const returnTo =
+    `gift_history.html?person_id=${
+      encodeURIComponent(
+        currentPerson.id
+      )
+    }`;
+
+
+  addButton.href =
+    `gifts.html?person_id=${
+      encodeURIComponent(
+        currentPerson.id
+      )
+    }&return_to=${
+      encodeURIComponent(
+        returnTo
+      )
+    }`;
+
+}
 
 /* ========================================
    ERROR
