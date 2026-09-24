@@ -35,6 +35,89 @@ const memoInput =
 const message =
   document.getElementById("message");
 
+const personBackButton =
+  document.getElementById(
+    "personBackButton"
+  );
+
+const personCloseButton =
+  document.getElementById(
+    "personCloseButton"
+  );
+
+
+/* ========================================
+   RETURN LINK
+======================================== */
+
+setupReturnLinks();
+
+
+function setupReturnLinks() {
+
+  const params =
+    new URLSearchParams(
+      window.location.search
+    );
+
+
+  const returnTo =
+    getSafeReturnUrl(
+      params.get("return_to")
+    );
+
+
+  const returnUrl =
+    returnTo ||
+    "../index.html";
+
+
+  if (personBackButton) {
+
+    personBackButton.href =
+      returnUrl;
+
+  }
+
+
+  if (personCloseButton) {
+
+    personCloseButton.href =
+      returnUrl;
+
+  }
+
+}
+
+
+function getSafeReturnUrl(
+  returnTo
+) {
+
+  if (!returnTo) {
+    return null;
+  }
+
+
+  const trimmedValue =
+    returnTo.trim();
+
+
+  if (
+    trimmedValue.startsWith("//") ||
+    /^[a-z][a-z\d+.-]*:/i.test(
+      trimmedValue
+    )
+  ) {
+
+    return null;
+
+  }
+
+
+  return trimmedValue;
+
+}
 
 /* ========================================
    SUBMIT
