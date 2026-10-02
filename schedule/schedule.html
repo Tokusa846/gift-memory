@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+  >
+
+  <title>予定 | Gift Memory</title>
+
+
+  <!-- Font Awesome -->
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+  >
+
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+
+  <link
+    rel="preconnect"
+    href="https://fonts.gstatic.com"
+    crossorigin
+  >
+
+  <link
+    href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;600;700&display=swap"
+    rel="stylesheet"
+  >
+
+
+  <!-- CSS -->
+  <link
+    rel="stylesheet"
+    href="../common/common.css"
+  >
+
+  <link
+    rel="stylesheet"
+    href="schedule.css"
+  >
+
+</head>
+
+
+<body>
+
+  <div class="app-container schedule-page">
+
+
+    <!-- ========================================
+         HEADER
+    ========================================= -->
+    <header class="app-page-header schedule-header">
+
+      <div class="app-page-header-side"></div>
+
+      <h1>
+        予定
+      </h1>
+
+      <div class="app-page-header-side"></div>
+
+    </header>
+
+
+    <!-- ========================================
+         MAIN
+    ========================================= -->
+    <main class="schedule-main">
+
+
+      <!-- ========================================
+           MONTH CALENDAR
+      ========================================= -->
+      <section
+        class="schedule-calendar-section"
+        aria-labelledby="scheduleCalendarTitle"
+      >
+
+        <!-- 月移動 -->
+        <div class="schedule-month-navigation">
+
+          <button
+            type="button"
+            id="previousMonthButton"
+            class="schedule-month-button"
+            aria-label="前の月を表示"
+          >
+            <i class="fa-solid fa-chevron-left"></i>
+          </button>
+
+
+          <h2
+            id="scheduleCalendarTitle"
+            class="schedule-month-title"
+            aria-live="polite"
+          >
+            ----年--月
+          </h2>
+
+
+          <button
+            type="button"
+            id="nextMonthButton"
+            class="schedule-month-button"
+            aria-label="次の月を表示"
+          >
+            <i class="fa-solid fa-chevron-right"></i>
+          </button>
+
+        </div>
+
+
+        <!-- 曜日 -->
+        <div
+          class="schedule-weekdays"
+          aria-hidden="true"
+        >
+
+          <span class="sunday">日</span>
+          <span>月</span>
+          <span>火</span>
+          <span>水</span>
+          <span>木</span>
+          <span>金</span>
+          <span class="saturday">土</span>
+
+        </div>
+
+
+        <!--
+          JSで月間カレンダーを生成する。
+          日曜日始まり。
+        -->
+        <div
+          id="scheduleCalendar"
+          class="schedule-calendar"
+        >
+        </div>
+
+      </section>
+
+
+      <!-- ========================================
+           MONTHLY LOG
+      ========================================= -->
+      <section
+        class="schedule-log-section"
+        aria-labelledby="scheduleLogTitle"
+      >
+
+        <div class="schedule-log-header">
+
+          <h2 id="scheduleLogTitle">
+            今月の予定・記録
+          </h2>
+
+
+          <button
+            type="button"
+            id="scheduleAddButton"
+            class="schedule-add-button"
+            aria-label="予定またはプレゼントを登録"
+            aria-expanded="false"
+          >
+            <i class="fa-solid fa-plus"></i>
+          </button>
+
+        </div>
+
+
+        <!-- ========================================
+             ADD MENU
+        ========================================= -->
+        <div
+          id="scheduleAddMenu"
+          class="schedule-add-menu hidden"
+        >
+
+          <!-- プレゼントを優先して上に表示 -->
+          <a
+            id="scheduleAddGiftLink"
+            href="../gifts/gifts.html"
+            class="schedule-add-menu-item"
+          >
+
+            <span class="schedule-add-menu-icon gift">
+              <i class="fa-solid fa-gift"></i>
+            </span>
+
+            <span>
+              プレゼント登録
+            </span>
+
+          </a>
+
+
+          <a
+            id="scheduleAddEventLink"
+            href="../events/event.html"
+            class="schedule-add-menu-item"
+          >
+
+            <span class="schedule-add-menu-icon event">
+              <i class="fa-regular fa-calendar"></i>
+            </span>
+
+            <span>
+              イベント登録
+            </span>
+
+          </a>
+
+        </div>
+
+
+        <!--
+          Event + Gift Log を
+          日付昇順で混在表示する。
+
+          左側にはTOPと同じ
+          タイムライン軸を表示する。
+        -->
+        <div
+          id="scheduleTimeline"
+          class="schedule-timeline"
+        >
+
+          <p class="schedule-loading">
+            予定・記録を読み込んでいます...
+          </p>
+
+        </div>
+
+      </section>
+
+
+    </main>
+
+
+    <!-- ========================================
+         BOTTOM NAVIGATION
+    ========================================= -->
+    <nav class="bottom-nav">
+
+      <!-- HOME -->
+      <a
+        href="../index.html"
+        class="nav-link-button"
+        id="nav-home"
+      >
+        <i class="fa-solid fa-house"></i>
+        <span>ホーム</span>
+      </a>
+
+
+      <!-- PEOPLE -->
+      <a
+        href="../people/people_manage.html"
+        class="nav-link-button"
+        id="nav-person"
+      >
+        <i class="fa-solid fa-user"></i>
+        <span>人物</span>
+      </a>
+
+
+      <!-- SCHEDULE -->
+      <a
+        href="schedule.html"
+        class="nav-link-button active-tab"
+        id="nav-schedule"
+        aria-current="page"
+      >
+        <i class="fa-regular fa-calendar"></i>
+        <span>予定</span>
+      </a>
+
+
+      <!-- AI -->
+      <a
+        href="../ai/ai_talk.html"
+        class="nav-link-button"
+        id="nav-ai"
+      >
+        <i class="fa-solid fa-wand-magic-sparkles"></i>
+        <span>AI</span>
+      </a>
+
+
+      <!-- SETTING -->
+      <button
+        type="button"
+        class="nav-button"
+        id="nav-setting"
+      >
+        <i class="fa-solid fa-gear"></i>
+        <span>設定</span>
+      </button>
+
+    </nav>
+
+
+  </div>
+
+
+  <!-- JavaScript -->
+  <script
+    type="module"
+    src="schedule.js"
+  ></script>
+
+</body>
+
+</html>

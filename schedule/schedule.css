@@ -1,0 +1,801 @@
+/* ========================================
+   SCHEDULE PAGE
+======================================== */
+
+.schedule-page {
+  min-height: 100vh;
+  background-color: #faf8f5;
+}
+
+
+/* ========================================
+   HEADER
+======================================== */
+
+.schedule-header {
+  position: sticky;
+  top: 0;
+  z-index: 30;
+}
+
+
+/* ========================================
+   MAIN
+======================================== */
+
+.schedule-main {
+  flex: 1;
+
+  padding-bottom:
+    calc(
+      82px +
+      env(safe-area-inset-bottom)
+    );
+}
+
+
+/* ========================================
+   MONTH CALENDAR
+======================================== */
+
+.schedule-calendar-section {
+  padding: 18px 16px 20px;
+
+  border-bottom: 1px solid #eee9e5;
+
+  background-color: #ffffff;
+}
+
+
+/* MONTH NAVIGATION */
+
+.schedule-month-navigation {
+  display: grid;
+
+  grid-template-columns:
+    40px 1fr 40px;
+
+  align-items: center;
+
+  margin-bottom: 16px;
+}
+
+
+.schedule-month-title {
+  margin: 0;
+
+  color: #332d29;
+
+  font-size: 15px;
+  font-weight: 700;
+
+  text-align: center;
+}
+
+
+.schedule-month-button {
+  width: 36px;
+  height: 36px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  justify-self: center;
+
+  padding: 0;
+
+  border: none;
+  border-radius: 50%;
+
+  background-color: transparent;
+
+  color: #827870;
+
+  font-size: 12px;
+
+  cursor: pointer;
+}
+
+
+.schedule-month-button:active {
+  background-color: #f4f0ed;
+
+  transform: scale(0.95);
+}
+
+
+/* ========================================
+   WEEKDAYS
+======================================== */
+
+.schedule-weekdays {
+  display: grid;
+
+  grid-template-columns:
+    repeat(7, minmax(0, 1fr));
+
+  margin-bottom: 4px;
+}
+
+
+.schedule-weekdays span {
+  min-width: 0;
+
+  padding: 4px 0;
+
+  color: #8f8780;
+
+  font-size: 10px;
+  font-weight: 600;
+
+  text-align: center;
+}
+
+
+.schedule-weekdays .sunday {
+  color: #d85d52;
+}
+
+
+.schedule-weekdays .saturday {
+  color: #5c82b5;
+}
+
+
+/* ========================================
+   CALENDAR GRID
+======================================== */
+
+.schedule-calendar {
+  display: grid;
+
+  grid-template-columns:
+    repeat(7, minmax(0, 1fr));
+
+  grid-auto-rows: 58px;
+
+  border-top: 1px solid #eee9e5;
+  border-left: 1px solid #eee9e5;
+}
+
+
+.schedule-calendar-day {
+  position: relative;
+
+  min-width: 0;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  gap: 4px;
+
+  box-sizing: border-box;
+
+  padding: 6px 2px 4px;
+
+  border: none;
+  border-right: 1px solid #eee9e5;
+  border-bottom: 1px solid #eee9e5;
+
+  background-color: #ffffff;
+
+  color: #4f4843;
+
+  font-family: inherit;
+
+  cursor: default;
+}
+
+
+.schedule-calendar-day.other-month {
+  background-color: #fbfaf8;
+
+  color: #c7c0ba;
+}
+
+
+.schedule-calendar-day.sunday:not(
+  .other-month
+) {
+  color: #d85d52;
+}
+
+
+.schedule-calendar-day.saturday:not(
+  .other-month
+) {
+  color: #5c82b5;
+}
+
+
+.schedule-calendar-day.today {
+  background-color: #fff9f7;
+}
+
+
+.schedule-calendar-date {
+  width: 24px;
+  height: 24px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 50%;
+
+  font-size: 10px;
+  font-weight: 600;
+}
+
+
+.schedule-calendar-day.today
+.schedule-calendar-date {
+  background-color: #e86a58;
+
+  color: #ffffff;
+
+  font-weight: 700;
+}
+
+
+/* ========================================
+   CALENDAR ICONS
+======================================== */
+
+.schedule-calendar-icons {
+  min-height: 14px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  gap: 3px;
+}
+
+
+.schedule-calendar-icon {
+  font-size: 9px;
+}
+
+
+/* GIFT LOG */
+
+.schedule-calendar-icon.received {
+  color: #35bd8a;
+}
+
+
+.schedule-calendar-icon.given {
+  color: #ef6a59;
+}
+
+
+/* EVENT */
+
+.schedule-calendar-icon.event-birthday {
+  color: #c45f82;
+}
+
+
+.schedule-calendar-icon.event-anniversary {
+  color: #a55c9c;
+}
+
+
+.schedule-calendar-icon.event-celebration {
+  color: #b77b1b;
+}
+
+
+.schedule-calendar-icon.event-gift {
+  color: #c95545;
+}
+
+
+.schedule-calendar-icon.event-other {
+  color: #827870;
+}
+
+
+/* ========================================
+   MONTHLY LOG
+======================================== */
+
+.schedule-log-section {
+  position: relative;
+
+  padding: 18px 16px 28px;
+
+  background-color: #faf8f5;
+}
+
+
+.schedule-log-header {
+  position: relative;
+  z-index: 12;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  margin-bottom: 16px;
+}
+
+
+.schedule-log-header h2 {
+  margin: 0;
+
+  color: #332d29;
+
+  font-size: 14px;
+  font-weight: 700;
+}
+
+
+/* ========================================
+   ADD BUTTON
+======================================== */
+
+.schedule-add-button {
+  width: 32px;
+  height: 32px;
+
+  flex-shrink: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 0;
+
+  border: none;
+  border-radius: 50%;
+
+  background-color: #ef6958;
+
+  color: #ffffff;
+
+  font-size: 12px;
+
+  cursor: pointer;
+
+  box-shadow:
+    0 3px 8px
+    rgba(232, 106, 88, 0.2);
+}
+
+
+.schedule-add-button:active {
+  transform: scale(0.95);
+}
+
+
+/* ========================================
+   ADD MENU
+======================================== */
+
+.schedule-add-menu {
+  position: absolute;
+
+  top: 56px;
+  right: 16px;
+
+  z-index: 20;
+
+  width: 184px;
+
+  box-sizing: border-box;
+
+  padding: 6px;
+
+  border: 1px solid #e8e2dd;
+  border-radius: 12px;
+
+  background-color: #ffffff;
+
+  box-shadow:
+    0 8px 24px
+    rgba(73, 60, 52, 0.14);
+}
+
+
+.schedule-add-menu-item {
+  min-height: 42px;
+
+  display: flex;
+  align-items: center;
+
+  gap: 9px;
+
+  padding: 6px 8px;
+
+  border-radius: 8px;
+
+  color: #514943;
+
+  text-decoration: none;
+
+  font-size: 11px;
+  font-weight: 600;
+}
+
+
+.schedule-add-menu-item:active {
+  background-color: #f7f4f1;
+}
+
+
+.schedule-add-menu-icon {
+  width: 27px;
+  height: 27px;
+
+  flex-shrink: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 8px;
+
+  font-size: 11px;
+}
+
+
+.schedule-add-menu-icon.gift {
+  background-color: #fff1ed;
+
+  color: #d55240;
+}
+
+
+.schedule-add-menu-icon.event {
+  background-color: #f5f1f6;
+
+  color: #9b6d96;
+}
+
+
+/* ========================================
+   TIMELINE
+======================================== */
+
+.schedule-timeline {
+  position: relative;
+
+  min-height: 80px;
+}
+
+
+/*
+  TOPと同じ考え方で
+  左側に一本の軸を置く。
+*/
+
+.schedule-timeline::before {
+  content: "";
+
+  position: absolute;
+
+  top: 8px;
+  bottom: 8px;
+  left: 9px;
+
+  width: 1px;
+
+  background-color: #ddd7d2;
+}
+
+
+.schedule-loading,
+.schedule-empty,
+.schedule-error {
+  position: relative;
+  z-index: 1;
+
+  margin: 0;
+
+  padding: 28px 12px 28px 34px;
+
+  color: #9a918a;
+
+  font-size: 11px;
+
+  line-height: 1.7;
+}
+
+
+.schedule-error {
+  color: #c95d51;
+}
+
+
+/* ========================================
+   DATE GROUP
+======================================== */
+
+.schedule-date-group {
+  position: relative;
+
+  padding-left: 32px;
+
+  margin-bottom: 18px;
+}
+
+
+.schedule-date-group:last-child {
+  margin-bottom: 0;
+}
+
+
+.schedule-date-heading {
+  position: relative;
+
+  min-height: 20px;
+
+  display: flex;
+  align-items: center;
+
+  margin: 0 0 8px;
+
+  color: #746b65;
+
+  font-size: 10px;
+  font-weight: 700;
+}
+
+
+/* 日付位置のタイムラインドット */
+
+.schedule-date-heading::before {
+  content: "";
+
+  position: absolute;
+
+  left: -27px;
+
+  width: 9px;
+  height: 9px;
+
+  box-sizing: border-box;
+
+  border: 2px solid #ffffff;
+  border-radius: 50%;
+
+  background-color: #aaa19a;
+
+  box-shadow:
+    0 0 0 1px #d7d0ca;
+}
+
+
+/* ========================================
+   CARD LIST
+======================================== */
+
+.schedule-date-items {
+  display: flex;
+  flex-direction: column;
+
+  gap: 8px;
+}
+
+
+.schedule-card {
+  width: 100%;
+
+  min-height: 64px;
+
+  display: grid;
+
+  grid-template-columns:
+    38px minmax(0, 1fr) 18px;
+
+  align-items: center;
+
+  gap: 9px;
+
+  box-sizing: border-box;
+
+  padding: 10px 10px;
+
+  border: 1px solid #ebe6e2;
+  border-radius: 13px;
+
+  background-color: #ffffff;
+
+  color: inherit;
+
+  text-decoration: none;
+
+  box-shadow:
+    0 2px 7px
+    rgba(75, 61, 53, 0.04);
+}
+
+
+.schedule-card:active {
+  transform: scale(0.99);
+
+  background-color: #fdfbf9;
+}
+
+
+/* ========================================
+   CARD ICON
+======================================== */
+
+.schedule-card-icon {
+  width: 36px;
+  height: 36px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 11px;
+
+  font-size: 13px;
+}
+
+
+/* もらった */
+
+.schedule-card.received
+.schedule-card-icon {
+  background-color: #edfff7;
+
+  color: #087c56;
+}
+
+
+/* あげた */
+
+.schedule-card.given
+.schedule-card-icon {
+  background-color: #fff4f1;
+
+  color: #c94333;
+}
+
+
+/* 誕生日 */
+
+.schedule-card.event-birthday
+.schedule-card-icon {
+  background-color: #f9dce6;
+
+  color: #c45f82;
+}
+
+
+/* 記念日 */
+
+.schedule-card.event-anniversary
+.schedule-card-icon {
+  background-color: #f2dff0;
+
+  color: #a55c9c;
+}
+
+
+/* お祝い */
+
+.schedule-card.event-celebration
+.schedule-card-icon {
+  background-color: #faedcc;
+
+  color: #b77b1b;
+}
+
+
+/* プレゼント予定 */
+
+.schedule-card.event-gift
+.schedule-card-icon {
+  background-color: #ffe5df;
+
+  color: #c95545;
+}
+
+
+/* その他 */
+
+.schedule-card.event-other
+.schedule-card-icon {
+  background-color: #f1eeeb;
+
+  color: #746b65;
+}
+
+
+/* ========================================
+   CARD CONTENT
+======================================== */
+
+.schedule-card-content {
+  min-width: 0;
+}
+
+
+.schedule-card-title {
+  overflow: hidden;
+
+  margin: 0 0 4px;
+
+  color: #3e3834;
+
+  font-size: 12px;
+  font-weight: 700;
+
+  line-height: 1.45;
+
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+
+.schedule-card-meta {
+  overflow: hidden;
+
+  margin: 0;
+
+  color: #928982;
+
+  font-size: 10px;
+  font-weight: 500;
+
+  line-height: 1.45;
+
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+
+.schedule-card-arrow {
+  color: #bbb3ad;
+
+  font-size: 9px;
+
+  text-align: center;
+}
+
+
+/* ========================================
+   SMALL SCREEN
+======================================== */
+
+@media (max-width: 360px) {
+
+  .schedule-calendar-section,
+  .schedule-log-section {
+    padding-left: 12px;
+    padding-right: 12px;
+  }
+
+
+  .schedule-calendar {
+    grid-auto-rows: 54px;
+  }
+
+
+  .schedule-add-menu {
+    right: 12px;
+  }
+
+
+  .schedule-card {
+    grid-template-columns:
+      34px minmax(0, 1fr) 16px;
+
+    gap: 7px;
+  }
+
+
+  .schedule-card-icon {
+    width: 33px;
+    height: 33px;
+  }
+
+}
