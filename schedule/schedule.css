@@ -709,6 +709,19 @@
   color: #746b65;
 }
 
+/* 人物登録の誕生日 */
+
+.schedule-calendar-icon.person-birthday {
+  color: #c45f82;
+}
+
+
+.schedule-card.person-birthday
+.schedule-card-icon {
+  background-color: #f9dce6;
+
+  color: #c45f82;
+}
 
 /* ========================================
    CARD CONTENT

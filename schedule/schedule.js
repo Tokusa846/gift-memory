@@ -67,6 +67,8 @@ let monthlyGifts = [];
 
 let monthlyEvents = [];
 
+let monthlyBirthdays = [];
+
 
 /* ========================================
    INITIALIZE
@@ -279,9 +281,14 @@ async function loadMonthlyData() {
 
   const [
     giftResult,
-    eventResult
+    eventResult,
+    peopleResult
   ] =
     await Promise.all([
+
+      /* ------------------------------
+         GIFT LOG
+      ------------------------------ */
 
       supabase
         .from("Gifts")
@@ -318,6 +325,11 @@ async function loadMonthlyData() {
           }
         ),
 
+
+      /* ------------------------------
+         EVENT
+      ------------------------------ */
+
       supabase
         .from("events")
         .select(`
@@ -327,23 +339,34 @@ async function loadMonthlyData() {
           event_date,
           person_id,
           related_person_name,
+          is_yearly,
           people (
             name
           )
         `)
-        .gte(
-          "event_date",
-          startDate
-        )
-        .lte(
-          "event_date",
-          endDate
-        )
         .order(
           "event_date",
           {
             ascending: true
           }
+        ),
+
+
+      /* ------------------------------
+         PEOPLE / BIRTHDAY
+      ------------------------------ */
+
+      supabase
+        .from("people")
+        .select(`
+          id,
+          name,
+          birthday
+        `)
+        .not(
+          "birthday",
+          "is",
+          null
         )
 
     ]);
@@ -351,7 +374,8 @@ async function loadMonthlyData() {
 
   if (
     giftResult.error ||
-    eventResult.error
+    eventResult.error ||
+    peopleResult.error
   ) {
 
     console.error(
@@ -359,8 +383,12 @@ async function loadMonthlyData() {
       {
         giftError:
           giftResult.error,
+
         eventError:
-          eventResult.error
+          eventResult.error,
+
+        peopleError:
+          peopleResult.error
       }
     );
 
@@ -368,8 +396,17 @@ async function loadMonthlyData() {
     monthlyGifts =
       giftResult.data || [];
 
+
     monthlyEvents =
-      eventResult.data || [];
+      filterEventsForDisplayedMonth(
+        eventResult.data || []
+      );
+
+
+    monthlyBirthdays =
+      filterBirthdaysForDisplayedMonth(
+        peopleResult.data || []
+      );
 
 
     showLoadError();
@@ -382,14 +419,208 @@ async function loadMonthlyData() {
   monthlyGifts =
     giftResult.data || [];
 
+
   monthlyEvents =
-    eventResult.data || [];
+    filterEventsForDisplayedMonth(
+      eventResult.data || []
+    );
+
+
+  monthlyBirthdays =
+    filterBirthdaysForDisplayedMonth(
+      peopleResult.data || []
+    );
 
 
   return true;
 
 }
 
+
+/* ========================================
+   FILTER EVENTS FOR DISPLAYED MONTH
+======================================== */
+
+function filterEventsForDisplayedMonth(
+  events
+) {
+
+  const displayedYear =
+    displayedDate.getFullYear();
+
+  const displayedMonth =
+    displayedDate.getMonth();
+
+
+  return events
+    .map(event => {
+
+      if (!event.event_date) {
+        return null;
+      }
+
+
+      const [
+        eventYear,
+        eventMonth,
+        eventDay
+      ] =
+        event.event_date
+          .split("-")
+          .map(Number);
+
+
+      /*
+        毎年繰り返すイベント
+        → 年を表示中の年へ置き換える
+      */
+
+      if (event.is_yearly) {
+
+        if (
+          eventMonth - 1 !==
+          displayedMonth
+        ) {
+          return null;
+        }
+
+
+        return {
+          ...event,
+
+          display_date:
+            formatDateKey(
+              new Date(
+                displayedYear,
+                eventMonth - 1,
+                eventDay
+              )
+            )
+        };
+
+      }
+
+
+      /*
+        繰り返さないイベント
+        → 年月が一致する場合のみ表示
+      */
+
+      if (
+        eventYear !== displayedYear ||
+        eventMonth - 1 !== displayedMonth
+      ) {
+        return null;
+      }
+
+
+      return {
+        ...event,
+
+        display_date:
+          event.event_date
+      };
+
+    })
+    .filter(Boolean)
+    .sort(
+      (a, b) =>
+        a.display_date.localeCompare(
+          b.display_date
+        )
+    );
+
+}
+
+/* ========================================
+   FILTER BIRTHDAYS FOR DISPLAYED MONTH
+======================================== */
+
+function filterBirthdaysForDisplayedMonth(
+  people
+) {
+
+  const displayedYear =
+    displayedDate.getFullYear();
+
+  const displayedMonth =
+    displayedDate.getMonth();
+
+
+  return people
+    .map(person => {
+
+      if (!person.birthday) {
+        return null;
+      }
+
+
+      const birthdayParts =
+        person.birthday
+          .split("-")
+          .map(Number);
+
+
+      if (
+        birthdayParts.length < 3
+      ) {
+        return null;
+      }
+
+
+      const birthdayMonth =
+        birthdayParts[1];
+
+      const birthdayDay =
+        birthdayParts[2];
+
+
+      /*
+        表示中の月と
+        誕生月が違う場合は対象外
+      */
+
+      if (
+        birthdayMonth - 1 !==
+        displayedMonth
+      ) {
+        return null;
+      }
+
+
+      /*
+        誕生日は毎年表示する。
+
+        元の生年月日は変更せず、
+        display_dateだけ表示中の年にする。
+      */
+
+      return {
+        id: person.id,
+        person_id: person.id,
+        name: person.name,
+        birthday: person.birthday,
+
+        display_date:
+          formatDateKey(
+            new Date(
+              displayedYear,
+              birthdayMonth - 1,
+              birthdayDay
+            )
+          )
+      };
+
+    })
+    .filter(Boolean)
+    .sort(
+      (a, b) =>
+        a.display_date.localeCompare(
+          b.display_date
+        )
+    );
+
+}
 
 /* ========================================
    MONTH RANGE
@@ -665,6 +896,10 @@ function getActivityTypesForDate(
     new Set();
 
 
+  /* ------------------------------
+     GIFT LOG
+  ------------------------------ */
+
   monthlyGifts.forEach(gift => {
 
     if (
@@ -695,10 +930,14 @@ function getActivityTypesForDate(
   });
 
 
+  /* ------------------------------
+     EVENT
+  ------------------------------ */
+
   monthlyEvents.forEach(event => {
 
     if (
-      event.event_date !==
+      event.display_date !==
       dateKey
     ) {
       return;
@@ -714,6 +953,27 @@ function getActivityTypesForDate(
     );
 
   });
+
+
+  /* ------------------------------
+     PERSON BIRTHDAY
+  ------------------------------ */
+
+  const hasBirthday =
+    monthlyBirthdays.some(
+      birthday =>
+        birthday.display_date ===
+        dateKey
+    );
+
+
+  if (hasBirthday) {
+
+    types.add(
+      "person-birthday"
+    );
+
+  }
 
 
   return [
@@ -826,15 +1086,27 @@ function createMonthlyItems() {
       event => ({
         kind: "event",
         id: event.id,
-        date: event.event_date,
+        date: event.display_date,
         data: event
+      })
+    );
+
+
+  const birthdayItems =
+    monthlyBirthdays.map(
+      birthday => ({
+        kind: "birthday",
+        id: birthday.id,
+        date: birthday.display_date,
+        data: birthday
       })
     );
 
 
   return [
     ...giftItems,
-    ...eventItems
+    ...eventItems,
+    ...birthdayItems
   ].sort(
     (a, b) => {
 
@@ -959,6 +1231,22 @@ function createDateGroup(
       }
 
 
+      if (
+        item.kind ===
+        "birthday"
+      ) {
+
+        itemList.appendChild(
+          createBirthdayCard(
+            item.data
+          )
+        );
+
+        return;
+
+      }
+
+
       itemList.appendChild(
         createEventCard(
           item.data
@@ -1057,6 +1345,60 @@ function createGiftCard(
 
 }
 
+/* ========================================
+   BIRTHDAY CARD
+======================================== */
+
+function createBirthdayCard(
+  birthday
+) {
+
+  const card =
+    document.createElement(
+      "a"
+    );
+
+
+  card.className =
+    "schedule-card person-birthday";
+
+
+  card.href =
+    createPersonDetailUrl(
+      birthday.person_id
+    );
+
+
+  card.innerHTML = `
+
+    <span class="schedule-card-icon">
+      <i class="fa-solid fa-cake-candles"></i>
+    </span>
+
+    <span class="schedule-card-content">
+
+      <span class="schedule-card-title">
+        ${escapeHtml(
+          `${birthday.name || "名前未登録"}の誕生日`
+        )}
+      </span>
+
+      <span class="schedule-card-meta">
+        人物登録の誕生日
+      </span>
+
+    </span>
+
+    <span class="schedule-card-arrow">
+      <i class="fa-solid fa-chevron-right"></i>
+    </span>
+
+  `;
+
+
+  return card;
+
+}
 
 /* ========================================
    EVENT CARD
@@ -1184,8 +1526,8 @@ function getIconClass(
 
 
     case "event-birthday":
+    case "person-birthday":
       return "fa-solid fa-cake-candles";
-
 
     case "event-anniversary":
       return "fa-solid fa-heart";
@@ -1432,6 +1774,20 @@ function createEventEditUrl(
     `&return_to=${
       encodeURIComponent(
         returnUrl
+      )
+    }`
+  );
+
+}
+
+function createPersonDetailUrl(
+  personId
+) {
+
+  return (
+    `../people/people_detail.html?id=${
+      encodeURIComponent(
+        personId
       )
     }`
   );
