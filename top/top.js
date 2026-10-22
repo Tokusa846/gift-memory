@@ -41,6 +41,8 @@ let displayedWeekStart =
     new Date()
   );
 
+let selectedCalendarDate = null;
+
 
 /* ========================================
    INITIALIZE
@@ -54,7 +56,8 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   applyInitialTab();
   
-  setupWeekNavigation()
+  setupWeekNavigation();
+  setupWeekDateSelectModal();
 
   await loadPeople();
 
@@ -88,24 +91,18 @@ document.addEventListener("DOMContentLoaded", async () => {
 ======================================== */
 
 function renderCurrentDate() {
-
-  const today = new Date();
-
-  const year = today.getFullYear();
-
-  const month = String(
-    today.getMonth() + 1
-  ).padStart(2, "0");
-
-  const date = String(
-    today.getDate()
-  ).padStart(2, "0");
-
   const header =
     document.getElementById("currentDateHeader");
 
-  header.textContent =
-    `${year}.${month}.${date}.`;
+  if (!header) return;
+
+  const date =
+    selectedCalendarDate ?? new Date();
+
+  header.innerHTML = `
+    ${date.getFullYear()}年${date.getMonth() + 1}月${date.getDate()}日
+    <i class="fa-solid fa-chevron-down"></i>
+  `;
 }
 
 
@@ -114,75 +111,49 @@ function renderCurrentDate() {
 ======================================== */
 
 function setupWeekNavigation() {
-
   const previousButton =
-    document.getElementById(
-      "previousWeekButton"
-    );
-
+    document.getElementById("previousWeekButton");
 
   const nextButton =
-    document.getElementById(
-      "nextWeekButton"
-    );
+    document.getElementById("nextWeekButton");
 
+  const todayButton =
+    document.getElementById("todayWeekButton");
 
-  const currentDateButton =
-    document.getElementById(
-      "currentDateHeader"
-    );
+  const dateButton =
+    document.getElementById("currentDateHeader");
 
+  previousButton?.addEventListener("click", () => {
+    displayedWeekStart =
+      addDays(displayedWeekStart, -7);
 
-  /* 前の週へ移動 */
-  previousButton?.addEventListener(
+    selectedCalendarDate = null;
+    renderWeekStrip();
+    renderCurrentDate();
+  });
+
+  nextButton?.addEventListener("click", () => {
+    displayedWeekStart =
+      addDays(displayedWeekStart, 7);
+
+    selectedCalendarDate = null;
+    renderWeekStrip();
+    renderCurrentDate();
+  });
+
+  todayButton?.addEventListener("click", () => {
+    displayedWeekStart =
+      getStartOfWeek(new Date());
+
+    selectedCalendarDate = null;
+    renderWeekStrip();
+    renderCurrentDate();
+  });
+
+  dateButton?.addEventListener(
     "click",
-    () => {
-
-      displayedWeekStart =
-        addDays(
-          displayedWeekStart,
-          -7
-        );
-
-      renderWeekStrip();
-
-    }
+    openWeekDateSelectModal
   );
-
-
-  /*　次の週へ移動　*/
-  nextButton?.addEventListener(
-    "click",
-    () => {
-
-      displayedWeekStart =
-        addDays(
-          displayedWeekStart,
-          7
-        );
-
-
-      renderWeekStrip();
-
-    }
-  );
-
-
-  /*　今週へ戻る*/
-  currentDateButton?.addEventListener(
-    "click",
-    () => {
-
-      displayedWeekStart =
-        getStartOfWeek(
-          new Date()
-        );
-
-      renderWeekStrip();
-
-    }
-  );
-
 }
 
 function addDays(
@@ -527,6 +498,16 @@ function renderWeekStrip() {
 
     }
 
+    if (
+      selectedCalendarDate &&
+      isSameDate(selectedCalendarDate, day)
+    ) {
+      dateButton.classList.add("selected");
+      dateButton.setAttribute("aria-pressed", "true");
+    } else {
+      dateButton.setAttribute("aria-pressed", "false");
+    }
+
 
     if (hasEvent) {
 
@@ -554,16 +535,20 @@ function renderWeekStrip() {
     /*
       日付タップ
     */
-    dateButton.addEventListener(
-      "click",
-      () => {
-
-        openDateDetailModal(
-          day
-        );
-
+    dateButton.addEventListener("click", () => {
+      if (
+        selectedCalendarDate &&
+        isSameDate(selectedCalendarDate, day)
+      ) {
+        openDateDetailModal(day);
+        return;
       }
-    );
+
+      selectedCalendarDate = new Date(day);
+
+      renderWeekStrip();
+      renderCurrentDate();
+    });
 
 
     /* =========================
@@ -3080,4 +3065,129 @@ function escapeHtml(value) {
       "&#039;"
     );
 
+}
+
+/* ========================================
+   WEEK DATE SELECT MODAL
+======================================== */
+
+function openWeekDateSelectModal() {
+  const modal =
+    document.getElementById("weekDateSelectModal");
+
+  const yearSelect =
+    document.getElementById("weekSelectYear");
+
+  const monthSelect =
+    document.getElementById("weekSelectMonth");
+
+  const daySelect =
+    document.getElementById("weekSelectDay");
+
+  const baseDate =
+    selectedCalendarDate ?? new Date();
+
+  const currentYear = new Date().getFullYear();
+
+  yearSelect.innerHTML = "";
+
+  for (let year = 1900; year <= currentYear + 100; year++) {
+    yearSelect.add(new Option(`${year}年`, year));
+  }
+
+  monthSelect.innerHTML = "";
+
+  for (let month = 1; month <= 12; month++) {
+    monthSelect.add(new Option(`${month}月`, month));
+  }
+
+  yearSelect.value = String(baseDate.getFullYear());
+  monthSelect.value = String(baseDate.getMonth() + 1);
+
+  function updateDays() {
+    const year = Number(yearSelect.value);
+    const month = Number(monthSelect.value);
+
+    const maxDay = new Date(year, month, 0).getDate();
+    const previousDay = Number(daySelect.value) || baseDate.getDate();
+
+    daySelect.innerHTML = "";
+
+    for (let day = 1; day <= maxDay; day++) {
+      daySelect.add(new Option(`${day}日`, day));
+    }
+
+    daySelect.value = String(Math.min(previousDay, maxDay));
+  }
+
+  yearSelect.onchange = updateDays;
+  monthSelect.onchange = updateDays;
+
+  updateDays();
+
+  modal.classList.remove("hidden");
+  modal.setAttribute("aria-hidden", "false");
+  document.body.style.overflow = "hidden";
+}
+
+function closeWeekDateSelectModal() {
+  const modal =
+    document.getElementById("weekDateSelectModal");
+
+  modal.classList.add("hidden");
+  modal.setAttribute("aria-hidden", "true");
+  document.body.style.overflow = "";
+}
+
+function setupWeekDateSelectModal() {
+  const modal =
+    document.getElementById("weekDateSelectModal");
+
+  const closeButton =
+    document.getElementById("weekDateSelectClose");
+
+  const confirmButton =
+    document.getElementById("weekDateSelectConfirm");
+
+  closeButton.addEventListener(
+    "click",
+    closeWeekDateSelectModal
+  );
+
+  modal.addEventListener("click", event => {
+    if (event.target === modal) {
+      closeWeekDateSelectModal();
+    }
+  });
+
+  document.addEventListener("keydown", event => {
+    if (
+      event.key === "Escape" &&
+      !modal.classList.contains("hidden")
+    ) {
+      closeWeekDateSelectModal();
+    }
+  });
+
+  confirmButton.addEventListener("click", () => {
+    const year =
+      Number(document.getElementById("weekSelectYear").value);
+
+    const month =
+      Number(document.getElementById("weekSelectMonth").value);
+
+    const day =
+      Number(document.getElementById("weekSelectDay").value);
+
+    const selectedDate = new Date(year, month - 1, day);
+
+    displayedWeekStart =
+      getStartOfWeek(selectedDate);
+
+    selectedCalendarDate = selectedDate;
+
+    renderWeekStrip();
+    renderCurrentDate();
+    closeWeekDateSelectModal();
+  });
 }

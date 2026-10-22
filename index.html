@@ -40,27 +40,22 @@
     ========================== -->
     <header class="top-header">
 
-      <div class="date-header">
-        <div class="date-title-area">
-          <button
-            type="button"
-            id="currentDateHeader"
-            class="current-date-button"
-            aria-label="今週のカレンダーへ戻る"
-          >
-            ----.--.--.
-          </button>
-          <span class="today-badge">Today</span>
-        </div>
-      </div>
-
-      <!-- 週間カレンダー -->
       <div class="week-calendar-navigation">
 
-        <!-- 週移動・表示年月 -->
+        <!-- 日付選択 -->
+        <button
+          type="button"
+          id="currentDateHeader"
+          class="current-date-button"
+          aria-label="日付を指定して移動"
+        >
+          ----年--月--日
+          <i class="fa-solid fa-chevron-down"></i>
+        </button>
+
+        <!-- 週移動 -->
         <div class="week-navigation-header">
 
-          <!-- 前の週 -->
           <button
             type="button"
             id="previousWeekButton"
@@ -70,18 +65,14 @@
             <i class="fa-solid fa-chevron-left"></i>
           </button>
 
-
-          <!-- 表示中の年月 -->
-          <p
-            id="displayedWeekMonth"
-            class="displayed-week-month"
-            aria-live="polite"
+          <button
+            type="button"
+            id="todayWeekButton"
+            class="week-today-button"
           >
-            ----年--月
-          </p>
+            Today
+          </button>
 
-
-          <!-- 次の週 -->
           <button
             type="button"
             id="nextWeekButton"
@@ -92,7 +83,6 @@
           </button>
 
         </div>
-
 
         <!-- 曜日・日付 -->
         <div class="week-calendar-content">
@@ -107,13 +97,7 @@
             <div>土</div>
           </div>
 
-
-          <div
-            id="weeklyStrip"
-            class="weekly-strip"
-          >
-            <!-- JSで生成 -->
-          </div>
+          <div id="weeklyStrip" class="weekly-strip"></div>
 
         </div>
 
@@ -320,7 +304,62 @@
 
 
     <!-- =========================
-          DATE DETAIL MODAL
+         日付選択モーダル
+    ========================== -->
+    <div
+      id="weekDateSelectModal"
+      class="date-detail-overlay hidden"
+      aria-hidden="true"
+    >
+      <div
+        class="date-detail-modal"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="weekDateSelectTitle"
+      >
+        <div class="date-detail-header">
+          <h2 id="weekDateSelectTitle">日付を選択</h2>
+
+          <button
+            type="button"
+            id="weekDateSelectClose"
+            class="date-detail-close"
+            aria-label="閉じる"
+          >
+            <i class="fa-solid fa-xmark"></i>
+          </button>
+        </div>
+
+        <div class="week-date-select-fields">
+          <label>
+            年
+            <select id="weekSelectYear"></select>
+          </label>
+
+          <label>
+            月
+            <select id="weekSelectMonth"></select>
+          </label>
+
+          <label>
+            日
+            <select id="weekSelectDay"></select>
+          </label>
+        </div>
+
+        <button
+          type="button"
+          id="weekDateSelectConfirm"
+          class="date-detail-add-button"
+        >
+          この日付へ移動
+        </button>
+      </div>
+    </div>
+
+
+    <!-- =========================
+          DATE DETAIL MODAL　日付詳細モーダル
     ========================== -->
     <div
        id="dateDetailModal"
