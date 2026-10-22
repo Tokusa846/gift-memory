@@ -82,6 +82,8 @@ document.addEventListener(
 
     setupAddMenu();
 
+    setupScheduleModals();
+
     await renderDisplayedMonth();
 
   }
@@ -873,15 +875,45 @@ function createCalendarDay(
   }
 
 
-  element.append(
-    dateNumber,
-    icons
+element.append(
+  dateNumber,
+  icons
+);
+
+/* ========================================
+   DATE CLICK
+======================================== */
+
+// 表示中の月の日付だけクリック可能にする
+if (date.getMonth() === displayedMonth) {
+
+  element.setAttribute("role", "button");
+  element.setAttribute("tabindex", "0");
+
+  element.setAttribute(
+    "aria-label",
+    `${date.getFullYear()}年${date.getMonth() + 1}月${date.getDate()}日の詳細`
   );
 
+  element.addEventListener("click", () => {
+    openScheduleDayModal(dateKey);
+  });
 
-  return element;
+  element.addEventListener("keydown", event => {
+
+    if (
+      event.key === "Enter" ||
+      event.key === " "
+    ) {
+      event.preventDefault();
+      openScheduleDayModal(dateKey);
+    }
+
+  });
 
 }
+
+return element;
 
 
 /* ========================================
@@ -2054,4 +2086,181 @@ function escapeHtml(
       "&#039;"
     );
 
+}
+
+/* ========================================
+   SCHEDULE MODALS
+======================================== */
+
+function setupScheduleModals() {
+  const todayButton = document.getElementById("scheduleTodayButton");
+  const titleButton = document.getElementById("scheduleCalendarTitle");
+
+  const monthModal = document.getElementById("scheduleMonthModal");
+  const yearSelect = document.getElementById("scheduleJumpYear");
+  const monthSelect = document.getElementById("scheduleJumpMonth");
+
+  const dayModal = document.getElementById("scheduleDayModal");
+
+  const closeModal = modal => {
+    modal.classList.add("hidden");
+    document.body.classList.remove("schedule-modal-open");
+  };
+
+  const showModal = modal => {
+    modal.classList.remove("hidden");
+    document.body.classList.add("schedule-modal-open");
+  };
+
+  // Today：現在の月へ戻る
+  todayButton.addEventListener("click", async () => {
+    const now = new Date();
+
+    displayedDate = new Date(
+      now.getFullYear(),
+      now.getMonth(),
+      1
+    );
+
+    await renderDisplayedMonth();
+  });
+
+  // 年月選択：1900年～現在年+100年
+  const currentYear = new Date().getFullYear();
+
+  for (let year = 1900; year <= currentYear + 100; year++) {
+    const option = document.createElement("option");
+    option.value = String(year);
+    option.textContent = `${year}年`;
+    yearSelect.appendChild(option);
+  }
+
+  for (let month = 1; month <= 12; month++) {
+    const option = document.createElement("option");
+    option.value = String(month);
+    option.textContent = `${month}月`;
+    monthSelect.appendChild(option);
+  }
+
+  // 年月表示を押してジャンプ先を選択
+  titleButton.addEventListener("click", () => {
+    yearSelect.value = String(displayedDate.getFullYear());
+    monthSelect.value = String(displayedDate.getMonth() + 1);
+
+    showModal(monthModal);
+  });
+
+  document.getElementById("scheduleMonthCancel")
+    .addEventListener("click", () => closeModal(monthModal));
+
+  document.getElementById("scheduleMonthApply")
+    .addEventListener("click", async () => {
+      displayedDate = new Date(
+        Number(yearSelect.value),
+        Number(monthSelect.value) - 1,
+        1
+      );
+
+      closeModal(monthModal);
+      await renderDisplayedMonth();
+    });
+
+  document.getElementById("scheduleDayClose")
+    .addEventListener("click", () => closeModal(dayModal));
+
+  // 背景タップで閉じる
+  [monthModal, dayModal].forEach(modal => {
+    modal.addEventListener("click", event => {
+      if (event.target === modal) {
+        closeModal(modal);
+      }
+    });
+  });
+
+  document.addEventListener("keydown", event => {
+    if (event.key === "Escape") {
+      closeModal(monthModal);
+      closeModal(dayModal);
+    }
+  });
+}
+
+
+/* ========================================
+   DAY DETAIL MODAL
+======================================== */
+
+function openScheduleDayModal(dateKey) {
+  const modal = document.getElementById("scheduleDayModal");
+  const title = document.getElementById("scheduleDayModalTitle");
+  const container = document.getElementById("scheduleDayItems");
+
+  const [year, month, day] = dateKey.split("-").map(Number);
+  const date = new Date(year, month - 1, day);
+  const weekdays = ["日", "月", "火", "水", "木", "金", "土"];
+
+  title.textContent =
+    `${year}年${month}月${day}日（${weekdays[date.getDay()]}）`;
+
+  container.replaceChildren();
+
+  const gifts = monthlyGifts.filter(
+    gift => gift.gift_date === dateKey
+  );
+
+  const events = monthlyEvents.filter(
+    event => event.display_date === dateKey
+  );
+
+  const birthdays = monthlyBirthdays.filter(
+    birthday => birthday.display_date === dateKey
+  );
+
+  // Gift Log
+  gifts.forEach(gift => {
+    container.appendChild(createGiftCard(gift));
+  });
+
+  // イベント
+  events.forEach(event => {
+    container.appendChild(createEventCard(event));
+  });
+
+  // 人物の誕生日
+  birthdays.forEach(birthday => {
+    container.appendChild(createBirthdayCard(birthday));
+  });
+
+  if (
+    gifts.length === 0 &&
+    events.length === 0 &&
+    birthdays.length === 0
+  ) {
+    const empty = document.createElement("p");
+    empty.className = "schedule-day-empty";
+    empty.textContent = "この日の予定・記録はありません。";
+    container.appendChild(empty);
+  }
+
+  // 選択日を登録画面へ引き継ぐ
+  const returnUrl = createScheduleReturnUrl();
+
+  const giftParams = new URLSearchParams({
+    gift_date: dateKey,
+    return_to: returnUrl
+  });
+
+  const eventParams = new URLSearchParams({
+    event_date: dateKey,
+    return_to: returnUrl
+  });
+
+  document.getElementById("scheduleDayGiftLink").href =
+    `../gifts/gifts.html?${giftParams.toString()}`;
+
+  document.getElementById("scheduleDayEventLink").href =
+    `../events/event.html?${eventParams.toString()}`;
+
+  modal.classList.remove("hidden");
+  document.body.classList.add("schedule-modal-open");
 }

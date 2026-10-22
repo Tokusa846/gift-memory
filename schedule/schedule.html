@@ -97,13 +97,14 @@
           </button>
 
 
-          <h2
+          <button
+            type="button"
             id="scheduleCalendarTitle"
-            class="schedule-month-title"
-            aria-live="polite"
+            class="schedule-month-title-button"
+            aria-label="年月を指定して移動"
           >
             ----年--月
-          </h2>
+          </button>
 
 
           <button
@@ -115,6 +116,13 @@
             <i class="fa-solid fa-chevron-right"></i>
           </button>
 
+          <button
+            type="button"
+            id="scheduleTodayButton"
+            class="schedule-today-button"
+          >
+           Today
+          </button>
         </div>
 
 
@@ -309,6 +317,50 @@
 
 
   </div>
+
+  <!-- 年月ジャンプ -->
+<div id="scheduleMonthModal" class="schedule-overlay hidden">
+  <div class="schedule-dialog" role="dialog" aria-modal="true" aria-labelledby="scheduleMonthModalTitle">
+    <h2 id="scheduleMonthModalTitle">年月を選択</h2>
+
+    <div class="schedule-month-fields">
+      <label>
+        年
+        <select id="scheduleJumpYear"></select>
+      </label>
+      <label>
+        月
+        <select id="scheduleJumpMonth"></select>
+      </label>
+    </div>
+
+    <div class="schedule-dialog-actions">
+      <button type="button" id="scheduleMonthCancel">キャンセル</button>
+      <button type="button" id="scheduleMonthApply" class="primary">移動</button>
+    </div>
+  </div>
+</div>
+
+<!-- 日付詳細 -->
+<div id="scheduleDayModal" class="schedule-overlay hidden">
+  <div class="schedule-dialog" role="dialog" aria-modal="true" aria-labelledby="scheduleDayModalTitle">
+    <div class="schedule-day-modal-header">
+      <h2 id="scheduleDayModalTitle"></h2>
+      <button type="button" id="scheduleDayClose" aria-label="閉じる">×</button>
+    </div>
+
+    <div id="scheduleDayItems" class="schedule-day-modal-items"></div>
+
+    <div class="schedule-day-actions">
+      <a id="scheduleDayGiftLink" class="schedule-day-action primary">
+        <i class="fa-solid fa-gift"></i> プレゼント登録
+      </a>
+      <a id="scheduleDayEventLink" class="schedule-day-action">
+        <i class="fa-regular fa-calendar-plus"></i> イベント追加
+      </a>
+    </div>
+  </div>
+</div>
 
 
   <!-- JavaScript -->
