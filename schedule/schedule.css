@@ -1054,3 +1054,15 @@
 .schedule-today-button {
   justify-self: center;
 }
+
+/* ========================================
+   SELECTED CALENDAR DATE
+======================================== */
+
+.schedule-calendar-day.selected {
+  background-color: #fff0ec;
+}
+
+.schedule-calendar-day.selected .schedule-calendar-date {
+  font-weight: 700;
+}

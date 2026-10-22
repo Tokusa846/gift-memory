@@ -69,6 +69,8 @@ let monthlyEvents = [];
 
 let monthlyBirthdays = [];
 
+let selectedDateKey = null;
+
 
 /* ========================================
    INITIALIZE
@@ -192,12 +194,14 @@ function setupMonthNavigation() {
 
 async function renderDisplayedMonth() {
 
+  selectedDateKey = null;
+
   updateMonthUrl();
 
   renderMonthTitle();
 
   showLoading();
-
+  
   const result =
     await loadMonthlyData();
 
@@ -772,6 +776,7 @@ function createCalendarDay(
 
   element.className =
     "schedule-calendar-day";
+    element.dataset.date = formatDateKey(date);
 
 
   const dayOfWeek =
@@ -879,6 +884,46 @@ element.append(
 );
 
 /* ========================================
+   DATE SELECTION
+======================================== */
+
+function selectCalendarDate(dateKey) {
+
+  // 同じ日付を再度押した場合
+  if (selectedDateKey === dateKey) {
+    openScheduleDayModal(dateKey);
+    return;
+  }
+
+  // 選択日を更新
+  selectedDateKey = dateKey;
+
+  // 以前のハイライトを解除
+  document
+    .querySelectorAll(
+      ".schedule-calendar-day.selected"
+    )
+    .forEach(element => {
+      element.classList.remove("selected");
+    });
+
+  // 新しい日付をハイライト
+  const selectedElement =
+    Array.from(
+      document.querySelectorAll(
+        ".schedule-calendar-day"
+      )
+    ).find(element =>
+      element.dataset.date === dateKey
+    );
+
+  selectedElement?.classList.add("selected");
+}
+
+
+
+
+/* ========================================
    DATE CLICK
 ======================================== */
 
@@ -894,7 +939,7 @@ if (date.getMonth() === displayedMonth) {
   );
 
   element.addEventListener("click", () => {
-    openScheduleDayModal(dateKey);
+    selectCalendarDate(dateKey);
   });
 
   element.addEventListener("keydown", event => {
@@ -904,7 +949,7 @@ if (date.getMonth() === displayedMonth) {
       event.key === " "
     ) {
       event.preventDefault();
-      openScheduleDayModal(dateKey);
+      selectCalendarDate(dateKey);
     }
 
   });
