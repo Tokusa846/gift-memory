@@ -258,12 +258,10 @@ function renderMonthTitle() {
   }
 
 
-  calendarTitle.textContent =
-    `${
-      displayedDate.getFullYear()
-    }年${
-      displayedDate.getMonth() + 1
-    }月`;
+  calendarTitle.innerHTML = `
+    ${displayedDate.getFullYear()}年${displayedDate.getMonth() + 1}月
+    <i class="fa-solid fa-chevron-down"></i>
+  `;
 
 }
 
@@ -914,6 +912,8 @@ if (date.getMonth() === displayedMonth) {
 }
 
 return element;
+
+}
 
 
 /* ========================================

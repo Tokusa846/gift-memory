@@ -992,3 +992,65 @@
   background: #e86a58;
   color: #fff;
 }
+
+/* ========================================
+   CALENDAR NAVIGATION
+======================================== */
+
+.schedule-calendar-navigation {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 6px;
+  margin-bottom: 16px;
+}
+
+.schedule-month-title-button {
+  align-self: center;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  border: none;
+  background: transparent;
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+  padding: 4px 10px;
+}
+
+.schedule-month-title-button i {
+  font-size: 11px;
+}
+
+.schedule-calendar-controls {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  width: 100%;
+}
+
+.schedule-month-arrow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 46px;
+  height: 32px;
+  border: 1px solid #d6d6d6;
+  border-radius: 20px;
+  background: transparent;
+  color: #555;
+  cursor: pointer;
+}
+
+#previousMonthButton {
+  justify-self: start;
+}
+
+#nextMonthButton {
+  justify-self: end;
+}
+
+.schedule-today-button {
+  justify-self: center;
+}
