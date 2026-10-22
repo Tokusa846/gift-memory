@@ -793,6 +793,63 @@ function getEventsForDate(date) {
 
 }
 
+// 指定日のプレゼント履歴を取得
+function getGiftsForDate(date) {
+  return giftLogs.filter(log =>
+    isGiftOnDate(log.gift_date, date)
+  );
+}
+
+// 日付詳細用のプレゼントHTML
+function createDateDetailGiftHtml(log) {
+  const personName = escapeHtml(
+    log.people?.name ?? "人物不明"
+  );
+
+  const itemName = escapeHtml(
+    log.item_name ?? "プレゼント"
+  );
+
+  const directionLabel =
+    log.direction === "received"
+      ? "もらったプレゼント"
+      : "贈ったプレゼント";
+
+  const memoHtml = log.memo
+    ? `<p class="date-detail-event-description">
+         ${escapeHtml(log.memo)}
+       </p>`
+    : "";
+
+  return `
+    <article class="date-detail-event gift-log-event">
+
+      <div class="date-detail-event-icon gift">
+        <i class="fa-solid fa-gift"></i>
+      </div>
+
+      <div class="date-detail-event-body">
+
+        <span class="date-detail-event-label gift">
+          ${directionLabel}
+        </span>
+
+        <p class="date-detail-event-title">
+          ${itemName}
+        </p>
+
+        <p class="date-detail-event-description">
+          ${personName}
+        </p>
+
+        ${memoHtml}
+
+      </div>
+
+    </article>
+  `;
+}
+
 /* ========================================
    REGISTERED EVENT CHECK
 ======================================== */
@@ -1008,6 +1065,9 @@ function openDateDetailModal(
   const events =
     getEventsForDate(date);
 
+  const gifts = 
+    getGiftsForDate(date);
+
 
   /* =========================
      TITLE
@@ -1020,44 +1080,30 @@ function openDateDetailModal(
 
 
   /* =========================
-     EVENTなし
+     EVENTなし・あり
   ========================== */
 
-  if (
-    events.length === 0
-  ) {
+  // イベントとプレゼントをまとめて表示
+  if (events.length === 0 && gifts.length === 0) {
 
     content.innerHTML = `
-
       <div class="date-detail-empty">
-
         <i class="fa-regular fa-calendar"></i>
-
-        <span>
-          表示するイベントがありません
-        </span>
-
+        <span>表示する予定・履歴がありません</span>
       </div>
-
     `;
 
-  }
+  } else {
 
+    const eventHtml = events
+      .map(event => createDateDetailEventHtml(event))
+      .join("");
 
-  /* =========================
-     EVENTあり
-  ========================== */
+    const giftHtml = gifts
+      .map(log => createDateDetailGiftHtml(log))
+      .join("");
 
-  else {
-
-    content.innerHTML =
-      events
-        .map(event =>
-          createDateDetailEventHtml(
-            event
-          )
-        )
-        .join("");
+    content.innerHTML = eventHtml + giftHtml;
 
   }
 
@@ -1402,6 +1448,11 @@ function setupDateDetailModal() {
       "dateDetailAddButton"
     );
 
+  const giftAddButton =
+    document.getElementById(
+      "dateDetailGiftAddButton"
+   );
+
 
   /* 閉じる */
   closeButton.addEventListener(
@@ -1455,30 +1506,31 @@ function setupDateDetailModal() {
      ADD
   ========================== */
 
-  addButton.addEventListener(
-    "click",
-    () => {
+  // イベント登録へ
+  addButton.addEventListener("click", () => {
+    const selectedDate = modal.dataset.date;
 
-      const selectedDate =
-        modal.dataset.date;
+    const params = new URLSearchParams({
+      event_date: selectedDate,
+      return_to: "../index.html"
+    });
 
+    window.location.href =
+      `events/event.html?${params.toString()}`;
+  });
 
-      /*
-        現時点では
-        プレゼント登録画面へ遷移。
+  // プレゼント登録へ
+  giftAddButton.addEventListener("click", () => {
+    const selectedDate = modal.dataset.date;
 
-        URLに日付を渡しておくので、
-        後から gifts.html 側で
-        初期日付として使用できます。
-      */
+    const params = new URLSearchParams({
+      gift_date: selectedDate,
+      return_to: "../index.html"
+    });
 
-      window.location.href =
-        `events/event.html?date=${encodeURIComponent(
-          selectedDate
-        )}`;
-
-    }
-  );
+    window.location.href =
+      `gifts/gifts.html?${params.toString()}`;
+  });
 
 }
 

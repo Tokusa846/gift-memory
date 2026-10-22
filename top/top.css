@@ -423,6 +423,18 @@
   cursor: pointer;
 }
 
+/* 日付詳細：登録ボタンの配置 */
+.date-detail-add-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+/* 日付詳細：プレゼント履歴の表示 */
+.date-detail-event.gift-log-event {
+  border-color: #f3d8d2;
+  background-color: #fffaf8;
+}
 
 /* ========================================
    日付詳細・イベント操作メニュー
