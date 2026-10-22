@@ -1,6 +1,9 @@
 /* Import */
 import { supabase } from "../common/supabase.js";
-
+import {
+  getInitialDate,
+  isValidDateString
+} from "../common/date_utils.js";
 
 
 /* ========================================
@@ -156,42 +159,16 @@ function getSafeReturnUrl(
 function setupInitialDate() {
 
   const dateInput =
-    document.getElementById(
-      "eventDate"
-    );
-
+    document.getElementById("eventDate");
 
   if (!dateInput) {
     return;
   }
 
-
-  const dateFromUrl =
-    getUrlParameter(
-      "date"
-    );
-
-
-  if (
-    dateFromUrl &&
-    isValidDateString(
-      dateFromUrl
-    )
-  ) {
-
-    dateInput.value =
-      dateFromUrl;
-
-    return;
-
-  }
-
-
-  dateInput.value =
-    formatDateForInput(
-      new Date()
-    );
-
+  dateInput.value = getInitialDate(
+    new URLSearchParams(window.location.search),
+    ["event_date", "date"]
+  );
 }
 
 
@@ -1158,76 +1135,6 @@ function showMessage(
   message.classList.toggle(
     "success",
     type === "success"
-  );
-
-}
-
-
-/* ========================================
-   DATE UTILITIES
-======================================== */
-
-function isValidDateString(
-  value
-) {
-
-  if (
-    !/^\d{4}-\d{2}-\d{2}$/.test(
-      value
-    )
-  ) {
-
-    return false;
-
-  }
-
-
-  const date =
-    new Date(
-      `${value}T00:00:00`
-    );
-
-
-  return (
-    !Number.isNaN(
-      date.getTime()
-    ) &&
-    formatDateForInput(
-      date
-    ) === value
-  );
-
-}
-
-
-function formatDateForInput(
-  date
-) {
-
-  const year =
-    date.getFullYear();
-
-
-  const month =
-    String(
-      date.getMonth() + 1
-    ).padStart(
-      2,
-      "0"
-    );
-
-
-  const day =
-    String(
-      date.getDate()
-    ).padStart(
-      2,
-      "0"
-    );
-
-
-  return (
-    `${year}-${month}-${day}`
   );
 
 }

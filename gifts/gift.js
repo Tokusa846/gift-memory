@@ -1,4 +1,8 @@
 import { supabase } from "../common/supabase.js";
+import {
+  getInitialDate
+} from "../common/date_utils.js";
+
 
 const GIFT_IMAGE_BUCKET =
   "gift-images";
@@ -588,29 +592,18 @@ function createRandomFileName() {
 }
 
 /* ========================================
-   TODAY
+   INITIAL DATE
 ======================================== */
 
 function setToday() {
+  if (!giftDateInput || giftId) {
+    return;
+  }
 
-  const today = new Date();
-
-  const year =
-    today.getFullYear();
-
-  const month =
-    String(
-      today.getMonth() + 1
-    ).padStart(2, "0");
-
-  const day =
-    String(
-      today.getDate()
-    ).padStart(2, "0");
-
-  giftDateInput.value =
-    `${year}-${month}-${day}`;
-
+  giftDateInput.value = getInitialDate(
+    urlParams,
+    ["gift_date"]
+  );
 }
 
 
