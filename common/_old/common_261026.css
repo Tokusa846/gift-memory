@@ -1,0 +1,261 @@
+/* ========================================
+   BASE
+======================================== */
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: "Noto Sans JP", sans-serif;
+
+  background-color: #f3f0ea;
+
+  color: #332d29;
+
+  -webkit-tap-highlight-color: transparent;
+}
+
+
+/* ========================================
+   APP CONTAINER
+======================================== */
+
+.app-container {
+  max-width: 480px;
+
+  min-height: 100vh;
+
+  margin: 0 auto;
+
+  background-color: #faf8f5;
+
+  position: relative;
+
+  display: flex;
+  flex-direction: column;
+
+  box-shadow:
+    0 10px 25px -5px rgba(0, 0, 0, 0.08),
+    0 8px 10px -6px rgba(0, 0, 0, 0.04);
+}
+
+.hidden {
+  display: none !important;
+}
+
+/* ========================================
+   COMMON PAGE HEADER
+======================================== */
+
+.app-page-header {
+  position: relative;
+
+  min-height: 62px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  box-sizing: border-box;
+
+  padding: 8px 16px;
+
+  border-bottom: 1px solid #eee9e5;
+
+  background-color: #ffffff;
+}
+
+
+.app-page-header h1 {
+  position: absolute;
+
+  top: 50%;
+  left: 50%;
+
+  margin: 0;
+
+  transform: translate(-50%, -50%);
+
+  color: #332d29;
+
+  font-size: 16px;
+  font-weight: 700;
+
+  line-height: 1.4;
+
+  white-space: nowrap;
+}
+
+
+.app-page-header-back {
+  width: 34px;
+  height: 34px;
+
+  flex-shrink: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 0;
+
+  color: #665d56;
+
+  font-size: 13px;
+
+  text-decoration: none;
+}
+
+
+.app-page-header-side {
+  width: 34px;
+  height: 34px;
+
+  flex-shrink: 0;
+}
+
+
+/* ========================================
+   BOTTOM NAV
+======================================== */
+
+.bottom-nav {
+  position: fixed;
+
+  bottom: 0;
+
+  left: 50%;
+
+  z-index: 30;
+
+  width: 100%;
+
+  max-width: 480px;
+
+  padding:
+    8px
+    8px
+    calc(8px + env(safe-area-inset-bottom));
+
+  display: grid;
+
+  grid-template-columns: repeat(5, 1fr);
+
+  transform: translateX(-50%);
+
+  border-top: 1px solid #e8e3de;
+
+  background-color: rgba(255, 255, 255, 0.96);
+
+  backdrop-filter: blur(10px);
+}
+
+
+.nav-button {
+  min-height: 46px;
+
+  display: flex;
+
+  flex-direction: column;
+
+  align-items: center;
+
+  justify-content: center;
+
+  gap: 4px;
+
+  border: none;
+
+  background: none;
+
+  color: #aaa19a;
+
+  font-family: inherit;
+
+  cursor: pointer;
+}
+
+
+.nav-button i {
+  font-size: 16px;
+}
+
+
+.nav-button span {
+  font-size: 9px;
+}
+
+
+.nav-button.active-tab {
+  color: #e86a58;
+
+  font-weight: 700;
+}
+
+/* ========================================
+   NAV LINK
+======================================== */
+
+.nav-link-button {
+  min-height: 46px;
+
+  display: flex;
+
+  flex-direction: column;
+
+  align-items: center;
+
+  justify-content: center;
+
+  gap: 4px;
+
+  border: none;
+
+  background: none;
+
+  color: #aaa19a;
+
+  font-family: inherit;
+
+  text-decoration: none;
+}
+
+
+.nav-link-button i {
+  font-size: 16px;
+}
+
+
+.nav-link-button span {
+  font-size: 9px;
+}
+
+
+.nav-link-button.active-tab {
+  color: #e86a58;
+
+  font-weight: 700;
+}
+
+/* ========================================
+   SCROLLBAR
+======================================== */
+
+::-webkit-scrollbar {
+  width: 4px;
+}
+
+
+::-webkit-scrollbar-thumb {
+  border-radius: 4px;
+
+  background-color: #ded8d2;
+}
+

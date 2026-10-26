@@ -1,3 +1,4 @@
+import { renderDateDetailCards } from "../common/modal.js";
 import { supabase } from "../common/supabase.js";
 
 /* ========================================
@@ -1098,34 +1099,24 @@ function openDateDetailModal(date) {
      + `（${weekdays[date.getDay()]}）`;
 
 
-  /* =========================
-     EVENTなし・あり
-  ========================== */
-
-  // イベントとプレゼントをまとめて表示
-  if (events.length === 0 && gifts.length === 0) {
-
-    content.innerHTML = `
-      <div class="date-detail-empty">
-        <i class="fa-regular fa-calendar"></i>
-        <span>表示する予定・履歴がありません</span>
-      </div>
-    `;
-
-  } else {
-
-    const eventHtml = events
-      .map(event => createDateDetailEventHtml(event))
-      .join("");
-
-    const giftHtml = gifts
-      .map(log => createDateDetailGiftHtml(log))
-      .join("");
-
-    content.innerHTML = eventHtml + giftHtml;
-
-  }
-
+  const items = [
+    ...events.map(event => ({
+      type: event.type,
+      title: event.title || "イベント",
+      personName: event.type !== "birthday" && event.personName
+        ? formatPersonName(event.personName) : "",
+      href: event.source === "people"
+        ? `people/people_detail.html?id=${encodeURIComponent(event.personId)}`
+        : `events/event_detail.html?event_id=${encodeURIComponent(event.id)}&return_to=${encodeURIComponent("../index.html")}`
+    })),
+    ...gifts.map(log => ({
+      type: log.direction === "received" ? "received" : "given",
+      title: log.item_name || "名称未登録",
+      personName: log.people?.name ? formatPersonName(log.people.name) : "",
+      href: `gifts/gift_detail.html?gift_id=${encodeURIComponent(log.id)}&return_to=${encodeURIComponent("../index.html")}`
+    }))
+  ];
+  renderDateDetailCards(content, items);
 
   /*追加ボタンで使用するため日付を保持*/
   modal.dataset.date =

@@ -204,3 +204,69 @@ export function setupModalEscape() {
   );
 
 }
+
+/* 日付詳細カード共通描画（TOP・予定画面） */
+const DAY_TYPES = {
+  birthday: ["誕生日", "fa-solid fa-cake-candles"],
+  anniversary: ["記念日", "fa-solid fa-heart"],
+  celebration: ["お祝い", "fa-solid fa-champagne-glasses"],
+  gift: ["プレゼント予定", "fa-solid fa-gift"],
+  other: ["その他", "fa-regular fa-calendar"],
+  given: ["あげたプレゼント", "fa-solid fa-gift"],
+  received: ["もらったプレゼント", "fa-solid fa-gift"]
+};
+
+/** items: [{type, title, personName, href}] */
+export function renderDateDetailCards(container, items) {
+  if (!container) return;
+  container.replaceChildren();
+  if (!items.length) {
+    const empty = document.createElement("div");
+    empty.className = "gm-day-empty";
+    const icon = document.createElement("i");
+    icon.className = "fa-regular fa-calendar";
+    const message = document.createElement("span");
+    message.textContent = "表示する予定・履歴がありません";
+    empty.append(icon, message);
+    container.appendChild(empty);
+    return;
+  }
+  for (const item of items) {
+    const type = Object.hasOwn(DAY_TYPES, item.type) ? item.type : "other";
+    const [label, iconName] = DAY_TYPES[type];
+    const card = document.createElement("a");
+    card.className = `gm-day-card ${type}`;
+    card.href = item.href || "#";
+    const iconBox = document.createElement("span");
+    iconBox.className = "gm-day-card-icon";
+    const icon = document.createElement("i");
+    icon.className = iconName;
+    iconBox.append(icon);
+    const body = document.createElement("span");
+    body.className = "gm-day-card-body";
+    const meta = document.createElement("span");
+    meta.className = "gm-day-card-meta";
+    const typeLabel = document.createElement("span");
+    typeLabel.className = "gm-day-card-type";
+    typeLabel.textContent = label;
+    meta.append(typeLabel);
+    // 誕生日はタイトルに人物名が含まれるため、別表示しない
+    if (type !== "birthday" && item.personName) {
+      const person = document.createElement("span");
+      person.className = "gm-day-card-person";
+      person.textContent = item.personName;
+      meta.append(person);
+    }
+    const title = document.createElement("span");
+    title.className = "gm-day-card-title";
+    title.textContent = item.title || "イベント";
+    body.append(meta, title);
+    const arrow = document.createElement("span");
+    arrow.className = "gm-day-card-arrow";
+    const arrowIcon = document.createElement("i");
+    arrowIcon.className = "fa-solid fa-chevron-right";
+    arrow.append(arrowIcon);
+    card.append(iconBox, body, arrow);
+    container.append(card);
+  }
+}
