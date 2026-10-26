@@ -458,8 +458,8 @@ function renderWeekStrip() {
       getEventsForDate(day);
 
 
-    const hasEvent =
-      events.length > 0;
+    const gifts = getGiftsForDate(day);
+    const hasEvent = events.length > 0 || gifts.length > 0;
 
 
     const dayElement =
@@ -569,9 +569,8 @@ function renderWeekStrip() {
     const uniqueEventTypes =
       [
         ...new Set(
-          events.map(
-            event => event.type
-          )
+          [...events.map(event => event.type),
+             ...gifts.map(gift => gift.direction === "received" ? "received" : "given")]
         )
       ];
 
@@ -822,7 +821,7 @@ function createDateDetailGiftHtml(log) {
     : "";
 
   return `
-    <article class="date-detail-event gift-log-event">
+    <a class="date-detail-event gift-log-event date-detail-link" href="gifts/gift_detail.html?gift_id=${encodeURIComponent(log.id)}&return_to=${encodeURIComponent("../index.html")}">
 
       <div class="date-detail-event-icon gift">
         <i class="fa-solid fa-gift"></i>
@@ -943,6 +942,16 @@ function createCalendarEventIcon(
 
 
   switch (type) {
+
+    case "received":
+      icon.classList.add("fa-gift", "received");
+      icon.setAttribute("aria-label", "もらったプレゼント");
+      break;
+
+    case "given":
+      icon.classList.add("fa-gift", "given");
+      icon.setAttribute("aria-label", "あげたプレゼント");
+      break;
 
     case "birthday":
 
@@ -1223,7 +1232,7 @@ const actionMenuHtml =
         </div>
 
 
-        <div class="date-detail-event-body">
+        <a class="date-detail-event-body date-detail-link" href="${event.source === "people" ? `people/people_detail.html?id=${encodeURIComponent(event.personId)}` : `events/event_detail.html?event_id=${encodeURIComponent(event.id)}&return_to=${encodeURIComponent("../index.html")}`}">
 
           <span class="date-detail-event-label birthday">
             誕生日
@@ -1232,11 +1241,7 @@ const actionMenuHtml =
 
           <p class="date-detail-event-title">
 
-            ${escapeHtml(
-              formatPersonName(
-                event.personName
-              )
-            )}の誕生日
+            ${escapeHtml(event.title)}
 
           </p>
 
@@ -1245,7 +1250,7 @@ const actionMenuHtml =
             誕生日のプレゼントを確認してみましょう。
           </p>
 
-        </div>
+        </a>
 
 
         ${actionMenuHtml}
@@ -1323,7 +1328,7 @@ const actionMenuHtml =
       </div>
 
 
-      <div class="date-detail-event-body">
+      <a class="date-detail-event-body date-detail-link" href="events/event_detail.html?event_id=${encodeURIComponent(event.id)}&return_to=${encodeURIComponent("../index.html")}">
 
         <span
           class="
@@ -1344,7 +1349,7 @@ const actionMenuHtml =
 
         ${memoHtml}
 
-      </div>
+      </a>
 
 
       ${actionMenuHtml}

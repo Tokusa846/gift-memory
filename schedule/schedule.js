@@ -1502,7 +1502,7 @@ function createEventCard(
 
 
   card.href =
-    createEventEditUrl(
+    createEventDetailUrl(
       event.id
     );
 
@@ -1833,7 +1833,7 @@ function createGiftDetailUrl(
   登録画面の編集モードへ遷移する。
 */
 
-function createEventEditUrl(
+function createEventDetailUrl(
   eventId
 ) {
 
@@ -1842,7 +1842,7 @@ function createEventEditUrl(
 
 
   return (
-    `../events/event.html?event_id=${
+    `../events/event_detail.html?event_id=${
       encodeURIComponent(
         eventId
       )

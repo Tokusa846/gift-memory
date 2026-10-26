@@ -945,3 +945,11 @@
 
 .floating-add-button.open {  transform: rotate(45deg);
 }
+
+/* Step 3: 日付詳細のリンク */
+.date-detail-link { color: inherit; text-decoration: none; cursor: pointer; min-width: 0; }
+a.date-detail-event.date-detail-link { display: flex; }
+.date-detail-link:focus-visible { outline: 2px solid #e86a58; outline-offset: 3px; border-radius: 8px; }
+
+.calendar-event-icon.received { color: #35a77b; }
+.calendar-event-icon.given { color: #e86a58; }
