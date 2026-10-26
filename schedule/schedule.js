@@ -2230,6 +2230,121 @@ function setupScheduleModals() {
   });
 }
 
+/* ========================================
+   日付詳細モーダル専用カード
+======================================== */
+
+function createScheduleModalCard(kind, data) {
+  let type;
+  let label;
+  let title;
+  let personName;
+  let iconClass;
+  let href;
+
+  if (kind === "gift") {
+    type = data.direction === "received"
+      ? "received"
+      : "given";
+
+    label = type === "received"
+      ? "もらったプレゼント"
+      : "あげたプレゼント";
+
+    title = data.item_name || "名称未登録";
+    personName = data.people?.name || "";
+    iconClass = "fa-solid fa-gift";
+    href = createGiftDetailUrl(data.id);
+
+  } else if (kind === "birthday") {
+    type = "birthday";
+    label = "誕生日";
+    title = `${data.name || "名前未登録"}の誕生日`;
+    personName = data.name || "";
+    iconClass = "fa-solid fa-cake-candles";
+    href = createPersonDetailUrl(data.person_id);
+
+  } else {
+    const eventType = normalizeEventType(
+      data.event_type
+    );
+
+    type = eventType;
+
+    const settings = {
+      birthday: {
+        label: "誕生日",
+        icon: "fa-solid fa-cake-candles"
+      },
+      anniversary: {
+        label: "記念日",
+        icon: "fa-solid fa-heart"
+      },
+      celebration: {
+        label: "お祝い",
+        icon: "fa-solid fa-champagne-glasses"
+      },
+      gift: {
+        label: "プレゼント予定",
+        icon: "fa-solid fa-gift"
+      },
+      other: {
+        label: "その他",
+        icon: "fa-regular fa-calendar"
+      }
+    };
+
+    const setting = settings[eventType];
+
+    label = setting.label;
+    title = data.title || "イベント";
+    personName =
+      data.people?.name ||
+      data.related_person_name ||
+      "";
+
+    iconClass = setting.icon;
+    href = createEventDetailUrl(data.id);
+  }
+
+  // 敬称の重複を防止
+  const formattedPerson = personName
+    ? formatPersonName(personName)
+    : "";
+
+  const card = document.createElement("a");
+
+  card.className = `gm-day-card ${type}`;
+  card.href = href;
+
+  card.innerHTML = `
+    <span class="gm-day-card-icon">
+      <i class="${iconClass}"></i>
+    </span>
+
+    <span class="gm-day-card-body">
+      <span class="gm-day-card-meta">
+        <span class="gm-day-card-type">
+          ${escapeHtml(label)}
+        </span>
+
+        <span class="gm-day-card-person">
+          ${escapeHtml(formattedPerson)}
+        </span>
+      </span>
+
+      <span class="gm-day-card-title">
+        ${escapeHtml(title)}
+      </span>
+    </span>
+
+    <span class="gm-day-card-arrow">
+      <i class="fa-solid fa-chevron-right"></i>
+    </span>
+  `;
+
+  return card;
+}
 
 /* ========================================
    DAY DETAIL MODAL
@@ -2261,31 +2376,42 @@ function openScheduleDayModal(dateKey) {
     birthday => birthday.display_date === dateKey
   );
 
-  // Gift Log
-  gifts.forEach(gift => {
-    container.appendChild(createGiftCard(gift));
-  });
+    // プレゼント履歴
+    gifts.forEach(gift => {
+      container.appendChild(
+        createScheduleModalCard("gift", gift)
+      );
+    });
 
-  // イベント
-  events.forEach(event => {
-    container.appendChild(createEventCard(event));
-  });
+    // 登録イベント
+    events.forEach(event => {
+      container.appendChild(
+        createScheduleModalCard("event", event)
+      );
+    });
 
-  // 人物の誕生日
-  birthdays.forEach(birthday => {
-    container.appendChild(createBirthdayCard(birthday));
-  });
+    // 人物登録の誕生日
+    birthdays.forEach(birthday => {
+      container.appendChild(
+        createScheduleModalCard("birthday", birthday)
+      );
+    });
 
-  if (
-    gifts.length === 0 &&
-    events.length === 0 &&
-    birthdays.length === 0
-  ) {
-    const empty = document.createElement("p");
-    empty.className = "schedule-day-empty";
-    empty.textContent = "この日の予定・記録はありません。";
-    container.appendChild(empty);
-  }
+    // 登録データがない場合
+    if (
+      gifts.length === 0 &&
+      events.length === 0 &&
+      birthdays.length === 0
+    ) {
+      container.innerHTML = `
+        <div class="gm-day-empty">
+          <i class="fa-regular fa-calendar"></i>
+          <span>
+            表示する予定・履歴がありません
+          </span>
+        </div>
+      `;
+    }
 
   // 選択日を登録画面へ引き継ぐ
   const returnUrl = createScheduleReturnUrl();

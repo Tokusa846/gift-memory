@@ -801,51 +801,58 @@ function getGiftsForDate(date) {
 
 // 日付詳細用のプレゼントHTML
 function createDateDetailGiftHtml(log) {
-  const personName = escapeHtml(
-    log.people?.name ?? "人物不明"
-  );
+  const type = log.direction === "received"
+    ? "received"
+    : "given";
 
-  const itemName = escapeHtml(
-    log.item_name ?? "プレゼント"
-  );
+  const label = type === "received"
+    ? "もらったプレゼント"
+    : "あげたプレゼント";
 
-  const directionLabel =
-    log.direction === "received"
-      ? "もらったプレゼント"
-      : "贈ったプレゼント";
-
-  const memoHtml = log.memo
-    ? `<p class="date-detail-event-description">
-         ${escapeHtml(log.memo)}
-       </p>`
+  const personName = log.people?.name
+    ? formatPersonName(log.people.name)
     : "";
 
+  const href =
+    `gifts/gift_detail.html?gift_id=${
+      encodeURIComponent(log.id)
+    }&return_to=${
+      encodeURIComponent("../index.html")
+    }`;
+
   return `
-    <a class="date-detail-event gift-log-event date-detail-link" href="gifts/gift_detail.html?gift_id=${encodeURIComponent(log.id)}&return_to=${encodeURIComponent("../index.html")}">
+    <a class="gm-day-card ${type}"
+       href="${href}">
 
-      <div class="date-detail-event-icon gift">
+      <span class="gm-day-card-icon">
         <i class="fa-solid fa-gift"></i>
-      </div>
+      </span>
 
-      <div class="date-detail-event-body">
+      <span class="gm-day-card-body">
 
-        <span class="date-detail-event-label gift">
-          ${directionLabel}
+        <span class="gm-day-card-meta">
+          <span class="gm-day-card-type">
+            ${label}
+          </span>
+
+          <span class="gm-day-card-person">
+            ${escapeHtml(personName)}
+          </span>
         </span>
 
-        <p class="date-detail-event-title">
-          ${itemName}
-        </p>
+        <span class="gm-day-card-title">
+          ${escapeHtml(
+            log.item_name || "名称未登録"
+          )}
+        </span>
 
-        <p class="date-detail-event-description">
-          ${personName}
-        </p>
+      </span>
 
-        ${memoHtml}
+      <span class="gm-day-card-arrow">
+        <i class="fa-solid fa-chevron-right"></i>
+      </span>
 
-      </div>
-
-    </article>
+    </a>
   `;
 }
 
@@ -1049,9 +1056,7 @@ function createCalendarEventIcon(
    DATE DETAIL MODAL
 ======================================== */
 
-function openDateDetailModal(
-  date
-) {
+function openDateDetailModal(date) {
 
   const modal =
     document.getElementById(
@@ -1082,10 +1087,15 @@ function openDateDetailModal(
      TITLE
   ========================== */
 
-  title.textContent =
-    `${date.getFullYear()}年`
-    + `${date.getMonth() + 1}月`
-    + `${date.getDate()}日`;
+    const weekdays = [
+      "日", "月", "火", "水", "木", "金", "土"
+    ];
+
+    title.textContent =
+      `${date.getFullYear()}年`
+     + `${date.getMonth() + 1}月`
+     + `${date.getDate()}日`
+     + `（${weekdays[date.getDay()]}）`;
 
 
   /* =========================
@@ -1139,225 +1149,99 @@ function openDateDetailModal(
 
 }
 
-function createDateDetailEventHtml(
-  event
-) {
+function createDateDetailEventHtml(event) {
+  const type = [
+    "birthday",
+    "anniversary",
+    "celebration",
+    "gift",
+    "other"
+  ].includes(event.type)
+    ? event.type
+    : "other";
 
-const canManage =
+  const settings = {
+    birthday: {
+      label: "誕生日",
+      icon: "fa-solid fa-cake-candles"
+    },
+    anniversary: {
+      label: "記念日",
+      icon: "fa-solid fa-heart"
+    },
+    celebration: {
+      label: "お祝い",
+      icon: "fa-solid fa-champagne-glasses"
+    },
+    gift: {
+      label: "プレゼント予定",
+      icon: "fa-solid fa-gift"
+    },
+    other: {
+      label: "その他",
+      icon: "fa-regular fa-calendar"
+    }
+  };
 
-  event.source === "events" &&
-  event.id;
+  const setting = settings[type];
 
-
-const actionMenuHtml =
-  canManage
-    ? `
-      <div class="date-detail-actions">
-
-        <button
-          type="button"
-          class="date-detail-actions-toggle"
-          data-event-id="${escapeHtml(event.id)}"
-          aria-label="${escapeHtml(event.title)}の操作メニュー"
-          aria-expanded="false"
-        >
-          <i class="fa-solid fa-ellipsis"></i>
-        </button>
-
-
-        <div
-          class="date-detail-actions-menu hidden"
-          role="menu"
-        >
-
-          <button
-            type="button"
-            class="date-detail-action-item event-edit-button"
-            data-event-id="${escapeHtml(event.id)}"
-            role="menuitem"
-          >
-            <i class="fa-regular fa-pen-to-square"></i>
-
-            <span>
-              編集
-            </span>
-          </button>
-
-
-          <button
-            type="button"
-            class="
-              date-detail-action-item
-              delete
-              date-detail-delete-button
-            "
-            data-event-id="${escapeHtml(event.id)}"
-            role="menuitem"
-          >
-            <i class="fa-regular fa-trash-can"></i>
-
-            <span>
-              削除
-            </span>
-          </button>
-
-        </div>
-
-      </div>
-    `
+  const personName = event.personName
+    ? formatPersonName(event.personName)
     : "";
 
+  let href;
 
-  /* =========================
-     BIRTHDAY
-  ========================== */
+  // 人物情報から取得した誕生日
+  if (event.source === "people") {
+    href =
+      `people/people_detail.html?id=${
+        encodeURIComponent(event.personId)
+      }`;
 
-  if (
-    event.type === "birthday"
-  ) {
-
-    return `
-
-      <article class="date-detail-event birthday">
-
-        <div class="date-detail-event-icon birthday">
-
-          <i
-            class="
-              fa-solid
-              fa-cake-candles
-            "
-          ></i>
-
-        </div>
-
-
-        <a class="date-detail-event-body date-detail-link" href="${event.source === "people" ? `people/people_detail.html?id=${encodeURIComponent(event.personId)}` : `events/event_detail.html?event_id=${encodeURIComponent(event.id)}&return_to=${encodeURIComponent("../index.html")}`}">
-
-          <span class="date-detail-event-label birthday">
-            誕生日
-          </span>
-
-
-          <p class="date-detail-event-title">
-
-            ${escapeHtml(event.title)}
-
-          </p>
-
-
-          <p class="date-detail-event-description">
-            誕生日のプレゼントを確認してみましょう。
-          </p>
-
-        </a>
-
-
-        ${actionMenuHtml}
-
-      </article>
-
-    `;
-
+  // イベント登録画面から登録したイベント
+  } else {
+    href =
+      `events/event_detail.html?event_id=${
+        encodeURIComponent(event.id)
+      }&return_to=${
+        encodeURIComponent("../index.html")
+      }`;
   }
 
-
-  /* =========================
-     REGISTERED EVENT
-  ========================== */
-
-  const settings =
-    getEventDisplaySettings(
-      event.type
-    );
-
-
-  const yearlyText =
-    event.isYearly
-      ? "・毎年"
-      : "";
-
-
-  const personHtml =
-    event.personName
-      ? `
-        <p class="date-detail-event-description">
-          ${escapeHtml(
-            formatPersonName(
-              event.personName
-            )
-          )}に関するイベント
-        </p>
-      `
-      : "";
-
-
-  const memoHtml =
-    event.memo
-      ? `
-        <p class="date-detail-event-description">
-          ${escapeHtml(event.memo)}
-        </p>
-      `
-      : "";
-
-
   return `
+    <a class="gm-day-card ${type}"
+       href="${href}">
 
-    <article
-      class="
-        date-detail-event
-        ${escapeHtml(event.type)}
-      "
-    >
+      <span class="gm-day-card-icon">
+        <i class="${setting.icon}"></i>
+      </span>
 
-      <div
-        class="
-          date-detail-event-icon
-          ${escapeHtml(event.type)}
-        "
-      >
+      <span class="gm-day-card-body">
 
-        <i
-          class="
-            fa-solid
-            ${settings.iconClass}
-          "
-        ></i>
+        <span class="gm-day-card-meta">
 
-      </div>
+          <span class="gm-day-card-type">
+            ${setting.label}
+          </span>
 
+          <span class="gm-day-card-person">
+            ${escapeHtml(personName)}
+          </span>
 
-      <a class="date-detail-event-body date-detail-link" href="events/event_detail.html?event_id=${encodeURIComponent(event.id)}&return_to=${encodeURIComponent("../index.html")}">
-
-        <span
-          class="
-            date-detail-event-label
-            ${escapeHtml(event.type)}
-          "
-        >
-          ${settings.label}${yearlyText}
         </span>
 
+        <span class="gm-day-card-title">
+          ${escapeHtml(event.title || "イベント")}
+        </span>
 
-        <p class="date-detail-event-title">
-          ${escapeHtml(event.title)}
-        </p>
+      </span>
 
+      <span class="gm-day-card-arrow">
+        <i class="fa-solid fa-chevron-right"></i>
+      </span>
 
-        ${personHtml}
-
-        ${memoHtml}
-
-      </a>
-
-
-      ${actionMenuHtml}
-
-    </article>
-
+    </a>
   `;
-
 }
 
 function getEventDisplaySettings(
