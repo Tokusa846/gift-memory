@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>イベント詳細 | Gift Memory</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../common/common.css">
+  <link rel="stylesheet" href="event_detail.css">
+</head>
+<body>
+<div class="app-container event-details-page">
+  <header class="event-details-header">
+    <a id="eventDetailsBackButton" class="event-details-back" href="../index.html" aria-label="前の画面へ戻る"><i class="fa-solid fa-chevron-left"></i></a>
+    <h1>イベント詳細</h1>
+    <div class="event-details-actions">
+      <button type="button" id="eventDetailsActionsToggle" class="event-details-actions-toggle" aria-label="イベントの操作メニュー" aria-expanded="false"><i class="fa-solid fa-ellipsis"></i></button>
+      <div id="eventDetailsActionsMenu" class="event-details-actions-menu hidden" role="menu">
+        <button type="button" id="eventDetailsEditButton" class="event-details-action-item" role="menuitem"><i class="fa-regular fa-pen-to-square"></i><span>編集</span></button>
+        <button type="button" id="eventDetailsDeleteButton" class="event-details-action-item delete" role="menuitem"><i class="fa-regular fa-trash-can"></i><span>削除</span></button>
+      </div>
+    </div>
+  </header>
+  <main class="event-details-main">
+    <div id="eventDetailsLoading" class="event-details-loading"><i class="fa-solid fa-spinner fa-spin"></i><p>イベント情報を読み込んでいます...</p></div>
+    <div id="eventDetailsError" class="event-details-error hidden"><i class="fa-regular fa-circle-xmark"></i><p>イベント情報を取得できませんでした。</p><a id="eventDetailsErrorBack" href="../index.html">前の画面へ戻る</a></div>
+    <div id="eventDetailsContent" class="event-details-content hidden">
+      <section id="eventDetailsSummary" class="event-details-summary">
+        <div class="event-details-symbol"><i id="eventDetailsTypeIcon" class="fa-regular fa-calendar"></i></div>
+        <span id="eventDetailsType" class="event-details-type">-</span>
+        <h2 id="eventDetailsTitle">-</h2>
+      </section>
+      <section class="event-details-card">
+        <h3>登録内容</h3>
+        <div class="event-details-row"><div class="event-details-row-icon"><i class="fa-regular fa-calendar"></i></div><div class="event-details-row-content"><span>日付</span><p id="eventDetailsDate">-</p></div></div>
+        <div class="event-details-row"><div class="event-details-row-icon"><i class="fa-regular fa-user"></i></div><div class="event-details-row-content"><span>関連する人物</span><p id="eventDetailsPerson">-</p></div></div>
+        <div class="event-details-row"><div class="event-details-row-icon"><i class="fa-solid fa-rotate"></i></div><div class="event-details-row-content"><span>繰り返し</span><p id="eventDetailsRepeat">-</p></div></div>
+      </section>
+      <section class="event-details-card"><h3>メモ</h3><p id="eventDetailsMemo" class="event-details-memo">-</p></section>
+    </div>
+  </main>
+</div>
+<script type="module" src="event_detail.js"></script>
+</body>
+</html>
