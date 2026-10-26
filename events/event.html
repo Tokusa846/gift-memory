@@ -163,28 +163,6 @@
             </label>
 
 
-            <!-- GIFT -->
-            <label class="event-type-option">
-
-              <input
-                type="radio"
-                name="eventType"
-                value="gift"
-              >
-
-              <span class="event-type-button gift">
-
-                <i class="fa-solid fa-gift"></i>
-
-                <span>
-                  プレゼント予定
-                </span>
-
-              </span>
-
-            </label>
-
-
             <!-- OTHER -->
             <label class="event-type-option">
 
@@ -210,6 +188,24 @@
 
         </div>
 
+
+        <!-- CELEBRATION SUBTYPE -->
+        <div class="event-form-group">
+          <label for="eventCelebrationType" class="event-form-label">お祝いの種類</label>
+          <div class="event-select-wrapper">
+            <select id="eventCelebrationType" disabled>
+              <option value="">ー選択してくださいー</option>
+              <option value="入学祝い">入学祝い</option>
+              <option value="卒業祝い">卒業祝い</option>
+              <option value="就職祝い">就職祝い</option>
+              <option value="出産祝い">出産祝い</option>
+              <option value="新築祝い">新築祝い</option>
+              <option value="長寿祝い">長寿祝い（還暦・古希など）</option>
+              <option value="other">その他（自由入力）</option>
+            </select>
+            <i class="fa-solid fa-chevron-down"></i>
+          </div>
+        </div>
 
         <!-- TITLE -->
         <div class="event-form-group">

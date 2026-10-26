@@ -320,10 +320,16 @@ async function loadEventForEdit(
 
 
   if (eventTypeInput) {
-
-    eventTypeInput.checked =
-      true;
-
+    eventTypeInput.checked = true;
+  } else if (data.event_type === "gift") {
+    // 過去の「プレゼント予定」は編集時だけ選択肢を復元する
+    const grid = document.querySelector(".event-type-grid");
+    const label = document.createElement("label");
+    label.className = "event-type-option";
+    label.innerHTML = '<input type="radio" name="eventType" value="gift" checked>' +
+      '<span class="event-type-button gift"><i class="fa-solid fa-gift"></i><span>プレゼント予定（既存）</span></span>';
+    grid.appendChild(label);
+    label.querySelector("input").addEventListener("change", updateEventTypeBehavior);
   }
 
 
@@ -428,8 +434,7 @@ async function loadEventForEdit(
   */
 
   updatePersonMode();
-
-  updateEventTypeBehavior();
+  updateEventTypeBehavior(true);
 
 }
 
@@ -597,85 +602,91 @@ function getSelectedPersonMode() {
    EVENT TYPE BEHAVIOR
 ======================================== */
 
+let previousEventType = "";
+let celebrationAutoTitle = "";
+
 function setupEventTypeBehavior() {
-
-  const eventTypeInputs =
-    document.querySelectorAll(
-      'input[name="eventType"]'
-    );
-
-
-  eventTypeInputs.forEach(input => {
-
-    input.addEventListener(
-      "change",
-      updateEventTypeBehavior
-    );
-
+  document.querySelectorAll('input[name="eventType"]').forEach(input => {
+    input.addEventListener("change", () => updateEventTypeBehavior());
   });
 
+  document.getElementById("eventCelebrationType").addEventListener("change", event => {
+    const titleInput = document.getElementById("eventTitle");
+    const selected = event.target.value;
+    if (selected && selected !== "other") {
+      titleInput.value = selected;
+      celebrationAutoTitle = selected;
+    } else if (titleInput.value === celebrationAutoTitle) {
+      titleInput.value = "";
+      celebrationAutoTitle = "";
+    }
+  });
+
+  document.getElementById("eventTitle").addEventListener("input", () => {
+    celebrationAutoTitle = "";
+  });
+
+  document.getElementById("eventPersonName").addEventListener("input", updateBirthdayTitle);
+  document.getElementById("eventPersonSelect").addEventListener("change", updateBirthdayTitle);
+  document.querySelectorAll('input[name="personMode"]').forEach(input => {
+    input.addEventListener("change", updateBirthdayTitle);
+  });
 
   updateEventTypeBehavior();
-
 }
 
-
-function updateEventTypeBehavior() {
-
-  const eventType =
-    getSelectedEventType();
-
-
-  const yearlyCheckbox =
-    document.getElementById(
-      "eventIsYearly"
-    );
-
-
-  if (!yearlyCheckbox) {
-    return;
+function getBirthdayTitle() {
+  const mode = getSelectedPersonMode();
+  if (mode === "free") {
+    const name = document.getElementById("eventPersonName").value.trim();
+    return name ? `${name}の誕生日` : "誕生日";
   }
-
-
-  const isBirthday =
-    eventType === "birthday";
-
-
-  if (isBirthday) {
-
-    yearlyCheckbox.dataset.previousChecked =
-      yearlyCheckbox.checked
-        ? "true"
-        : "false";
-
-
-    yearlyCheckbox.checked =
-      true;
-
-
-    yearlyCheckbox.disabled =
-      true;
-
-  } else {
-
-    if (
-      yearlyCheckbox.disabled
-    ) {
-
-      yearlyCheckbox.checked =
-        yearlyCheckbox.dataset
-          .previousChecked === "true";
-
-    }
-
-
-    yearlyCheckbox.disabled =
-      false;
-
+  if (mode === "registered") {
+    const select = document.getElementById("eventPersonSelect");
+    const name = select.value ? select.selectedOptions[0]?.textContent.trim() : "";
+    return name ? `${name}${name.endsWith("さん") ? "" : "さん"}の誕生日` : "誕生日";
   }
-
+  return "誕生日";
 }
 
+function updateBirthdayTitle() {
+  if (getSelectedEventType() === "birthday") {
+    document.getElementById("eventTitle").value = getBirthdayTitle();
+  }
+}
+
+function updateEventTypeBehavior(isEditingLoad = false) {
+  const eventType = getSelectedEventType();
+  const titleInput = document.getElementById("eventTitle");
+  const celebrationSelect = document.getElementById("eventCelebrationType");
+  const yearlyCheckbox = document.getElementById("eventIsYearly");
+  const typeChanged = previousEventType !== eventType;
+
+  celebrationSelect.disabled = eventType !== "celebration";
+  titleInput.readOnly = eventType === "birthday";
+  titleInput.required = eventType !== "birthday";
+  titleInput.classList.toggle("event-input-readonly", eventType === "birthday");
+
+  if (isEditingLoad && eventType === "celebration") {
+    const options = [...celebrationSelect.options].map(option => option.value);
+    celebrationSelect.value = options.includes(titleInput.value) ? titleInput.value : "other";
+  } else if (typeChanged) {
+    celebrationSelect.value = "";
+    celebrationAutoTitle = "";
+  }
+
+  if (eventType === "birthday") {
+    updateBirthdayTitle();
+  } else if (typeChanged && previousEventType === "birthday") {
+    titleInput.value = "";
+  }
+
+  if (typeChanged && !isEditingLoad && eventType) {
+    yearlyCheckbox.checked = eventType === "birthday" || eventType === "anniversary";
+  }
+  yearlyCheckbox.disabled = false;
+  previousEventType = eventType;
+}
 
 
 /* ========================================
@@ -775,7 +786,7 @@ function validateEventForm() {
   }
 
 
-  if (!title) {
+  if (!title && eventType !== "birthday") {
 
     showMessage(
       "イベント名を入力してください。",
@@ -806,7 +817,8 @@ function validateEventForm() {
 
   if (
     personMode === "free" &&
-    !freePersonName
+    !freePersonName &&
+    eventType !== "birthday"
   ) {
 
     showMessage(
@@ -819,32 +831,7 @@ function validateEventForm() {
   }
 
 
-  if (
-    eventType === "birthday" &&
-    personMode === "registered" &&
-    !registeredPersonId
-  ) {
-
-    showMessage(
-      "誕生日を登録する人物を選択してください。",
-      "error"
-    );
-
-    return false;
-
-  }
-
-  if (!personMode) {
-
-    showMessage(
-     "人物の入力方法を選択してください。",
-     "error"
-    );
-
-     return false;
-
-}
-
+  // 人物の関連付けは任意。誕生日は名前なしでも登録できる。
 
   showMessage(
     "",
@@ -873,13 +860,9 @@ async function saveEvent() {
     getSelectedEventType();
 
 
-  const title =
-    document
-      .getElementById(
-        "eventTitle"
-      )
-      .value
-      .trim();
+  const title = eventType === "birthday"
+    ? getBirthdayTitle()
+    : document.getElementById("eventTitle").value.trim();
 
 
   const eventDate =
@@ -911,13 +894,7 @@ async function saveEvent() {
       .trim();
 
 
-  const isYearly =
-    eventType === "birthday" ||
-    document
-      .getElementById(
-        "eventIsYearly"
-      )
-      .checked;
+  const isYearly = document.getElementById("eventIsYearly").checked;
 
 
   const memo =

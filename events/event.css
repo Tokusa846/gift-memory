@@ -697,3 +697,14 @@
   }
 
 }
+/* お祝い選択不可・誕生日イベント名の読み取り専用表示 */
+.event-select-wrapper select:disabled {
+  background-color: #f1eeeb;
+  color: #a39a94;
+  cursor: not-allowed;
+}
+.event-input-readonly {
+  background-color: #f1eeeb !important;
+  color: #665d56 !important;
+  cursor: default;
+}
