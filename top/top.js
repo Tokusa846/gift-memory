@@ -1185,9 +1185,13 @@ function createDateDetailEventHtml(event) {
 
   const setting = settings[type];
 
-  const personName = event.personName
-    ? formatPersonName(event.personName)
-    : "";
+  // 誕生日カードは人物名を重複表示しない
+  const personName =
+    type === "birthday"
+      ? ""
+      : event.personName
+        ? formatPersonName(event.personName)
+        : "";
 
   let href;
 

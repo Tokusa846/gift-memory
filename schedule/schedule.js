@@ -2307,10 +2307,14 @@ function createScheduleModalCard(kind, data) {
     href = createEventDetailUrl(data.id);
   }
 
+  // 誕生日カードはタイトルに人物名が含まれるため、
   // 敬称の重複を防止
-  const formattedPerson = personName
-    ? formatPersonName(personName)
-    : "";
+  const formattedPerson =
+    type === "birthday"
+      ? ""
+      : personName
+        ? formatPersonName(personName)
+        : "";
 
   const card = document.createElement("a");
 
