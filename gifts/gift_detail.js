@@ -1,6 +1,10 @@
 import {
   supabase
 } from "../common/supabase.js";
+import {
+  getReturnUrl,
+  buildUrlWithReturnTo
+} from "../common/navigation.js";
 
 
 /* ========================================
@@ -35,11 +39,8 @@ const giftId =
 
 
 const returnTo =
-  getSafeReturnTo(
-    urlParams.get(
-      "return_to"
-    )
-  );
+  getReturnUrl() ||
+  new URL("../index.html", window.location.href).href;
 
 
 /* ========================================
@@ -1111,15 +1112,10 @@ function setupEditButton() {
 
 
       window.location.href =
-        `gifts.html?gift_id=${
-          encodeURIComponent(
-            giftId
-          )
-        }&return_to=${
-          encodeURIComponent(
-            detailUrl
-          )
-        }`;
+        buildUrlWithReturnTo(
+          `gifts.html?gift_id=${encodeURIComponent(giftId)}`,
+          detailUrl
+        );
 
     }
   );
@@ -1129,22 +1125,14 @@ function setupEditButton() {
 
 function createCurrentDetailUrl() {
 
-  return (
+  const detailUrl =
     `gift_detail.html?gift_id=${
-      encodeURIComponent(
-        giftId
-      )
-    }`
-    +
-    `&return_to=${
-      encodeURIComponent(
-        returnTo
-      )
-    }`
-    +
-    `&refresh=${
-      Date.now()
-    }`
+      encodeURIComponent(giftId)
+    }&refresh=${Date.now()}`;
+
+  return buildUrlWithReturnTo(
+    detailUrl,
+    returnTo
   );
 
 }
@@ -1286,40 +1274,6 @@ function formatPrice(
       "ja-JP"
     )}円`
   );
-
-}
-
-
-/* ========================================
-   SAFE RETURN URL
-======================================== */
-
-function getSafeReturnTo(
-  value
-) {
-
-  if (!value) {
-    return "../index.html";
-  }
-
-
-  const trimmedValue =
-    value.trim();
-
-
-  if (
-    trimmedValue.startsWith("//") ||
-    /^[a-z][a-z\d+.-]*:/i.test(
-      trimmedValue
-    )
-  ) {
-
-    return "../index.html";
-
-  }
-
-
-  return trimmedValue;
 
 }
 
