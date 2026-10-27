@@ -2,6 +2,9 @@ import { supabase } from "../common/supabase.js";
 import {
   getInitialDate
 } from "../common/date_utils.js";
+import {
+  getReturnUrl
+} from "../common/navigation.js";
 
 
 const GIFT_IMAGE_BUCKET =
@@ -121,9 +124,7 @@ const giftId =
   );
 
 const returnTo =
-  urlParams.get(
-    "return_to"
-  );
+  getReturnUrl();
 
 
 /* ========================================
