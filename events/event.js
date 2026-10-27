@@ -4,6 +4,9 @@ import {
   getInitialDate,
   isValidDateString
 } from "../common/date_utils.js";
+import {
+  getReturnUrl
+} from "../common/navigation.js";
 
 
 /* ========================================
@@ -93,11 +96,7 @@ function setupReturnButtons() {
 
 
   const returnTo =
-    getSafeReturnUrl(
-      getUrlParameter(
-        "return_to"
-      )
-    ) || "../index.html";
+    getReturnUrl() || "../index.html";
 
 
   if (backButton) {
@@ -116,41 +115,6 @@ function setupReturnButtons() {
   }
 
 }
-
-
-/* ========================================
-   SAFE RETURN URL
-======================================== */
-
-function getSafeReturnUrl(
-  returnTo
-) {
-
-  if (!returnTo) {
-    return null;
-  }
-
-
-  const trimmedValue =
-    returnTo.trim();
-
-
-  if (
-    trimmedValue.startsWith("//") ||
-    /^[a-z][a-z\d+.-]*:/i.test(
-      trimmedValue
-    )
-  ) {
-
-    return null;
-
-  }
-
-
-  return trimmedValue;
-
-}
-
 
 /* ========================================
    INITIAL DATE
@@ -1019,11 +983,7 @@ const { error } =
     () => {
 
       window.location.href =
-        getSafeReturnUrl(
-          getUrlParameter(
-            "return_to"
-          )
-        ) || "../index.html";
+        getReturnUrl() || "../index.html";
 
     },
     700
