@@ -1,8 +1,13 @@
 import { supabase } from "../common/supabase.js";
+import {
+  getReturnUrl,
+  buildUrlWithReturnTo
+} from "../common/navigation.js";
+
 
 const params = new URLSearchParams(window.location.search);
 const eventId = params.get("event_id");
-const returnTo = getSafeReturnTo(params.get("return_to"));
+const returnTo = getReturnUrl() || new URL("../index.html", window.location.href).href;
 let currentEvent = null;
 
 const TYPES = {
@@ -13,12 +18,6 @@ const TYPES = {
   other: { label: "その他", icon: "fa-regular fa-calendar" }
 };
 
-function getSafeReturnTo(value) {
-  if (!value) return "../index.html";
-  const trimmed = value.trim();
-  if (trimmed.startsWith("//") || /^[a-z][a-z\d+.-]*:/i.test(trimmed) || trimmed.startsWith("\\") || /[\x00-\x1f]/.test(trimmed)) return "../index.html";
-  return trimmed;
-}
 
 function setText(id, value) {
   const el = document.getElementById(id);
@@ -84,9 +83,11 @@ function renderEvent() {
   document.getElementById("eventDetailsContent").classList.remove("hidden");
 }
 
+
 function detailUrl() {
-  const p = new URLSearchParams({ event_id: eventId, return_to: returnTo, refresh: String(Date.now()) });
-  return `event_detail.html?${p.toString()}`;
+  const url = `event_detail.html?event_id=${encodeURIComponent(eventId)}&refresh=${Date.now()}`;
+
+  return buildUrlWithReturnTo(url, returnTo);
 }
 
 function setupMenu() {
@@ -101,10 +102,14 @@ function setupMenu() {
   });
   document.addEventListener("click", e => { if (!e.target.closest(".event-details-actions")) close(); });
   document.getElementById("eventDetailsEditButton").addEventListener("click", () => {
-    if (!currentEvent) return;
-    const p = new URLSearchParams({ event_id: eventId, return_to: detailUrl() });
-    window.location.href = `event.html?${p.toString()}`;
-  });
+  if (!currentEvent) return;
+
+  window.location.href = buildUrlWithReturnTo(
+    `event.html?event_id=${encodeURIComponent(eventId)}`,
+    detailUrl()
+  );
+});
+
   document.getElementById("eventDetailsDeleteButton").addEventListener("click", async e => {
     if (!currentEvent) return;
     close();
