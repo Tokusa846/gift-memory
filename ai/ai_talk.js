@@ -1,5 +1,6 @@
 /* Import */
 import { supabase } from "../common/supabase.js";
+import { getReturnUrl } from "../common/navigation.js";
 
 
 /* ========================================
@@ -132,27 +133,16 @@ function setupBackButton() {
       "aiTalkBackButton"
     );
 
-
   if (!button) {
     return;
   }
 
-
-  const params =
-    new URLSearchParams(
-      window.location.search
-    );
-
-
-  const returnTo =
-    params.get(
-      "return_to"
-    );
-
+  // 共通関数から戻り先URLを取得
+  const returnTo = getReturnUrl();
 
   /*
-    return_to がない場合は、
-    TOPなどの下部メニューからの遷移とみなし、
+    return_to が存在しない場合、
+    または不正なURLの場合は
     戻るボタンを非表示にする
   */
   if (!returnTo) {
@@ -162,72 +152,14 @@ function setupBackButton() {
     );
 
     return;
-
   }
 
-
-  const safeReturnUrl =
-    getSafeReturnUrl(
-      returnTo
-    );
-
-
-  /*
-    不正な戻り先の場合も
-    戻るボタンは表示しない
-  */
-  if (!safeReturnUrl) {
-
-    button.classList.add(
-      "hidden"
-    );
-
-    return;
-
-  }
-
-
-  button.href =
-    safeReturnUrl;
-
+  // 戻り先を設定してボタンを表示
+  button.href = returnTo;
 
   button.classList.remove(
     "hidden"
   );
-
-}
-
-
-/* ========================================
-   SAFE RETURN URL
-======================================== */
-
-function getSafeReturnUrl(
-  returnTo
-) {
-
-  if (!returnTo) {
-    return null;
-  }
-
-
-  const trimmedValue =
-    returnTo.trim();
-
-
-  if (
-    trimmedValue.startsWith("//") ||
-    /^[a-z][a-z\d+.-]*:/i.test(
-      trimmedValue
-    )
-  ) {
-
-    return null;
-
-  }
-
-
-  return trimmedValue;
 
 }
 
