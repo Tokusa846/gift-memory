@@ -6,7 +6,9 @@ import {
   setupModalClose,
   setupModalEscape
 } from "../common/modal.js";
-
+import {
+  setupBackLink
+} from "../common/navigation.js";
 
 /* ========================================
    STATE
@@ -28,6 +30,9 @@ let editingMemoId = null;
 document.addEventListener(
   "DOMContentLoaded",
   async () => {
+
+    // 遷移元に応じて戻るボタンを設定
+    setupBackLink(".person-detail-back");
 
     const personId =
       getPersonIdFromUrl();

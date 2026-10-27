@@ -1,8 +1,12 @@
 import { renderDateDetailCards } from "../common/modal.js";
+
+import {
+  buildUrlWithReturnTo
+} from "../common/navigation.js";
+
 import {
   supabase
 } from "../common/supabase.js";
-
 
 /* ========================================
    ELEMENTS
@@ -1858,16 +1862,19 @@ function createEventDetailUrl(
 
 }
 
-function createPersonDetailUrl(
-  personId
-) {
+function createPersonDetailUrl(personId) {
 
-  return (
+  const destinationUrl =
     `../people/people_detail.html?id=${
-      encodeURIComponent(
-        personId
-      )
-    }`
+      encodeURIComponent(personId)
+    }`;
+
+  const returnUrl =
+    createScheduleReturnUrl();
+
+  return buildUrlWithReturnTo(
+    destinationUrl,
+    returnUrl
   );
 
 }
