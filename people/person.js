@@ -1,5 +1,9 @@
 import { supabase } from "../common/supabase.js";
 
+import {
+  getReturnUrl
+} from "../common/navigation.js";
+
 
 /* ========================================
    ELEMENTS
@@ -52,25 +56,10 @@ const personCloseButton =
 
 setupReturnLinks();
 
-
 function setupReturnLinks() {
 
-  const params =
-    new URLSearchParams(
-      window.location.search
-    );
-
-
-  const returnTo =
-    getSafeReturnUrl(
-      params.get("return_to")
-    );
-
-
   const returnUrl =
-    returnTo ||
-    "../index.html";
-
+    getReturnUrl() || "../index.html";
 
   if (personBackButton) {
 
@@ -79,43 +68,12 @@ function setupReturnLinks() {
 
   }
 
-
   if (personCloseButton) {
 
     personCloseButton.href =
       returnUrl;
 
   }
-
-}
-
-
-function getSafeReturnUrl(
-  returnTo
-) {
-
-  if (!returnTo) {
-    return null;
-  }
-
-
-  const trimmedValue =
-    returnTo.trim();
-
-
-  if (
-    trimmedValue.startsWith("//") ||
-    /^[a-z][a-z\d+.-]*:/i.test(
-      trimmedValue
-    )
-  ) {
-
-    return null;
-
-  }
-
-
-  return trimmedValue;
 
 }
 
