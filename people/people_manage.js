@@ -1,5 +1,9 @@
 import { supabase } from "../common/supabase.js";
 
+import {
+  buildUrlWithReturnTo
+} from "../common/navigation.js";
+
 
 /* ========================================
    STATE
@@ -25,6 +29,8 @@ document.addEventListener(
     renderPersonList();
 
     setupPersonSearch();
+
+    setupPersonAddLink();
 
   }
 );
@@ -1396,8 +1402,16 @@ function setupPersonCardLinks() {
         card.dataset.personId;
 
 
+      const destinationUrl =
+        `people_detail.html?id=${
+          encodeURIComponent(personId)
+        }`;
+
       window.location.href =
-        `people_detail.html?id=${encodeURIComponent(personId)}`;
+        buildUrlWithReturnTo(
+          destinationUrl,
+          "../people/people_manage.html"
+        );
 
     };
 
@@ -1427,4 +1441,23 @@ function setupPersonCardLinks() {
     );
 
   });
+}
+
+/* ========================================
+   PERSON ADD LINK
+======================================== */
+
+function setupPersonAddLink() {
+
+  const addLink =
+    document.getElementById("personAddLink");
+
+  if (!addLink) return;
+
+  addLink.href =
+    buildUrlWithReturnTo(
+      "person.html",
+      "people_manage.html"
+    );
+
 }
