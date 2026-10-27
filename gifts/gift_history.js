@@ -1,5 +1,8 @@
 /* Import */
 import { supabase } from "../common/supabase.js";
+import {
+  buildUrlWithReturnTo
+} from "../common/navigation.js";
 
 
 /* ========================================
@@ -414,17 +417,11 @@ function createGiftItemHtml(
       )
     }`;
 
-
   const detailUrl =
-    `gift_detail.html?gift_id=${
-      encodeURIComponent(
-        gift.id
-      )
-    }&return_to=${
-      encodeURIComponent(
-        returnTo
-      )
-    }`;
+    buildUrlWithReturnTo(
+      `gift_detail.html?gift_id=${encodeURIComponent(gift.id)}`,
+      returnTo
+    );
 
 
   return `
@@ -559,17 +556,11 @@ function setupAddGiftLink() {
       )
     }`;
 
-
   addButton.href =
-    `gifts.html?person_id=${
-      encodeURIComponent(
-        currentPerson.id
-      )
-    }&return_to=${
-      encodeURIComponent(
-        returnTo
-      )
-    }`;
+    buildUrlWithReturnTo(
+      `gifts.html?person_id=${encodeURIComponent(currentPerson.id)}`,
+      returnTo
+    );
 
 }
 
