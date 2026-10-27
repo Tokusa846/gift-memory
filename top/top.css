@@ -280,44 +280,31 @@
   line-height: 1;
 }
 
-
 /* 誕生日 */
-
 .calendar-event-icon.birthday {
-  color: #c45f82;
+  color: var(--event-birthday);
 }
 
-
-/* プレゼント */
+/* プレゼント予定 */
 .calendar-event-icon.gift {
-  color: #e86a58;
-}
-
-/* あげたプレゼント */
-.calendar-event-icon.given {
-  color: #e86a58;
-}
-
-/* もらったプレゼント */
-.calendar-event-icon.received {
-  color: #15966b;
+  color: var(--event-gift);
 }
 
 /* 記念日 */
 .calendar-event-icon.anniversary {
-  color: #c27eb8;
+  color: var(--event-anniversary);
 }
 
 /* お祝い */
 .calendar-event-icon.celebration {
-  color: #e0a23b;
+  color: var(--event-celebration);
 }
-
 
 /* その他 */
 .calendar-event-icon.other {
-  color: #6f849c;
+  color: var(--event-other);
 }
+
 
 /* イベントなしでも高さを維持 */
 .calendar-event-spacer {
@@ -1712,10 +1699,10 @@
 
 /* あげたプレゼント */
 .calendar-event-area .calendar-event-icon.given {
-  color: #e86a58
+  color: var(--event-given) !important;
 }
 
 /* もらったプレゼント */
 .calendar-event-area .calendar-event-icon.received {
-  color: #15966b
+  color: var(--event-received) !important;
 }

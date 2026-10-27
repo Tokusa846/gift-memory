@@ -260,42 +260,40 @@
 }
 
 
-/* GIFT LOG */
-
+/* もらったプレゼント */
 .schedule-calendar-icon.received {
-  color: #35bd8a;
+  color: var(--event-received);
 }
 
-
+/* あげたプレゼント */
 .schedule-calendar-icon.given {
-  color: #ef6a59;
+  color: var(--event-given);
 }
 
-
-/* EVENT */
-
-.schedule-calendar-icon.event-birthday {
-  color: #c45f82;
+/* 誕生日 */
+.schedule-calendar-icon.event-birthday,
+.schedule-calendar-icon.person-birthday {
+  color: var(--event-birthday);
 }
 
-
+/* 記念日 */
 .schedule-calendar-icon.event-anniversary {
-  color: #a55c9c;
+  color: var(--event-anniversary);
 }
 
-
+/* お祝い */
 .schedule-calendar-icon.event-celebration {
-  color: #b77b1b;
+  color: var(--event-celebration);
 }
 
-
+/* プレゼント予定 */
 .schedule-calendar-icon.event-gift {
-  color: #c95545;
+  color: var(--event-gift);
 }
 
-
+/* その他 */
 .schedule-calendar-icon.event-other {
-  color: #827870;
+  color: var(--event-other);
 }
 
 
@@ -640,87 +638,52 @@
 }
 
 
-/* もらった */
-
-.schedule-card.received
-.schedule-card-icon {
-  background-color: #edfff7;
-
-  color: #087c56;
+/* もらったプレゼント */
+.schedule-card.received .schedule-card-icon {
+  background-color: var(--event-received-bg);
+  color: var(--event-received);
 }
 
-
-/* あげた */
-
-.schedule-card.given
-.schedule-card-icon {
-  background-color: #fff4f1;
-
-  color: #c94333;
+/* あげたプレゼント */
+.schedule-card.given .schedule-card-icon {
+  background-color: var(--event-given-bg);
+  color: var(--event-given);
 }
 
-
-/* 誕生日 */
-
-.schedule-card.event-birthday
-.schedule-card-icon {
-  background-color: #f9dce6;
-
-  color: #c45f82;
+/* 誕生日：登録イベント */
+.schedule-card.event-birthday .schedule-card-icon {
+  background-color: var(--event-birthday-bg);
+  color: var(--event-birthday);
 }
-
 
 /* 記念日 */
-
-.schedule-card.event-anniversary
-.schedule-card-icon {
-  background-color: #f2dff0;
-
-  color: #a55c9c;
+.schedule-card.event-anniversary .schedule-card-icon {
+  background-color: var(--event-anniversary-bg);
+  color: var(--event-anniversary);
 }
-
 
 /* お祝い */
-
-.schedule-card.event-celebration
-.schedule-card-icon {
-  background-color: #faedcc;
-
-  color: #b77b1b;
+.schedule-card.event-celebration .schedule-card-icon {
+  background-color: var(--event-celebration-bg);
+  color: var(--event-celebration);
 }
-
 
 /* プレゼント予定 */
-
-.schedule-card.event-gift
-.schedule-card-icon {
-  background-color: #ffe5df;
-
-  color: #c95545;
+.schedule-card.event-gift .schedule-card-icon {
+  background-color: var(--event-gift-bg);
+  color: var(--event-gift);
 }
-
 
 /* その他 */
-
-.schedule-card.event-other
-.schedule-card-icon {
-  background-color: #f1eeeb;
-
-  color: #746b65;
+.schedule-card.event-other .schedule-card-icon {
+  background-color: var(--event-other-bg);
+  color: var(--event-other);
 }
 
-/* 人物登録の誕生日 */
-
-.schedule-calendar-icon.person-birthday {
-  color: #c45f82;
-}
-
-
-.schedule-card.person-birthday
-.schedule-card-icon {
-  background-color: #f9dce6;
-
-  color: #c45f82;
+/* 誕生日：人物登録 */
+.schedule-card.person-birthday .schedule-card-icon {
+  background-color: var(--event-birthday-bg);
+  color: var(--event-birthday);
 }
 
 /* ========================================
@@ -1135,222 +1098,6 @@
   padding: 2px 2px 4px;
 
   scrollbar-width: thin;
-}
-
-/* ========================================
-   共通カード
-======================================== */
-
-.gm-day-card {
-  display: flex;
-  align-items: center;
-
-  flex: 0 0 auto;
-
-  gap: 10px;
-
-  min-height: 64px;
-  padding: 10px 9px;
-
-  box-sizing: border-box;
-
-  border: 1px solid #ebe6e2;
-  border-radius: 12px;
-
-  background: #ffffff;
-
-  text-decoration: none;
-  color: #332d29;
-}
-
-/* アイコン */
-.gm-day-card-icon {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  flex-shrink: 0;
-
-  width: 38px;
-  height: 38px;
-
-  border-radius: 12px;
-
-  background: #f1eeeb;
-  color: #746b65;
-
-  font-size: 15px;
-}
-
-/* 本文 */
-.gm-day-card-body {
-  display: flex;
-  flex-direction: column;
-
-  flex: 1;
-  min-width: 0;
-
-  gap: 5px;
-}
-
-/* 種別と人物名 */
-.gm-day-card-meta {
-  display: flex;
-  align-items: center;
-  flex-wrap: wrap;
-
-  gap: 8px;
-
-  font-size: 10px;
-}
-
-.gm-day-card-type {
-  font-weight: 700;
-}
-
-.gm-day-card-person {
-  color: #9a918a;
-  font-weight: 500;
-}
-
-/* イベント名・商品名 */
-.gm-day-card-title {
-  overflow: hidden;
-
-  color: #332d29;
-
-  font-size: 13px;
-  font-weight: 700;
-  line-height: 1.5;
-
-  overflow-wrap: anywhere;
-}
-
-/* 右端の矢印 */
-.gm-day-card-arrow {
-  flex-shrink: 0;
-
-  color: #b7aea8;
-  font-size: 10px;
-}
-
-/* ========================================
-   イベント種別の色
-======================================== */
-
-/* 誕生日 */
-.gm-day-card.birthday {
-  background: #fff7fa;
-  border-color: #f1dce5;
-}
-
-.gm-day-card.birthday .gm-day-card-icon {
-  background: #f5dfed;
-  color: #b65a9d;
-}
-
-.gm-day-card.birthday .gm-day-card-type {
-  color: #b65a9d;
-}
-
-/* あげたプレゼント */
-.gm-day-card.given {
-  background: #fff8f6;
-  border-color: #f3ddd7;
-}
-
-.gm-day-card.given .gm-day-card-icon {
-  background: #ffe8e3;
-  color: #e86a58;
-}
-
-.gm-day-card.given .gm-day-card-type {
-  color: #e86a58;
-}
-
-/* もらったプレゼント */
-.gm-day-card.received {
-  background: #f5fcf8;
-  border-color: #dcefe5;
-}
-
-.gm-day-card.received .gm-day-card-icon {
-  background: #dff5e9;
-  color: #15966b;
-}
-
-.gm-day-card.received .gm-day-card-type {
-  color: #15966b;
-}
-
-/* 記念日 */
-.gm-day-card.anniversary .gm-day-card-icon {
-  background: #f3e5f2;
-  color: #a55c9c;
-}
-
-.gm-day-card.anniversary .gm-day-card-type {
-  color: #a55c9c;
-}
-
-/* お祝い */
-.gm-day-card.celebration .gm-day-card-icon {
-  background: #faedcc;
-  color: #b77b1b;
-}
-
-.gm-day-card.celebration .gm-day-card-type {
-  color: #b77b1b;
-}
-
-/* 過去のプレゼント予定 */
-.gm-day-card.gift .gm-day-card-icon {
-  background: #ffe5df;
-  color: #c95545;
-}
-
-.gm-day-card.gift .gm-day-card-type {
-  color: #c95545;
-}
-
-/* その他 */
-.gm-day-card.other .gm-day-card-icon {
-  background: #f1eeeb;
-  color: #746b65;
-}
-
-.gm-day-card.other .gm-day-card-type {
-  color: #746b65;
-}
-
-/* ========================================
-   登録データなし
-======================================== */
-
-.gm-day-empty {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-
-  gap: 10px;
-
-  min-height: 112px;
-  padding: 12px;
-
-  box-sizing: border-box;
-
-  border-radius: 12px;
-  background: #f7f8fa;
-
-  color: #9aa8bd;
-  font-size: 11px;
-  text-align: center;
-}
-
-.gm-day-empty i {
-  font-size: 20px;
-  color: #c6d1df;
 }
 
 /* ========================================

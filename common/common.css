@@ -24,6 +24,45 @@ body {
 
 
 /* ========================================
+   イベント共通カラー
+======================================== */
+
+:root {
+  /* イベント */
+  --event-birthday: #c45f82;
+  --event-anniversary: #c27eb8;
+  --event-celebration: #e0a23b;
+  --event-other: #6f849c;
+  --event-gift: #827870;
+
+  /* プレゼント履歴 */
+  --event-given: #c84e3e;
+  --event-received: #277b60;
+
+  /* アイコン背景 */
+  --event-birthday-bg: #f5dfed;
+  --event-anniversary-bg: #f3e5f2;
+  --event-celebration-bg: #fcf5e2;
+  --event-other-bg: #f1eeeb;
+  --event-gift-bg: #ffe5df;
+  --event-given-bg: #ffe8e3;
+  --event-received-bg: #dff5e9;
+
+  /* カード背景：誕生日・プレゼント履歴のみ */
+  --event-birthday-card-bg: #fff7fa;
+  --event-birthday-border: #f1dce5;
+
+  --event-given-card-bg: #fff8f6;
+  --event-given-border: #f3ddd7;
+
+  --event-received-card-bg: #f5fcf8;
+  --event-received-border: #dcefe5;
+}
+
+
+
+
+/* ========================================
    APP CONTAINER
 ======================================== */
 
@@ -362,87 +401,87 @@ body {
 
 /* 誕生日 */
 .gm-day-card.birthday {
-  background: #fff7fa;
-  border-color: #f1dce5;
+  background: var(--event-birthday-card-bg);
+  border-color: var(--event-birthday-border);
 }
 
 .gm-day-card.birthday .gm-day-card-icon {
-  background: #f5dfed;
-  color: #b65a9d;
+  background: var(--event-birthday-bg);
+  color: var(--event-birthday);
 }
 
 .gm-day-card.birthday .gm-day-card-type {
-  color: #b65a9d;
+  color: var(--event-birthday);
 }
 
 /* あげたプレゼント */
 .gm-day-card.given {
-  background: #fff8f6;
-  border-color: #f3ddd7;
+  background: var(--event-given-card-bg);
+  border-color: var(--event-given-border);
 }
 
 .gm-day-card.given .gm-day-card-icon {
-  background: #ffe8e3;
-  color: #e86a58;
+  background: var(--event-given-bg);
+  color: var(--event-given);
 }
 
 .gm-day-card.given .gm-day-card-type {
-  color: #e86a58;
+  color: var(--event-given);
 }
 
 /* もらったプレゼント */
 .gm-day-card.received {
-  background: #f5fcf8;
-  border-color: #dcefe5;
+  background: var(--event-received-card-bg);
+  border-color: var(--event-received-border);
 }
 
 .gm-day-card.received .gm-day-card-icon {
-  background: #dff5e9;
-  color: #15966b;
+  background: var(--event-received-bg);
+  color: var(--event-received);
 }
 
 .gm-day-card.received .gm-day-card-type {
-  color: #15966b;
+  color: var(--event-received);
 }
 
 /* 記念日 */
 .gm-day-card.anniversary .gm-day-card-icon {
-  background: #f3e5f2;
-  color: #a55c9c;
+  background: var(--event-anniversary-bg);
+  color: var(--event-anniversary);
 }
 
 .gm-day-card.anniversary .gm-day-card-type {
-  color: #a55c9c;
+  color: var(--event-anniversary);
 }
 
 /* お祝い */
 .gm-day-card.celebration .gm-day-card-icon {
-  background: #faedcc;
-  color: #b77b1b;
+  background: var(--event-celebration-bg);
+  color: var(--event-celebration);
 }
 
 .gm-day-card.celebration .gm-day-card-type {
-  color: #b77b1b;
+  color: var(--event-celebration);
 }
 
-/* 過去のプレゼント予定 */
+/* プレゼント予定（旧イベント） */
 .gm-day-card.gift .gm-day-card-icon {
-  background: #ffe5df;
-  color: #c95545;
+  background: var(--event-gift-bg);
+  color: var(--event-gift);
 }
 
 .gm-day-card.gift .gm-day-card-type {
-  color: #c95545;
+  color: var(--event-gift);
 }
 
 /* その他 */
 .gm-day-card.other .gm-day-card-icon {
-  background: #f1eeeb;
-  color: #746b65;
+  background: var(--event-other-bg);
+  color: var(--event-other);
 }
 
 .gm-day-card.other .gm-day-card-type {
-  color: #746b65;
+  color: var(--event-other);
 }
 
 /* ========================================
