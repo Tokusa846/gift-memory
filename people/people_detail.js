@@ -7,8 +7,27 @@ import {
   setupModalEscape
 } from "../common/modal.js";
 import {
-  setupBackLink
+  setupBackLink,
+  buildUrlWithReturnTo
 } from "../common/navigation.js";
+
+/* ========================================
+   DETAIL NAVIGATION
+======================================== */
+
+function createPersonDetailUrl(destinationUrl) {
+
+  const returnUrl =
+    `../people/people_detail.html?id=${
+      encodeURIComponent(currentPerson.id)
+    }`;
+
+  return buildUrlWithReturnTo(
+    destinationUrl,
+    returnUrl
+  );
+
+}
 
 /* ========================================
    STATE
@@ -643,13 +662,13 @@ function setupGiftAddButton() {
 
 
   button.href =
-    `../gifts/gifts.html?person_id=${encodeURIComponent(
-      currentPerson.id
-    )}&return_to=${encodeURIComponent(
-      `../people/people_detail.html?id=${currentPerson.id}`
-    )}`;
-}
+    createPersonDetailUrl(
+      `../gifts/gifts.html?person_id=${
+        encodeURIComponent(currentPerson.id)
+     }`
+   );
 
+}
 
 /* ========================================
    PERSONAL AI CONSULT BUTTON
@@ -671,11 +690,11 @@ function setupPersonalAiConsultButton() {
 
 
   button.href =
-    `../ai/ai_talk.html?person_id=${encodeURIComponent(
-      currentPerson.id
-    )}&return_to=${encodeURIComponent(
-      `../people/people_detail.html?id=${currentPerson.id}`
-    )}`;
+   createPersonDetailUrl(
+      `../ai/ai_talk.html?person_id=${
+        encodeURIComponent(currentPerson.id)
+      }`
+    );
 
 }
 
@@ -737,9 +756,11 @@ function renderGiftList() {
     container.innerHTML += `
       <a
         class="person-detail-more-button"
-        href="../gifts/gift_history.html?person_id=${encodeURIComponent(
-          currentPerson.id
-        )}"
+        href="${createPersonDetailUrl(
+          `../gifts/gift_history.html?person_id=${
+            encodeURIComponent(currentPerson.id)
+          }`
+      )}"
       >
         もっと見る…
       </a>
@@ -754,9 +775,7 @@ function renderGiftList() {
    GIFT ITEM
 ======================================== */
 
-function createGiftItemHtml(
-  gift
-) {
+function createGiftItemHtml(gift) {
 
   const isReceived =
     gift.direction ===
@@ -786,17 +805,11 @@ function createGiftItemHtml(
 
   
   const detailUrl =
-    `../gifts/gift_detail.html?gift_id=${
-      encodeURIComponent(
-        gift.id
-      )
-    }&return_to=${
-      encodeURIComponent(
-        `../people/people_detail.html?id=${
-          currentPerson.id
-        }`
-      )
-    }`;
+    createPersonDetailUrl(
+      `../gifts/gift_detail.html?gift_id=${
+        encodeURIComponent(gift.id)
+     }`
+  );
 
 
 
@@ -1966,8 +1979,10 @@ function renderMemoList() {
     container.innerHTML += `
       <a
         class="person-detail-more-button"
-        href="../memos/memo_history.html?person_id=${encodeURIComponent(
-          currentPerson.id
+        href="${createPersonDetailUrl(
+          `../memos/memo_history.html?person_id=${
+            encodeURIComponent(currentPerson.id)
+          }`
         )}"
       >
         もっと見る…
