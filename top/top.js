@@ -1,5 +1,23 @@
 import { renderDateDetailCards } from "../common/modal.js";
+
+import {
+  buildUrlWithReturnTo
+} from "../common/navigation.js";
+
 import { supabase } from "../common/supabase.js";
+
+/* ========================================
+   DETAIL NAVIGATION
+======================================== */
+
+function createTopDetailUrl(destinationUrl) {
+
+  return buildUrlWithReturnTo(
+    destinationUrl,
+    "../index.html"
+  );
+
+}
 
 /* ========================================
    DATE HELPERS
@@ -1099,21 +1117,31 @@ function openDateDetailModal(date) {
      + `（${weekdays[date.getDay()]}）`;
 
 
-  const items = [
+    const items = [
     ...events.map(event => ({
       type: event.type,
       title: event.title || "イベント",
       personName: event.type !== "birthday" && event.personName
-        ? formatPersonName(event.personName) : "",
+        ? formatPersonName(event.personName)
+        : "",
       href: event.source === "people"
-        ? `people/people_detail.html?id=${encodeURIComponent(event.personId)}`
-        : `events/event_detail.html?event_id=${encodeURIComponent(event.id)}&return_to=${encodeURIComponent("../index.html")}`
+        ? createTopDetailUrl(
+            `people/people_detail.html?id=${encodeURIComponent(event.personId)}`
+          )
+        : createTopDetailUrl(
+            `events/event_detail.html?event_id=${encodeURIComponent(event.id)}`
+          )
     })),
+
     ...gifts.map(log => ({
       type: log.direction === "received" ? "received" : "given",
       title: log.item_name || "名称未登録",
-      personName: log.people?.name ? formatPersonName(log.people.name) : "",
-      href: `gifts/gift_detail.html?gift_id=${encodeURIComponent(log.id)}&return_to=${encodeURIComponent("../index.html")}`
+      personName: log.people?.name
+        ? formatPersonName(log.people.name)
+        : "",
+      href: createTopDetailUrl(
+        `gifts/gift_detail.html?gift_id=${encodeURIComponent(log.id)}`
+      )
     }))
   ];
   renderDateDetailCards(content, items);
@@ -1387,35 +1415,37 @@ function setupDateDetailModal() {
 
 
   /* =========================
-     ADD
+     追加　イベント登録　＆　プレゼント登録
   ========================== */
-
   // イベント登録へ
   addButton.addEventListener("click", () => {
+
     const selectedDate = modal.dataset.date;
 
-    const params = new URLSearchParams({
-      event_date: selectedDate,
-      return_to: "../index.html"
-    });
+    const destinationUrl =
+      `events/event.html?event_date=${
+        encodeURIComponent(selectedDate)
+      }`;
 
     window.location.href =
-      `events/event.html?${params.toString()}`;
+      createTopDetailUrl(destinationUrl);
+
   });
 
   // プレゼント登録へ
   giftAddButton.addEventListener("click", () => {
+
     const selectedDate = modal.dataset.date;
 
-    const params = new URLSearchParams({
-      gift_date: selectedDate,
-      return_to: "../index.html"
-    });
+    const destinationUrl =
+      `gifts/gifts.html?gift_date=${
+        encodeURIComponent(selectedDate)
+      }`;
 
     window.location.href =
-      `gifts/gifts.html?${params.toString()}`;
-  });
+      createTopDetailUrl(destinationUrl);
 
+  });
 }
 
 
@@ -1515,12 +1545,11 @@ function setupEventActions() {
 
 
         window.location.href =
-          `events/event.html?event_id=${
-            encodeURIComponent(eventId)
-          }&return_to=${
-            encodeURIComponent("../index.html")
-          }`;
-
+          createTopDetailUrl(
+            `events/event.html?event_id=${
+                encodeURIComponent(eventId)
+            }`
+        );
 
         return;
 
@@ -2207,16 +2236,12 @@ function createGiftLogHtml(log) {
       `
       : "";
     
-  const detailUrl =
-     `gifts/gift_detail.html?gift_id=${
-        encodeURIComponent(
-          log.id
-        )
-      }&return_to=${
-        encodeURIComponent(
-          "../index.html"
-        )
-     }`;
+    const detailUrl =
+      createTopDetailUrl(
+        `gifts/gift_detail.html?gift_id=${
+           encodeURIComponent(log.id)
+        }`
+      );
 
 
   return `
