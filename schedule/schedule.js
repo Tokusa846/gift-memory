@@ -1750,28 +1750,20 @@ function updateAddLinks() {
   const returnUrl =
     createScheduleReturnUrl();
 
-
   if (addGiftLink) {
-
     addGiftLink.href =
-      `../gifts/gifts.html?return_to=${
-        encodeURIComponent(
-          returnUrl
-        )
-      }`;
-
+      buildUrlWithReturnTo(
+        "../gifts/gifts.html",
+        returnUrl
+      );
   }
 
-
   if (addEventLink) {
-
     addEventLink.href =
-      `../events/event.html?return_to=${
-        encodeURIComponent(
-          returnUrl
-        )
-      }`;
-
+      buildUrlWithReturnTo(
+        "../events/event.html",
+        returnUrl
+      );
   }
 
 }
@@ -1808,56 +1800,35 @@ function closeAddMenu() {
    DETAIL URL
 ======================================== */
 
-function createGiftDetailUrl(
-  giftId
-) {
+function createGiftDetailUrl(giftId) {
 
-  const returnUrl =
-    createScheduleReturnUrl();
-
-
-  return (
+  const destinationUrl =
     `../gifts/gift_detail.html?gift_id=${
-      encodeURIComponent(
-        giftId
-      )
-    }`
-    +
-    `&return_to=${
-      encodeURIComponent(
-        returnUrl
-      )
-    }`
+      encodeURIComponent(giftId)
+    }`;
+
+  return buildUrlWithReturnTo(
+    destinationUrl,
+    createScheduleReturnUrl()
   );
 
 }
-
 
 /*
   現在イベント専用の詳細画面はないため、
   登録画面の編集モードへ遷移する。
 */
 
-function createEventDetailUrl(
-  eventId
-) {
+function createEventDetailUrl(eventId) {
 
-  const returnUrl =
-    createScheduleReturnUrl();
-
-
-  return (
+  const destinationUrl =
     `../events/event_detail.html?event_id=${
-      encodeURIComponent(
-        eventId
-      )
-    }`
-    +
-    `&return_to=${
-      encodeURIComponent(
-        returnUrl
-      )
-    }`
+      encodeURIComponent(eventId)
+    }`;
+
+  return buildUrlWithReturnTo(
+    destinationUrl,
+    createScheduleReturnUrl()
   );
 
 }
@@ -2303,24 +2274,30 @@ function openScheduleDayModal(dateKey) {
     ...birthdays.map(birthday => toSharedScheduleCard("birthday", birthday))
   ]);
 
-  // 選択日を登録画面へ引き継ぐ
+    // 選択日を登録画面へ引き継ぐ
   const returnUrl = createScheduleReturnUrl();
 
-  const giftParams = new URLSearchParams({
-    gift_date: dateKey,
-    return_to: returnUrl
-  });
+  const giftUrl =
+    `../gifts/gifts.html?gift_date=${
+      encodeURIComponent(dateKey)
+    }`;
 
-  const eventParams = new URLSearchParams({
-    event_date: dateKey,
-    return_to: returnUrl
-  });
+  const eventUrl =
+    `../events/event.html?event_date=${
+      encodeURIComponent(dateKey)
+    }`;
 
   document.getElementById("scheduleDayGiftLink").href =
-    `../gifts/gifts.html?${giftParams.toString()}`;
+    buildUrlWithReturnTo(
+      giftUrl,
+      returnUrl
+    );
 
   document.getElementById("scheduleDayEventLink").href =
-    `../events/event.html?${eventParams.toString()}`;
+    buildUrlWithReturnTo(
+      eventUrl,
+      returnUrl
+    );
 
   modal.classList.remove("hidden");
   document.body.classList.add("schedule-modal-open");
