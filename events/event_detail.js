@@ -26,7 +26,7 @@ const TYPES = {
   anniversary: { label: "記念日", icon: "fa-solid fa-heart" },
   celebration: { label: "お祝い", icon: "fa-solid fa-champagne-glasses" },
   gift: { label: "プレゼント予定", icon: "fa-solid fa-gift" }, // 過去データ用
-  other: { label: "その他", icon: "fa-regular fa-calendar" }
+  other: { label: "その他", icon: "fa-solid fa-star" }
 };
 
 
