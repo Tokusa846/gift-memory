@@ -1294,48 +1294,16 @@ function createDateGroup(
     "schedule-date-items";
 
 
-  group.items.forEach(
-    item => {
+  const cards = group.items.map(item =>
+    toSharedScheduleCard(
+      item.kind,
+      item.data
+    )
+  );
 
-      if (
-        item.kind ===
-        "gift"
-      ) {
-
-        itemList.appendChild(
-          createGiftCard(
-            item.data
-          )
-        );
-
-        return;
-
-      }
-
-
-      if (
-        item.kind ===
-        "birthday"
-      ) {
-
-        itemList.appendChild(
-          createBirthdayCard(
-            item.data
-          )
-        );
-
-        return;
-
-      }
-
-
-      itemList.appendChild(
-        createEventCard(
-          item.data
-        )
-      );
-
-    }
+  renderDateDetailCards(
+    itemList,
+    cards
   );
 
 
