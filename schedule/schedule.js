@@ -1623,6 +1623,9 @@ function getIconClass(
       return "fa-solid fa-gift";
 
 
+    case "event-other":
+      return "fa-solid fa-star";
+
     default:
       return "fa-regular fa-calendar";
 

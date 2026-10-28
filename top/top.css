@@ -248,12 +248,10 @@
 
 
 /* イベントあり */
-/* today の場合は赤丸を優先 */
-.calendar-date-button.has-event:not(.today) {
+/* 今日・選択日は赤丸を優先 */
+.calendar-date-button.has-event:not(.today):not(.selected) {
   border-color: #f0b94c;
-
   background-color: #fffaf0;
-
   color: #544d47;
 }
 

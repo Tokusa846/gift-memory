@@ -1042,7 +1042,7 @@ function createCalendarEventIcon(
     case "other":
 
       icon.classList.add(
-        "fa-calendar",
+        "fa-star",
         "other"
       );
 

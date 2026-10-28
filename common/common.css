@@ -40,10 +40,10 @@ body {
   --event-received: #277b60;
 
   /* アイコン背景 */
-  --event-birthday-bg: #f5dfed;
-  --event-anniversary-bg: #f3e5f2;
+  --event-birthday-bg: #ffdff3;
+  --event-anniversary-bg: #ffe5fd;
   --event-celebration-bg: #fcf5e2;
-  --event-other-bg: #f1eeeb;
+  --event-other-bg: #dfebf8;
   --event-gift-bg: #ffe5df;
   --event-given-bg: #ffe8e3;
   --event-received-bg: #dff5e9;
