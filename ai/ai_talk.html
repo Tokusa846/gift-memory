@@ -716,14 +716,15 @@
 
 
         <!-- ===========================================
-             AI RESULT
-        ============================================ -->
+     　　　AI RESULT
+　　　　============================================ -->
         <section
           id="aiTalkResult"
           class="ai-talk-result hidden"
           aria-live="polite"
         >
 
+          <!-- RESULT TITLE -->
           <div class="ai-talk-result-title">
 
             <i class="fa-solid fa-sparkles"></i>
@@ -734,12 +735,113 @@
 
           </div>
 
+          <!-- RESULT DESCRIPTION -->
+          <p class="ai-talk-result-description">
+            おすすめのプレゼントを最大3件ご紹介します。
+            気になる候補を選ぶと、詳しい情報を確認できます。
+          </p>
 
-          <div id="aiTalkSuggestionList">
+          <!-- =======================================
+               SUGGESTION CARDS
+          ======================================== -->
+          <div
+            id="aiTalkSuggestionList"
+            class="ai-talk-suggestion-list"
+            aria-label="おすすめのプレゼント一覧"
+          >
 
-            <!-- AIの回答をJavaScriptで表示 -->
+            <!-- JavaScriptで候補カードを追加 -->
 
           </div>
+
+          <!-- =======================================
+               SELECTED SUGGESTION DETAIL
+          ======================================== -->
+          <section
+            id="aiTalkSuggestionDetail"
+            class="ai-talk-suggestion-detail hidden"
+            aria-labelledby="aiTalkDetailHeading"
+          >
+
+            <!-- DETAIL HEADER -->
+            <div class="ai-talk-detail-header">
+
+              <h3 id="aiTalkDetailHeading">
+                プレゼントの詳細
+              </h3>
+
+            </div>
+
+            <!-- DETAIL CONTENT -->
+            <div id="aiTalkDetailContent">
+
+              <!-- JavaScriptで選択した候補の詳細を表示 -->
+
+            </div>
+
+            <!-- =====================================
+                 ACTION BUTTONS
+            ====================================== -->
+            <div class="ai-talk-detail-actions">
+
+              <!-- SAVE -->
+              <button
+                type="button"
+                id="aiTalkSaveButton"
+                class="ai-talk-save-button"
+                disabled
+              >
+
+                <i class="fa-regular fa-bookmark"></i>
+
+                <span>
+                  保存する
+                </span>
+
+              </button>
+
+              <!-- EC SEARCH -->
+              <div class="ai-talk-ec-section">
+
+                <p class="ai-talk-ec-label">
+                  このプレゼントを探す
+                </p>
+
+                <div class="ai-talk-ec-buttons">
+
+                  <a
+                    id="aiTalkAmazonButton"
+                    class="ai-talk-ec-button amazon"
+                    aria-disabled="true"
+                    tabindex="-1"
+                  >
+
+                    Amazon
+
+                    <i class="fa-solid fa-arrow-up-right-from-square"></i>
+
+                  </a>
+
+                  <a
+                    id="aiTalkRakutenButton"
+                    class="ai-talk-ec-button rakuten"
+                    aria-disabled="true"
+                    tabindex="-1"
+                  >
+
+                    楽天市場
+
+                    <i class="fa-solid fa-arrow-up-right-from-square"></i>
+
+                  </a>
+
+                </div>
+
+              </div>
+
+            </div>
+
+          </section>
 
         </section>
 
