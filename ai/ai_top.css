@@ -1,0 +1,245 @@
+/* ========================================
+   AI TOP PAGE
+======================================== */
+
+/* MAIN */
+
+.ai-top-main {
+  flex: 1;
+  padding: 28px 16px 110px;
+}
+
+/* ========================================
+   INTRODUCTION
+======================================== */
+
+.ai-top-introduction {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  margin-bottom: 32px;
+
+  text-align: center;
+}
+
+.ai-top-logo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 66px;
+  height: 66px;
+
+  margin-bottom: 16px;
+
+  border-radius: 22px;
+
+  background: linear-gradient(
+    135deg,
+    #efe4f7,
+    #f9e8ed
+  );
+
+  color: #9a6db4;
+
+  font-size: 27px;
+}
+
+.ai-top-introduction h2 {
+  margin: 0 0 10px;
+
+  color: #493e4e;
+
+  font-size: 19px;
+  font-weight: 700;
+}
+
+.ai-top-introduction p {
+  margin: 0;
+
+  color: #8e8580;
+
+  font-size: 12px;
+  line-height: 1.9;
+}
+
+/* ========================================
+   MENU
+======================================== */
+
+.ai-top-menu {
+  display: flex;
+  flex-direction: column;
+
+  gap: 13px;
+}
+
+.ai-top-menu-card {
+  display: flex;
+  align-items: center;
+
+  gap: 13px;
+
+  min-height: 92px;
+  padding: 16px 14px;
+
+  border: 1px solid #e8e3de;
+  border-radius: 16px;
+
+  background-color: #ffffff;
+
+  box-shadow:
+    0 3px 10px rgba(0, 0, 0, 0.025);
+
+  color: #4a423d;
+  text-decoration: none;
+
+  transition:
+    transform 0.15s,
+    border-color 0.15s,
+    box-shadow 0.15s;
+}
+
+a.ai-top-menu-card:hover {
+  border-color: #d8c2e6;
+
+  box-shadow:
+    0 5px 15px rgba(82, 58, 93, 0.07);
+}
+
+a.ai-top-menu-card:active {
+  transform: scale(0.98);
+}
+
+a.ai-top-menu-card:focus-visible {
+  outline: 2px solid #9a6db4;
+  outline-offset: 3px;
+}
+
+/* ========================================
+   MENU ICON
+======================================== */
+
+.ai-top-menu-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  flex-shrink: 0;
+
+  width: 48px;
+  height: 48px;
+
+  border-radius: 14px;
+
+  font-size: 19px;
+}
+
+.ai-top-menu-icon.consultation {
+  background-color: #f3ebf7;
+  color: #9a6db4;
+}
+
+.ai-top-menu-icon.saved {
+  background-color: #fff0e9;
+  color: #d78665;
+}
+
+.ai-top-menu-icon.history {
+  background-color: #eaf0f8;
+  color: #738ca9;
+}
+
+/* ========================================
+   MENU TEXT
+======================================== */
+
+.ai-top-menu-content {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+
+  min-width: 0;
+
+  gap: 7px;
+}
+
+.ai-top-menu-title {
+  color: #493e4e;
+
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.ai-top-menu-description {
+  color: #968c86;
+
+  font-size: 10px;
+  line-height: 1.6;
+}
+
+.ai-top-menu-arrow {
+  flex-shrink: 0;
+
+  color: #b7aea8;
+
+  font-size: 12px;
+}
+
+/* ========================================
+   COMING SOON
+======================================== */
+
+.ai-top-menu-card.coming-soon {
+  opacity: 0.72;
+}
+
+.ai-top-coming-soon {
+  flex-shrink: 0;
+
+  padding: 5px 7px;
+
+  border-radius: 7px;
+
+  background-color: #f3f0ed;
+
+  color: #9b928d;
+
+  font-size: 8px;
+  font-weight: 700;
+
+  white-space: nowrap;
+}
+
+/* ========================================
+   RESPONSIVE
+======================================== */
+
+@media (max-width: 360px) {
+
+  .ai-top-menu-card {
+    gap: 10px;
+    padding: 13px 10px;
+  }
+
+  .ai-top-menu-icon {
+    width: 42px;
+    height: 42px;
+
+    font-size: 17px;
+  }
+
+  .ai-top-menu-title {
+    font-size: 12px;
+  }
+
+  .ai-top-menu-description {
+    font-size: 9px;
+  }
+
+  .ai-top-coming-soon {
+    font-size: 7px;
+    padding: 4px 5px;
+  }
+}

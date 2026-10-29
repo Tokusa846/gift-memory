@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+
+  <title>AI | Gift Memory</title>
+
+  <!-- Font Awesome -->
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+  >
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+  <link
+    href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;600;700&display=swap"
+    rel="stylesheet"
+  >
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="../common/common.css">
+  <link rel="stylesheet" href="ai_top.css">
+</head>
+
+<body>
+
+  <div class="app-container">
+
+    <!-- HEADER -->
+    <header class="app-page-header">
+
+      <div class="app-page-header-side"></div>
+
+      <h1>AI</h1>
+
+      <div class="app-page-header-side"></div>
+
+    </header>
+
+    <!-- MAIN -->
+    <main class="ai-top-main">
+
+      <!-- INTRODUCTION -->
+      <section class="ai-top-introduction">
+
+        <div class="ai-top-logo">
+          <i class="fa-solid fa-wand-magic-sparkles"></i>
+        </div>
+
+        <h2>Gift Memory AI</h2>
+
+        <p>
+          大切な人への贈り物を、<br>
+          AIと一緒に考えましょう。
+        </p>
+
+      </section>
+
+      <!-- MENU -->
+      <nav class="ai-top-menu" aria-label="AIメニュー">
+
+        <!-- AI CONSULTATION -->
+        <a
+            href="ai_talk.html?return_to=./ai_top.html"
+            class="ai-top-menu-card"
+        >
+
+          <span class="ai-top-menu-icon consultation">
+            <i class="fa-solid fa-wand-magic-sparkles"></i>
+          </span>
+
+          <span class="ai-top-menu-content">
+
+            <span class="ai-top-menu-title">
+              AI相談
+            </span>
+
+            <span class="ai-top-menu-description">
+              贈り物のアイデアを探す
+            </span>
+
+          </span>
+
+          <i class="fa-solid fa-chevron-right ai-top-menu-arrow"></i>
+
+        </a>
+
+        <!-- SAVED ITEMS -->
+        <div
+          class="ai-top-menu-card coming-soon"
+          aria-disabled="true"
+        >
+
+          <span class="ai-top-menu-icon saved">
+            <i class="fa-regular fa-bookmark"></i>
+          </span>
+
+          <span class="ai-top-menu-content">
+
+            <span class="ai-top-menu-title">
+              保存した商品
+            </span>
+
+            <span class="ai-top-menu-description">
+              気になる候補を確認
+            </span>
+
+          </span>
+
+          <span class="ai-top-coming-soon">
+            Coming Soon
+          </span>
+
+        </div>
+
+        <!-- CONSULTATION HISTORY -->
+        <div
+          class="ai-top-menu-card coming-soon"
+          aria-disabled="true"
+        >
+
+          <span class="ai-top-menu-icon history">
+            <i class="fa-solid fa-clock-rotate-left"></i>
+          </span>
+
+          <span class="ai-top-menu-content">
+
+            <span class="ai-top-menu-title">
+              相談履歴
+            </span>
+
+            <span class="ai-top-menu-description">
+              過去の提案を振り返る
+            </span>
+
+          </span>
+
+          <span class="ai-top-coming-soon">
+            Coming Soon
+          </span>
+
+        </div>
+
+      </nav>
+
+    </main>
+
+    <!-- BOTTOM NAVIGATION -->
+    <nav class="bottom-nav">
+
+      <a
+        href="../index.html"
+        class="nav-link-button"
+      >
+        <i class="fa-solid fa-house"></i>
+        <span>ホーム</span>
+      </a>
+
+      <a
+        href="../people/people_manage.html"
+        class="nav-link-button"
+      >
+        <i class="fa-solid fa-user"></i>
+        <span>人物</span>
+      </a>
+
+      <a
+        href="../schedule/schedule.html"
+        class="nav-link-button"
+      >
+        <i class="fa-regular fa-calendar"></i>
+        <span>予定</span>
+      </a>
+
+      <a
+        href="ai_top.html"
+        class="nav-link-button active-tab"
+        aria-current="page"
+      >
+        <i class="fa-solid fa-wand-magic-sparkles"></i>
+        <span>AI</span>
+      </a>
+
+      <a
+        href="../index.html?tab=setting"
+        class="nav-link-button"
+      >
+        <i class="fa-solid fa-gear"></i>
+        <span>設定</span>
+      </a>
+
+    </nav>
+
+  </div>
+
+</body>
+</html>
