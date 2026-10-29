@@ -1619,3 +1619,265 @@
   appearance: none;
   color: inherit;
 }
+
+/* ========================================
+   AI SUGGESTION CAROUSEL
+======================================== */
+
+/* 横スクロール領域 */
+
+.ai-talk-suggestion-list {
+  gap: 12px;
+
+  padding: 6px 2px 12px;
+
+  scrollbar-width: none;
+
+  scroll-snap-type: x mandatory;
+  scroll-padding-left: 2px;
+}
+
+/* Chrome・Safariのスクロールバー非表示 */
+
+.ai-talk-suggestion-list::-webkit-scrollbar {
+  display: none;
+}
+
+
+/* ========================================
+   LARGE SUGGESTION CARD
+======================================== */
+
+.ai-talk-suggestion-list
+.ai-talk-suggestion-card {
+  /*
+    1枚目を大きく表示しながら、
+    2枚目の一部が見える幅にする
+  */
+  flex: 0 0 85%;
+
+  box-sizing: border-box;
+
+  min-height: 340px;
+
+  display: flex;
+  flex-direction: column;
+}
+
+
+/* カード画像 */
+
+.ai-talk-card-image {
+  height: 145px;
+
+  flex-shrink: 0;
+
+  font-size: 40px;
+}
+
+
+/* カード本文 */
+
+.ai-talk-card-content {
+  flex: 1;
+
+  display: flex;
+  flex-direction: column;
+
+  padding: 16px 15px 18px;
+}
+
+
+/* カードタイトル */
+
+.ai-talk-card-title {
+  margin-bottom: 10px;
+
+  font-size: 15px;
+}
+
+
+/* 価格目安 */
+
+.ai-talk-card-price {
+  align-self: flex-start;
+
+  margin-bottom: 13px;
+
+  font-size: 11px;
+}
+
+
+/* 短い紹介文 */
+
+.ai-talk-card-reason {
+  margin-bottom: 13px;
+
+  font-size: 11px;
+  line-height: 1.8;
+}
+
+
+/* ========================================
+   CARD RECOMMENDATION REASON
+======================================== */
+
+.ai-talk-card-recommendation {
+  margin-top: auto;
+
+  padding-top: 13px;
+
+  border-top: 1px solid #f0ece8;
+}
+
+
+.ai-talk-card-recommendation-title {
+  display: flex;
+  align-items: center;
+
+  gap: 6px;
+
+  margin: 0 0 7px;
+
+  color: #82559c;
+
+  font-size: 11px;
+  font-weight: 700;
+}
+
+
+.ai-talk-card-recommendation-title i {
+  font-size: 11px;
+}
+
+
+.ai-talk-card-recommendation-text {
+  margin: 0;
+
+  color: #665d67;
+
+  font-size: 11px;
+  line-height: 1.8;
+}
+
+
+/* ========================================
+   PAGE INDICATOR
+======================================== */
+
+.ai-talk-suggestion-dots {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  gap: 9px;
+
+  min-height: 20px;
+
+  margin: 4px 0 16px;
+}
+
+
+/* 丸 */
+
+.ai-talk-suggestion-dot {
+  width: 9px;
+  height: 9px;
+
+  padding: 0;
+
+  border: none;
+  border-radius: 50%;
+
+  background-color: #ded9e1;
+
+  cursor: pointer;
+
+  transition:
+    background-color 0.2s,
+    transform 0.2s;
+}
+
+
+/* 現在表示中 */
+
+.ai-talk-suggestion-dot.active {
+  background-color: #9a6db4;
+
+  transform: scale(1.25);
+}
+
+
+/* キーボード操作 */
+
+.ai-talk-suggestion-dot:focus-visible {
+  outline: 2px solid #9a6db4;
+  outline-offset: 3px;
+}
+
+
+/* ========================================
+   SMALL SCREEN
+======================================== */
+
+@media (max-width: 360px) {
+
+  .ai-talk-suggestion-list
+  .ai-talk-suggestion-card {
+    flex-basis: 85%;
+    min-height: 330px;
+  }
+
+  .ai-talk-card-image {
+    height: 130px;
+  }
+
+}
+
+/* ========================================
+   CENTERED CARD CAROUSEL
+======================================== */
+
+/* カルーセル本体 */
+
+.ai-talk-suggestion-list {
+  gap: 12px;
+
+  scroll-snap-type: x mandatory;
+
+  scroll-padding-inline: 0;
+}
+
+
+/* カードサイズ */
+
+.ai-talk-suggestion-list
+.ai-talk-suggestion-card {
+  flex: 0 0 78%;
+
+  scroll-snap-align: center;
+}
+
+
+/* 左右の余白 */
+
+.ai-talk-suggestion-list::before,
+.ai-talk-suggestion-list::after {
+  content: "";
+
+  flex: 0 0 11%;
+
+  scroll-snap-align: none;
+}
+
+
+/* 小さい画面 */
+
+@media (max-width: 360px) {
+
+  .ai-talk-suggestion-list
+  .ai-talk-suggestion-card {
+    flex-basis: 78%;
+  }
+
+}

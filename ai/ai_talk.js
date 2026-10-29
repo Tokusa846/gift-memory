@@ -1948,6 +1948,12 @@ function renderSuggestions(suggestions) {
 
   result.classList.remove("hidden");
 
+  // カード位置を先頭に戻す
+  list.scrollLeft = 0;
+
+  // ページインジケーターを作成
+  setupSuggestionDots();
+
   result.scrollIntoView({
     behavior: "smooth",
     block: "start"
@@ -2024,10 +2030,52 @@ function createSuggestionCard(suggestion) {
   reason.textContent =
     suggestion.summary;
 
+  // おすすめ理由
+  const recommendation =
+    document.createElement("div");
+
+  recommendation.className =
+    "ai-talk-card-recommendation";
+
+  const recommendationTitle =
+    document.createElement("p");
+
+  recommendationTitle.className =
+    "ai-talk-card-recommendation-title";
+
+  const recommendationIcon =
+    document.createElement("i");
+
+  recommendationIcon.className =
+    "fa-solid fa-sparkles";
+
+  recommendationTitle.appendChild(
+    recommendationIcon
+  );
+
+  recommendationTitle.appendChild(
+    document.createTextNode("おすすめする理由")
+  );
+
+  const recommendationText =
+    document.createElement("p");
+
+  recommendationText.className =
+    "ai-talk-card-recommendation-text";
+
+  recommendationText.textContent =
+    suggestion.reason || "おすすめのギフト候補です。";
+
+  recommendation.append(
+    recommendationTitle,
+    recommendationText
+  );
+
   content.append(
     title,
     price,
-    reason
+    reason,
+    recommendation
   );
 
   card.append(
@@ -2039,12 +2087,135 @@ function createSuggestionCard(suggestion) {
 
 }
 
+/* ========================================
+   SETUP SUGGESTION DOTS
+======================================== */
+
+function setupSuggestionDots() {
+
+  const list =
+    document.getElementById("aiTalkSuggestionList");
+
+  const dotsContainer =
+    document.getElementById("aiTalkSuggestionDots");
+
+  if (!list || !dotsContainer) {
+    return;
+  }
+
+  dotsContainer.replaceChildren();
+
+  const cards = Array.from(
+    list.querySelectorAll(".ai-talk-suggestion-card")
+  );
+
+  if (cards.length === 0) {
+    return;
+  }
+
+  const dots = cards.map((card, index) => {
+
+    const dot =
+      document.createElement("button");
+
+    dot.type = "button";
+
+    dot.className =
+      "ai-talk-suggestion-dot";
+
+    dot.setAttribute(
+      "aria-label",
+      `${index + 1}件目のプレゼントを表示`
+    );
+
+    dot.addEventListener("click", () => {
+
+      card.scrollIntoView({
+        behavior: "smooth",
+        block: "nearest",
+        inline: "start"
+      });
+
+      selectSuggestion(
+        temporarySuggestions[index],
+        card
+      );
+
+    });
+
+    dotsContainer.appendChild(dot);
+
+    return dot;
+
+  });
+
+
+  // 表示中のカードに対応する丸を更新
+  function updateActiveDot() {
+
+  const listCenter =
+    list.getBoundingClientRect().left +
+    list.clientWidth / 2;
+
+  let activeIndex = 0;
+  let minDistance = Infinity;
+
+  cards.forEach((card, index) => {
+
+    const rect =
+      card.getBoundingClientRect();
+
+    const cardCenter =
+      rect.left + rect.width / 2;
+
+    const distance =
+      Math.abs(cardCenter - listCenter);
+
+    if (distance < minDistance) {
+      minDistance = distance;
+      activeIndex = index;
+    }
+
+  });
+
+  dots.forEach((dot, index) => {
+
+    const isActive =
+      index === activeIndex;
+
+    dot.classList.toggle(
+      "active",
+      isActive
+    );
+
+    dot.setAttribute(
+      "aria-current",
+      String(isActive)
+    );
+
+  });
+
+}
+
+  list.addEventListener(
+    "scroll",
+    updateActiveDot,
+    { passive: true }
+  );
+
+  updateActiveDot();
+
+}
+
 
 /* ========================================
    SELECT SUGGESTION
 ======================================== */
 
 function selectSuggestion(suggestion, selectedCard) {
+
+  const list =
+    document.getElementById("aiTalkSuggestionList");
 
   const cards =
     document.querySelectorAll(
@@ -2068,6 +2239,22 @@ function selectSuggestion(suggestion, selectedCard) {
 
   });
 
+  // 選択したカードを中央にスクロール
+  if (list && selectedCard) {
+
+    const targetLeft =
+      selectedCard.offsetLeft -
+      list.offsetLeft -
+      (list.clientWidth - selectedCard.offsetWidth) / 2;
+
+    list.scrollTo({
+      left: targetLeft,
+      behavior: "smooth"
+    });
+
+  }
+
+  // 詳細情報を切り替え
   renderSuggestionDetail(suggestion);
 
 }
