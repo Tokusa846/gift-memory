@@ -1836,109 +1836,415 @@ function createConsultationData() {
    TEMPORARY RESULT
 ======================================== */
 
-function showTemporaryResult(
-  consultationData
-) {
+// AI接続前の表示確認用データ
+const temporarySuggestions = [
+  {
+    id: "sample-1",
+    name: "コーヒー飲み比べセット",
+    priceRange: "2,000〜4,000円",
+    summary: "さまざまなコーヒーを楽しめるギフトです。",
+    features:
+      "異なる産地や焙煎度のコーヒーを少量ずつ楽しめるセットです。",
+    reason:
+      "普段からコーヒーを飲む方に、いつもとは違う味を楽しんでもらえます。",
+    caution:
+      "カフェインを控えている方には、デカフェの商品も検討してください。",
+    icon: "fa-mug-hot",
+    searchKeyword: "コーヒー 飲み比べ ギフト"
+  },
+  {
+    id: "sample-2",
+    name: "焼き菓子の詰め合わせ",
+    priceRange: "1,500〜3,000円",
+    summary: "気軽に贈りやすい定番のスイーツギフトです。",
+    features:
+      "クッキーやフィナンシェなど、複数の焼き菓子を楽しめるセットです。",
+    reason:
+      "種類が豊富で、好みに合わせて選びやすいプレゼントです。",
+    caution:
+      "小麦・卵・乳などのアレルギーや、賞味期限に注意してください。",
+    icon: "fa-cookie-bite",
+    searchKeyword: "焼き菓子 詰め合わせ ギフト"
+  },
+  {
+    id: "sample-3",
+    name: "リラックスグッズセット",
+    priceRange: "2,000〜5,000円",
+    summary: "日々の疲れを癒やす時間を贈れるギフトです。",
+    features:
+      "入浴剤やアイマスクなど、自宅でくつろぐ時間に使えるアイテムのセットです。",
+    reason:
+      "忙しい方にも、自分のためのリラックスタイムを楽しんでもらえます。",
+    caution:
+      "香りの好みや肌への刺激、使用上の注意を確認してください。",
+    icon: "fa-spa",
+    searchKeyword: "リラックスグッズ ギフト セット"
+  }
+];
+
+
+/* ========================================
+   SHOW TEMPORARY RESULT
+======================================== */
+
+function showTemporaryResult(consultationData) {
+
+  // 将来、AIから取得した候補データに置き換える
+  renderSuggestions(temporarySuggestions);
+
+}
+
+
+/* ========================================
+   RENDER SUGGESTIONS
+======================================== */
+
+function renderSuggestions(suggestions) {
 
   const result =
-    document.getElementById(
-      "aiTalkResult"
-    );
-
+    document.getElementById("aiTalkResult");
 
   const list =
-    document.getElementById(
-      "aiTalkSuggestionList"
-    );
+    document.getElementById("aiTalkSuggestionList");
 
+  const detail =
+    document.getElementById("aiTalkSuggestionDetail");
 
-  if (
-    !result ||
-    !list
-  ) {
+  if (!result || !list || !detail) {
     return;
   }
 
+  // 前回の相談結果をクリア
+  list.replaceChildren();
 
-  list.innerHTML = "";
+  detail.classList.add("hidden");
 
+  // 最大3件
+  const displaySuggestions =
+    suggestions.slice(0, 3);
+
+  displaySuggestions.forEach((suggestion, index) => {
+
+    const card =
+      createSuggestionCard(suggestion);
+
+    card.addEventListener("click", () => {
+
+      selectSuggestion(
+        suggestion,
+        card
+      );
+
+    });
+
+    list.appendChild(card);
+
+    // 最初の候補を初期選択
+    if (index === 0) {
+      selectSuggestion(suggestion, card);
+    }
+
+  });
+
+  result.classList.remove("hidden");
+
+  result.scrollIntoView({
+    behavior: "smooth",
+    block: "start"
+  });
+
+}
+
+
+/* ========================================
+   CREATE SUGGESTION CARD
+======================================== */
+
+function createSuggestionCard(suggestion) {
 
   const card =
-    document.createElement(
-      "article"
-    );
+    document.createElement("button");
 
+  card.type = "button";
 
   card.className =
     "ai-talk-suggestion-card";
 
+  card.setAttribute(
+    "aria-pressed",
+    "false"
+  );
+
+  // 画像表示領域
+  const image =
+    document.createElement("div");
+
+  image.className =
+    "ai-talk-card-image";
+
+  const icon =
+    document.createElement("i");
+
+  icon.className =
+    `fa-solid ${suggestion.icon || "fa-gift"}`;
+
+  image.appendChild(icon);
+
+  // テキスト領域
+  const content =
+    document.createElement("div");
+
+  content.className =
+    "ai-talk-card-content";
+
+  const title =
+    document.createElement("h3");
+
+  title.className =
+    "ai-talk-card-title";
+
+  title.textContent =
+    suggestion.name;
+
+  const price =
+    document.createElement("span");
+
+  price.className =
+    "ai-talk-card-price";
+
+  price.textContent =
+    `目安：${suggestion.priceRange}`;
+
+  const reason =
+    document.createElement("p");
+
+  reason.className =
+    "ai-talk-card-reason";
+
+  reason.textContent =
+    suggestion.summary;
+
+  content.append(
+    title,
+    price,
+    reason
+  );
+
+  card.append(
+    image,
+    content
+  );
+
+  return card;
+
+}
+
+
+/* ========================================
+   SELECT SUGGESTION
+======================================== */
+
+function selectSuggestion(suggestion, selectedCard) {
+
+  const cards =
+    document.querySelectorAll(
+      "#aiTalkSuggestionList .ai-talk-suggestion-card"
+    );
+
+  cards.forEach(card => {
+
+    const isSelected =
+      card === selectedCard;
+
+    card.classList.toggle(
+      "selected",
+      isSelected
+    );
+
+    card.setAttribute(
+      "aria-pressed",
+      String(isSelected)
+    );
+
+  });
+
+  renderSuggestionDetail(suggestion);
+
+}
+
+
+/* ========================================
+   RENDER SUGGESTION DETAIL
+======================================== */
+
+function renderSuggestionDetail(suggestion) {
+
+  const detail =
+    document.getElementById("aiTalkSuggestionDetail");
+
+  const content =
+    document.getElementById("aiTalkDetailContent");
+
+  if (!detail || !content) {
+    return;
+  }
+
+  content.replaceChildren();
+
+  // 候補名
+  const title =
+    document.createElement("h3");
+
+  title.className =
+    "ai-talk-detail-title";
+
+  title.textContent =
+    suggestion.name;
+
+  // 価格目安
+  const price =
+    document.createElement("span");
+
+  price.className =
+    "ai-talk-detail-price";
+
+  price.textContent =
+    `価格目安：${suggestion.priceRange}`;
+
+  content.append(
+    title,
+    price
+  );
+
+  // 特徴
+  content.appendChild(
+    createDetailSection(
+      "特徴",
+      suggestion.features,
+      "fa-circle-info"
+    )
+  );
+
+  // おすすめ理由
+  content.appendChild(
+    createDetailSection(
+      "おすすめする理由",
+      suggestion.reason,
+      "fa-heart"
+    )
+  );
+
+  // 注意点
+  content.appendChild(
+    createDetailSection(
+      "注意点",
+      suggestion.caution,
+      "fa-triangle-exclamation"
+    )
+  );
+
+  // EC検索リンク
+  updateEcLinks(suggestion);
+
+  // 保存機能は後の工程で実装
+  const saveButton =
+    document.getElementById("aiTalkSaveButton");
+
+  if (saveButton) {
+    saveButton.disabled = true;
+  }
+
+  detail.classList.remove("hidden");
+
+}
+
+
+/* ========================================
+   CREATE DETAIL SECTION
+======================================== */
+
+function createDetailSection(title, description, iconClass) {
+
+  const section =
+    document.createElement("section");
+
+  section.className =
+    "ai-talk-detail-section";
 
   const heading =
-    document.createElement(
-      "h3"
-    );
+    document.createElement("h4");
 
+  const icon =
+    document.createElement("i");
 
-  heading.textContent =
-    "相談条件を確認しました";
+  icon.className =
+    `fa-solid ${iconClass}`;
 
+  heading.appendChild(icon);
 
-  const budget =
-    document.createElement(
-      "span"
-    );
-
-
-  budget.className =
-    "ai-talk-suggestion-budget";
-
-
-  budget.textContent =
-    consultationData.budget;
-
-
-  const description =
-    document.createElement(
-      "p"
-    );
-
-
-  description.textContent =
-    "画面の入力処理は正常に動作しています。" +
-    "次の工程でAIからプレゼント候補を取得する処理を接続します。";
-
-
-  card.appendChild(
-    heading
+  heading.appendChild(
+    document.createTextNode(title)
   );
 
+  const text =
+    document.createElement("p");
 
-  card.appendChild(
-    budget
+  text.textContent =
+    description || "情報がありません。";
+
+  section.append(
+    heading,
+    text
   );
 
+  return section;
 
-  card.appendChild(
-    description
-  );
-
-
-  list.appendChild(
-    card
-  );
+}
 
 
-  result.classList.remove(
-    "hidden"
-  );
+/* ========================================
+   UPDATE EC LINKS
+======================================== */
 
+function updateEcLinks(suggestion) {
 
-  result.scrollIntoView(
-    {
-      behavior: "smooth",
-      block: "start"
-    }
-  );
+  const amazonButton =
+    document.getElementById("aiTalkAmazonButton");
+
+  const rakutenButton =
+    document.getElementById("aiTalkRakutenButton");
+
+  const keyword =
+    suggestion.searchKeyword || suggestion.name;
+
+  const encodedKeyword =
+    encodeURIComponent(keyword);
+
+  if (amazonButton) {
+
+    amazonButton.href =
+      `https://www.amazon.co.jp/s?k=${encodedKeyword}`;
+
+    amazonButton.target = "_blank";
+    amazonButton.rel = "noopener noreferrer";
+
+    amazonButton.removeAttribute("aria-disabled");
+    amazonButton.removeAttribute("tabindex");
+
+  }
+
+  if (rakutenButton) {
+
+    rakutenButton.href =
+      `https://search.rakuten.co.jp/search/mall/${encodedKeyword}/`;
+
+    rakutenButton.target = "_blank";
+    rakutenButton.rel = "noopener noreferrer";
+
+    rakutenButton.removeAttribute("aria-disabled");
+    rakutenButton.removeAttribute("tabindex");
+
+  }
 
 }
 
