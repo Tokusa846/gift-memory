@@ -1506,48 +1506,79 @@ function updateSubmitButton() {
    FORM
 ======================================== */
 
+
 function setupForm() {
+  const form = document.getElementById("aiTalkForm");
+  const submitButton =
+    document.getElementById("aiTalkSubmitButton");
+  const message =
+    document.getElementById("aiTalkFormMessage");
 
-  const form =
-    document.getElementById(
-      "aiTalkForm"
-    );
+  let isSubmitting = false;
 
+  form?.addEventListener("submit", async event => {
+    event.preventDefault();
 
-  form?.addEventListener(
-    "submit",
-    event => {
+    if (isSubmitting || !validateForm()) {
+      return;
+    }
 
-      event.preventDefault();
+    const consultationData = createConsultationData();
 
+    // GitHub Pagesなどでは仮データを使用
+    const isLocal =
+      ["localhost", "127.0.0.1"].includes(
+        window.location.hostname
+      );
 
-      if (!validateForm()) {
-        return;
+    if (!isLocal) {
+      showTemporaryResult(consultationData);
+      return;
+    }
+
+    isSubmitting = true;
+
+    if (submitButton) {
+      submitButton.disabled = true;
+      submitButton.textContent = "AIが考えています...";
+    }
+
+    if (message) {
+      message.textContent = "ギフト候補を生成しています...";
+    }
+
+    // 前回の結果を一時的に非表示
+    document.getElementById("aiTalkResult")
+      ?.classList.add("hidden");
+
+    try {
+      const suggestions =
+        await requestGiftRecommendations(consultationData);
+
+      renderSuggestions(suggestions);
+
+      if (message) {
+        message.textContent = "";
+      }
+    } catch (error) {
+      console.error("AI相談エラー:", error);
+
+      if (message) {
+        message.textContent =
+          "AIの提案を取得できませんでした。ローカルAPIサーバーの起動状態を確認してください。";
+      }
+    } finally {
+      isSubmitting = false;
+
+      if (submitButton) {
+        submitButton.textContent = "AIに相談する";
       }
 
-
-      const consultationData =
-        createConsultationData();
-
-
-      /*
-        次の工程で、このデータを
-        Supabase Edge Functionへ送信する
-      */
-      console.log(
-        "AI相談データ:",
-        consultationData
-      );
-
-
-      showTemporaryResult(
-        consultationData
-      );
-
+      updateSubmitButton();
     }
-  );
-
+  });
 }
+
 
 
 /* ========================================
@@ -1832,6 +1863,72 @@ function createConsultationData() {
 }
 
 
+
+/* ========================================
+   REQUEST GIFT RECOMMENDATIONS
+======================================== */
+
+async function requestGiftRecommendations(consultationData) {
+  const person = consultationData.person;
+  const unregistered = consultationData.unregisteredRecipient;
+
+  const recipientInfo = person
+    ? {
+        name: person.name || "",
+        relationship: person.relationship || "",
+        birthday: person.birthday || "",
+        likes: person.likes || "",
+        dislikes: person.dislikes || "",
+        allergies: person.allergies || "",
+        memo: person.memo || "",
+        giftHistory: consultationData.giftHistory
+          .slice(0, 10)
+          .map(gift => ({
+            direction: gift.direction,
+            occasion: gift.occasion,
+            itemName: gift.item_name
+          }))
+      }
+    : {
+        relationship: unregistered?.relationship || "",
+        ageGroup: unregistered?.ageGroup || "",
+        likes: unregistered?.likes || "",
+        avoid: unregistered?.avoid || ""
+      };
+
+  const response = await fetch(
+    "http://127.0.0.1:8787/recommend-gifts",
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        recipientInfo,
+        occasion: consultationData.occasion,
+        budget: consultationData.budget,
+        additionalRequest: consultationData.additionalRequest
+      })
+    }
+  );
+
+  if (!response.ok) {
+    throw new Error(`API error: ${response.status}`);
+  }
+
+  const data = await response.json();
+
+  if (
+    !Array.isArray(data.suggestions) ||
+    data.suggestions.length !== 3
+  ) {
+    throw new Error("AIの回答形式が正しくありません");
+  }
+
+  return data.suggestions;
+}
+
+
 /* ========================================
    TEMPORARY RESULT
 ======================================== */
@@ -1952,7 +2049,7 @@ function renderSuggestions(suggestions) {
   list.scrollLeft = 0;
 
   // ページインジケーターを作成
-  setupSuggestionDots();
+  setupSuggestionDots(displaySuggestions);
 
   result.scrollIntoView({
     behavior: "smooth",
@@ -2091,7 +2188,7 @@ function createSuggestionCard(suggestion) {
    SETUP SUGGESTION DOTS
 ======================================== */
 
-function setupSuggestionDots() {
+function setupSuggestionDots(suggestions) {
 
   const list =
     document.getElementById("aiTalkSuggestionList");
@@ -2137,7 +2234,7 @@ function setupSuggestionDots() {
       });
 
       selectSuggestion(
-        temporarySuggestions[index],
+        suggestions[index],
         card
       );
 
