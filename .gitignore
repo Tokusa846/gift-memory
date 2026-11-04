@@ -1,0 +1,5 @@
+# ローカル開発用の秘密情報
+dev-server/.env
+
+# Node.js
+node_modules/
