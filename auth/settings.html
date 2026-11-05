@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>アカウント設定 | Gift Memory</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../common/common.css">
+  <link rel="stylesheet" href="./auth.css">
+  <script type="module" src="./settings.js"></script>
+</head>
+<body>
+  <div class="app-container auth-app">
+    <main class="auth-main">
+      <div class="auth-brand" aria-hidden="true">♡</div>
+      <h1 class="auth-title">Gift Memory</h1>
+      <p class="auth-subtitle">大切な人への想いを、忘れないために。</p>
+      <section class="auth-card" aria-labelledby="settingsHeading">
+        <h2 id="settingsHeading">アカウント設定</h2>
+        <p class="auth-description">ログイン中のアカウントを確認できます。</p>
+        <p style="font-size:12px;font-weight:700;margin:0 0 8px;">メールアドレス</p>
+        <p id="accountEmail" style="font-size:14px;overflow-wrap:anywhere;margin:0 0 25px;">確認中...</p>
+        <p id="settingsMessage" class="auth-message" role="status" aria-live="polite"></p>
+        <button id="logoutButton" class="auth-primary-button" type="button" disabled style="width:100%;">ログアウト</button>
+        <a class="auth-secondary-link" href="../index.html">TOP画面に戻る</a>
+      </section>
+    </main>
+  </div>
+</body>
+</html>

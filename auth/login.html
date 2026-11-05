@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ログイン | Gift Memory</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../common/common.css">
+  <link rel="stylesheet" href="./auth.css">
+  <script type="module" src="./auth.js"></script>
+</head>
+<body>
+  <div class="app-container auth-app">
+    <main class="auth-main">
+      <div class="auth-brand" aria-hidden="true">♡</div>
+      <h1 class="auth-title">Gift Memory</h1>
+      <p class="auth-subtitle">大切な人への想いを、忘れないために。</p>
+      <section class="auth-card" aria-labelledby="loginHeading">
+        <h2 id="loginHeading">ログイン</h2>
+        <p class="auth-description">登録済みのメールアドレスでログインしてください。</p>
+        <form id="loginForm">
+          <label for="loginEmail">メールアドレス</label>
+          <input id="loginEmail" type="email" name="email" autocomplete="username" inputmode="email" required maxlength="254" placeholder="example@example.com">
+          <label for="loginPassword">パスワード</label>
+          <input id="loginPassword" type="password" name="password" autocomplete="current-password" required placeholder="パスワードを入力">
+          <p id="loginMessage" class="auth-message" role="status" aria-live="polite"></p>
+          <button id="loginButton" class="auth-primary-button" type="submit">ログインする</button>
+        </form>
+        <a class="auth-secondary-link" href="./reset-password.html">パスワードを忘れた方はこちら</a>
+      </section>
+      <p class="auth-note">現在、Gift Memoryは招待制です。</p>
+    </main>
+  </div>
+</body>
+</html>
