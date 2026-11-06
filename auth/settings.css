@@ -1,0 +1,24 @@
+/* V1.6 暫定設定画面。既存の auth.css / settings.js は変更しない。 */
+.settings-app { min-height:100vh; background:#faf8f5; color:#332d29; }
+.settings-header { display:flex; align-items:center; justify-content:space-between; height:62px; padding:0 18px; background:#faf8f5; border-bottom:1px solid #eee7e1; }
+.settings-header h1 { margin:0; font-size:18px; font-weight:700; }
+.settings-back { display:flex; align-items:center; justify-content:center; width:34px; height:34px; color:#332d29; text-decoration:none; font-size:32px; line-height:1; }
+.settings-header-spacer { width:34px; }
+.settings-main { max-width:480px; margin:0 auto; padding:18px 16px 38px; }
+.settings-section { margin-bottom:22px; }
+.settings-section h2 { margin:0 0 9px 4px; font-size:13px; font-weight:700; color:#a36a66; }
+.settings-panel { background:#fff; border:1px solid #eee7e1; border-radius:13px; overflow:hidden; }
+.settings-item { display:flex; align-items:center; gap:11px; min-height:51px; padding:13px 14px; }
+.settings-item + .settings-item { border-top:1px solid #f1ece8; }
+.settings-icon { display:flex; align-items:center; justify-content:center; flex:0 0 23px; color:#85746e; font-size:17px; font-weight:600; }
+.settings-label { flex:1; min-width:0; font-size:13px; font-weight:500; }
+.settings-soon { flex-shrink:0; font-size:11px; color:#a49a95; background:#f6f3f0; padding:4px 7px; border-radius:6px; }
+.settings-value { flex-shrink:0; font-size:11px; color:#827671; }
+.settings-item-stack { display:block; }
+.settings-item-top { display:flex; align-items:center; gap:11px; }
+.settings-detail { margin:7px 0 0 34px; color:#746a65; font-size:12px; overflow-wrap:anywhere; }
+.settings-logout { width:100%; padding:13px; border:1px solid #e6c8c2; border-radius:11px; background:#fff; color:#b65d52; font:inherit; font-size:14px; font-weight:700; cursor:pointer; }
+.settings-logout:disabled { opacity:.55; cursor:wait; }
+.settings-home-link { display:block; margin-top:17px; text-align:center; color:#a36a66; font-size:12px; text-decoration:none; }
+.settings-main .auth-message { text-align:center; font-size:12px; }
+@media (max-width:360px) { .settings-item { padding:12px 10px; gap:7px; } .settings-label { font-size:12px; } .settings-soon { font-size:10px; } }

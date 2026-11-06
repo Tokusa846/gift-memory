@@ -3,29 +3,82 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>アカウント設定 | Gift Memory</title>
+  <title>設定 | Gift Memory</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="../common/common.css">
   <link rel="stylesheet" href="./auth.css">
+  <link rel="stylesheet" href="./settings.css">
   <script type="module" src="./settings.js"></script>
 </head>
 <body>
-  <div class="app-container auth-app">
-    <main class="auth-main">
-      <div class="auth-brand" aria-hidden="true">♡</div>
-      <h1 class="auth-title">Gift Memory</h1>
-      <p class="auth-subtitle">大切な人への想いを、忘れないために。</p>
-      <section class="auth-card" aria-labelledby="settingsHeading">
-        <h2 id="settingsHeading">アカウント設定</h2>
-        <p class="auth-description">ログイン中のアカウントを確認できます。</p>
-        <p style="font-size:12px;font-weight:700;margin:0 0 8px;">メールアドレス</p>
-        <p id="accountEmail" style="font-size:14px;overflow-wrap:anywhere;margin:0 0 25px;">確認中...</p>
-        <p id="settingsMessage" class="auth-message" role="status" aria-live="polite"></p>
-        <button id="logoutButton" class="auth-primary-button" type="button" disabled style="width:100%;">ログアウト</button>
-        <a class="auth-secondary-link" href="../index.html">TOP画面に戻る</a>
+  <div class="app-container settings-app">
+    <header class="settings-header">
+      <a class="settings-back" href="../index.html" aria-label="TOP画面に戻る">‹</a>
+      <h1>設定</h1>
+      <span class="settings-header-spacer" aria-hidden="true"></span>
+    </header>
+    <main class="settings-main">
+      <section class="settings-section" aria-labelledby="subscriptionHeading">
+        <h2 id="subscriptionHeading">サブスクリプション</h2>
+        <div class="settings-panel">
+          <div class="settings-item"><span class="settings-icon">♕</span><span class="settings-label">プランの確認・変更</span><span class="settings-soon">準備中</span></div>
+          <div class="settings-item"><span class="settings-icon">✧</span><span class="settings-label">有料プランの特典</span><span class="settings-soon">準備中</span></div>
+        </div>
       </section>
+      <section class="settings-section" aria-labelledby="accountHeading">
+        <h2 id="accountHeading">アカウント</h2>
+        <div class="settings-panel">
+          <div class="settings-item settings-item-stack"><div class="settings-item-top"><span class="settings-icon">♙</span><span class="settings-label">プロフィール</span><span class="settings-soon">一部対応</span></div><p class="settings-detail" id="accountEmail">確認中...</p></div>
+          <div class="settings-item"><span class="settings-icon">⚿</span><span class="settings-label">パスワード変更</span><span class="settings-soon">準備中</span></div>
+        </div>
+      </section>
+      <section class="settings-section" aria-labelledby="displayHeading">
+        <h2 id="displayHeading">画面・表示</h2>
+        <div class="settings-panel">
+          <div class="settings-item"><span class="settings-icon">Aa</span><span class="settings-label">文字の大きさ</span><span class="settings-soon">準備中</span></div>
+          <div class="settings-item"><span class="settings-icon">◉</span><span class="settings-label">テーマカラー</span><span class="settings-soon">準備中</span></div>
+          <div class="settings-item"><span class="settings-icon">文</span><span class="settings-label">言語</span><span class="settings-soon">準備中</span></div>
+          <div class="settings-item"><span class="settings-icon">▦</span><span class="settings-label">週の開始曜日</span><span class="settings-soon">準備中</span></div>
+          <div class="settings-item"><span class="settings-icon">☷</span><span class="settings-label">カレンダー表示・フィルター</span><span class="settings-soon">準備中</span></div>
+        </div>
+      </section>
+      <section class="settings-section" aria-labelledby="notificationHeading">
+        <h2 id="notificationHeading">通知</h2>
+        <div class="settings-panel">
+          <div class="settings-item"><span class="settings-icon">♧</span><span class="settings-label">リマインダー通知</span><span class="settings-soon">準備中</span></div>
+          <div class="settings-item"><span class="settings-icon">◷</span><span class="settings-label">イベント通知のタイミング</span><span class="settings-soon">準備中</span></div>
+          <div class="settings-item"><span class="settings-icon">☑</span><span class="settings-label">通知の対象設定</span><span class="settings-soon">準備中</span></div>
+        </div>
+      </section>
+      <section class="settings-section" aria-labelledby="aiHeading">
+        <h2 id="aiHeading">AI相談</h2>
+        <div class="settings-panel">
+          <div class="settings-item"><span class="settings-icon">✧</span><span class="settings-label">AI相談の設定</span><span class="settings-soon">準備中</span></div>
+          <div class="settings-item"><span class="settings-icon">◴</span><span class="settings-label">相談履歴・利用状況</span><span class="settings-soon">準備中</span></div>
+        </div>
+      </section>
+      <section class="settings-section" aria-labelledby="dataHeading">
+        <h2 id="dataHeading">データ管理</h2>
+        <div class="settings-panel">
+          <div class="settings-item"><span class="settings-icon">⇩</span><span class="settings-label">データのバックアップ</span><span class="settings-soon">準備中</span></div>
+          <div class="settings-item"><span class="settings-icon">⇧</span><span class="settings-label">データのエクスポート</span><span class="settings-soon">準備中</span></div>
+          <div class="settings-item"><span class="settings-icon">×</span><span class="settings-label">データ一括削除</span><span class="settings-soon">準備中</span></div>
+          <div class="settings-item"><span class="settings-icon">×</span><span class="settings-label">アカウント削除</span><span class="settings-soon">準備中</span></div>
+        </div>
+      </section>
+      <section class="settings-section" aria-labelledby="aboutHeading">
+        <h2 id="aboutHeading">アプリについて</h2>
+        <div class="settings-panel">
+          <div class="settings-item"><span class="settings-icon">ⓘ</span><span class="settings-label">バージョン情報</span><span class="settings-value">V1.6 開発中</span></div>
+          <div class="settings-item"><span class="settings-icon">▤</span><span class="settings-label">利用規約・プライバシーポリシー</span><span class="settings-soon">準備中</span></div>
+          <div class="settings-item"><span class="settings-icon">✉</span><span class="settings-label">お問い合わせ・フィードバック</span><span class="settings-soon">準備中</span></div>
+        </div>
+      </section>
+      <p id="settingsMessage" class="auth-message" role="status" aria-live="polite"></p>
+      <button id="logoutButton" class="settings-logout" type="button" disabled>ログアウト</button>
+      <a class="settings-home-link" href="../index.html">TOP画面に戻る</a>
     </main>
   </div>
 </body>
