@@ -37,6 +37,7 @@
 
   <!-- CSS -->
   <link rel="stylesheet" href="../common/common.css">
+  <link rel="stylesheet" href="../common/person_selector.css">
   <link rel="stylesheet" href="event.css">
 
 
@@ -336,30 +337,30 @@
             id="eventRegisteredPersonField"
             class="event-person-field hidden"
           >
-
             <label
-              for="eventPersonSelect"
+              for="eventPersonButton"
               class="event-person-sub-label"
             >
               登録済みの人物
             </label>
 
-            <div class="event-select-wrapper">
-
-              <select id="eventPersonSelect">
-
-                <option value="">
-                  ー選択してくださいー
-                </option>
-
-                <!-- JavaScriptで人物を追加 -->
-
-              </select>
-
+            <button
+              type="button"
+              id="eventPersonButton"
+              class="event-person-picker-button"
+              disabled
+            >
+              <span id="eventPersonDisplay">
+                ー選択してくださいー
+              </span>
               <i class="fa-solid fa-chevron-down"></i>
+            </button>
 
-            </div>
-
+            <input
+              type="hidden"
+              id="eventPersonSelect"
+              value=""
+            >
           </div>
 
         </div>

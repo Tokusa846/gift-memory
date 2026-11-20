@@ -4,16 +4,16 @@ import {
   getInitialDate,
   isValidDateString
 } from "../common/date_utils.js";
-import {
-  getReturnUrl
-} from "../common/navigation.js";
-
+import { getReturnUrl } from "../common/navigation.js";
+import { createPersonSelector } from "../common/person_selector.js";
 
 /* ========================================
    STATE
 ======================================== */
 
 let editingEventId = null;
+let personSelector = null;
+let registeredPeople = [];
 
 /* ========================================
    INITIALIZE
@@ -28,6 +28,8 @@ document.addEventListener(
     setupInitialDate();
 
     await loadPeople();
+
+    document.getElementById("eventPersonButton").disabled = !personSelector;
 
     setupPersonMode();
 
@@ -139,84 +141,56 @@ function setupInitialDate() {
 /* ========================================
    LOAD PEOPLE
 ======================================== */
-
 async function loadPeople() {
-
-  const select =
-    document.getElementById(
-      "eventPersonSelect"
-    );
-
-
-  if (!select) {
-    return;
-  }
-
-
-  const { data, error } =
-    await supabase
-      .from("people")
-      .select(`
-        id,
-        name
-      `)
-      .order(
-        "name",
-        {
-          ascending: true
-        }
-      );
-
+  const { data, error } = await supabase
+    .from("people")
+    .select("id, name, name_kana")
+    .order("name", { ascending: true });
 
   if (error) {
-
-    console.error(
-      "人物一覧の取得に失敗しました:",
-      error
-    );
-
-
-    showMessage(
-      "人物一覧を取得できませんでした。",
-      "error"
-    );
-
-
+    console.error("人物一覧の取得に失敗しました:", error);
+    showMessage("人物一覧を取得できませんでした。", "error");
     return;
-
   }
 
+  registeredPeople = (data ?? []).map(person => ({
+    ...person,
+    furigana: person.name_kana ?? ""
+  }));
 
-  const people =
-    data ?? [];
-
-
-  people.forEach(
-    person => {
-
-      const option =
-        document.createElement(
-          "option"
-        );
-
-
-      option.value =
-        person.id;
-
-
-      option.textContent =
-        person.name;
-
-
-      select.appendChild(
-        option
-      );
-
+  personSelector = createPersonSelector({
+    people: registeredPeople,
+    onSelect: person => {
+      setSelectedPerson(person);
     }
-  );
+  });
 
+  document
+    .getElementById("eventPersonButton")
+    .addEventListener("click", () => {
+      personSelector.open();
+    });
 }
 
+function setSelectedPerson(person) {
+  const personId = document.getElementById("eventPersonSelect");
+  const display = document.getElementById("eventPersonDisplay");
+
+  personId.value = person?.id ?? "";
+  display.textContent = person?.name ?? "ー選択してくださいー";
+
+  personSelector?.setSelectedId(person?.id ?? null);
+
+  updateBirthdayTitle();
+}
+
+function restoreSelectedPerson(personId) {
+  const person = registeredPeople.find(
+    item => String(item.id) === String(personId)
+  );
+
+  setSelectedPerson(person ?? null);
+}
 
 /* ========================================
    LOAD EVENT FOR EDIT
@@ -262,20 +236,15 @@ async function loadEventForEdit(
       "error"
     );
 
-
     disableEventForm();
 
     return;
-
   }
-
 
   applyEditPageTitle();
 
 
-  /*
-    イベント種別
-  */
+  /* イベント種別*/
 
   const eventTypeInput =
     document.querySelector(
@@ -286,6 +255,7 @@ async function loadEventForEdit(
   if (eventTypeInput) {
     eventTypeInput.checked = true;
   } else if (data.event_type === "gift") {
+
     // 過去の「プレゼント予定」は編集時だけ選択肢を復元する
     const grid = document.querySelector(".event-type-grid");
     const label = document.createElement("label");
@@ -297,9 +267,7 @@ async function loadEventForEdit(
   }
 
 
-  /*
-    基本情報
-  */
+  /* 基本情報*/
 
   document.getElementById(
     "eventTitle"
@@ -343,10 +311,7 @@ async function loadEventForEdit(
       true;
 
 
-    document.getElementById(
-      "eventPersonSelect"
-    ).value =
-      data.person_id;
+    restoreSelectedPerson(data.person_id);
 
   } else if (
     data.related_person_name
@@ -385,10 +350,7 @@ async function loadEventForEdit(
       true;
 
 
-    document.getElementById(
-      "eventPersonSelect"
-    ).value =
-      "";
+    setSelectedPerson(null);
 
   }
 
@@ -516,9 +478,9 @@ function updatePersonMode() {
     );
 
 
-  const personSelect =
+  const personButton =
     document.getElementById(
-      "eventPersonSelect"
+      "eventPersonButton"
     );
 
 
@@ -545,9 +507,8 @@ function updatePersonMode() {
   freeInput.disabled =
     !isFree;
 
-
-  personSelect.disabled =
-    !isRegistered;
+  personButton.disabled =
+  !isRegistered || !personSelector;
 
 }
 
@@ -591,7 +552,6 @@ function setupEventTypeBehavior() {
   });
 
   document.getElementById("eventPersonName").addEventListener("input", updateBirthdayTitle);
-  document.getElementById("eventPersonSelect").addEventListener("change", updateBirthdayTitle);
   document.querySelectorAll('input[name="personMode"]').forEach(input => {
     input.addEventListener("change", updateBirthdayTitle);
   });
@@ -606,10 +566,22 @@ function getBirthdayTitle() {
     return name ? `${name}の誕生日` : "誕生日";
   }
   if (mode === "registered") {
-    const select = document.getElementById("eventPersonSelect");
-    const name = select.value ? select.selectedOptions[0]?.textContent.trim() : "";
-    return name ? `${name}${name.endsWith("さん") ? "" : "さん"}の誕生日` : "誕生日";
+    const name = document
+      .getElementById("eventPersonDisplay")
+      .textContent
+      .trim();
+
+    const personId = document
+      .getElementById("eventPersonSelect")
+      .value;
+
+    if (!personId) {
+      return "誕生日";
+    }
+
+    return `${name}${name.endsWith("さん") ? "" : "さん"}の誕生日`;
   }
+
   return "誕生日";
 }
 

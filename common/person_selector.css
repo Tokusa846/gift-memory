@@ -1,0 +1,143 @@
+
+/* 共通：人物選択モーダル */
+.person-selector-overlay[hidden] { 
+    display: none; 
+}
+
+.person-selector-open { 
+    overflow: hidden; 
+}
+
+.person-selector-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 10000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  background: rgba(0, 0, 0, .48);
+}
+
+.person-selector-dialog {
+  display: flex;
+  flex-direction: column;
+  width: min(100%, 440px);
+  max-height: min(80dvh, 680px);
+  overflow: hidden;
+  border-radius: 16px;
+  background: #fff;
+  color: #333;
+  box-shadow: 0 12px 36px rgba(0, 0, 0, .18);
+}
+.person-selector-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 18px 10px;
+}
+.person-selector-header h2 { 
+    margin: 0; 
+    font-size: 17px; 
+}
+
+.person-selector-close {
+  border: 0;
+  background: transparent;
+  color: inherit;
+  font-size: 26px;
+  cursor: pointer;
+}
+.person-selector-search-wrap { 
+    padding: 6px 16px 12px; 
+}
+
+.person-selector-search {
+  box-sizing: border-box;
+  width: 100%;
+  min-height: 44px;
+  padding: 10px 12px;
+  border: 1px solid #d5d5d5;
+  border-radius: 10px;
+  font: inherit;
+  font-size: 16px;
+}
+.person-selector-results { 
+    flex: 1; 
+    min-height: 0; 
+    overflow-y: auto; 
+    overscroll-behavior: contain; 
+}
+
+.person-selector-option {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  padding: 11px 18px;
+  border: 0;
+  border-bottom: 1px solid #eee;
+  background: #fff;
+  color: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.person-selector-option:hover, 
+.person-selector-option:focus-visible { 
+    background: #f7f5f6; 
+}
+
+.person-selector-option[aria-selected="true"] {
+    background: #f9eef2; 
+}
+
+.person-selector-avatar {
+  display: grid;
+  place-items: center;
+  flex: 0 0 40px;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: #f1e8ec;
+  color: #8c6071;
+  font-size: 13px;
+}
+.person-selector-person-text { 
+    display: flex; 
+    flex-direction: column; 
+    min-width: 0; 
+}
+
+.person-selector-name { 
+    overflow-wrap: anywhere; 
+    font-size: 15px; 
+}
+
+.person-selector-reading { 
+    color: #777; 
+    font-size: 12px; 
+    overflow-wrap: anywhere; 
+}
+
+.person-selector-empty { 
+    padding: 24px 16px; 
+    text-align: center; 
+    color: #777; 
+}
+
+.person-selector-footer { 
+    padding: 12px 16px; 
+    border-top: 1px solid #eee; 
+}
+
+.person-selector-clear {
+  width: 100%;
+  min-height: 42px;
+  border: 1px solid #d5d5d5;
+  border-radius: 9px;
+  background: #fff;
+  color: #555;
+  font: inherit;
+  cursor: pointer;
+}

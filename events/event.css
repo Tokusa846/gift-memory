@@ -708,3 +708,36 @@
   color: #665d56 !important;
   cursor: default;
 }
+
+/* 登録済み人物の選択ボタン */
+.event-person-picker-button {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  width: 100%;
+  min-height: 46px;
+  padding: 12px 14px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  background: #fff;
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.event-person-picker-button span {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.event-person-picker-button i {
+  flex-shrink: 0;
+  color: #888;
+}
+
+.event-person-picker-button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
